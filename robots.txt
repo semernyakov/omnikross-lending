@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: /sitemap.xml
-
-# Omnikross Landing
-# .ru — Russian market
-# .com — Global market
