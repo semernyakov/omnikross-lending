@@ -1,0 +1,1007 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>OmniKross — One Text → 4 Platforms in 3 Seconds</title>
+        <meta
+            name="description"
+            content="OmniKross — AI adaptive publishing engine. Obsidian &amp; Notion notes → publish-ready posts for Twitter, Instagram, LinkedIn, TikTok. Proofreads, adapts, auto-publishes. 500 early access slots — free forever."
+        />
+        <meta
+            name="keywords"
+            content="omnikross, adaptive publishing, ai, smm, twitter, instagram, linkedin, tiktok, obsidian, notion, content adaptation, cross-posting"
+        />
+        <meta name="author" content="OmniKross" />
+        <meta name="robots" content="index, follow" />
+
+        <link
+            rel="alternate"
+            hreflang="en"
+            href="https://omnikross.com/index_en.html"
+        />
+        <link
+            rel="alternate"
+            hreflang="ru"
+            href="https://omnikross.ru/index_ru.html"
+        />
+        <link rel="canonical" href="https://omnikross.com/index_en.html" />
+
+        <meta
+            property="og:title"
+            content="OmniKross — One Text → 4 Platforms in 3 Seconds"
+        />
+        <meta
+            property="og:description"
+            content="AI adaptive publishing: Obsidian/Notion → Twitter, IG, LinkedIn, TikTok. Free forever for the first 500."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://omnikross.com/" />
+        <meta
+            property="og:image"
+            content="https://omnikross.com/assets/og-image-en.webp"
+        />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:site_name" content="OmniKross" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+            name="twitter:title"
+            content="OmniKross — One Text → 4 Platforms"
+        />
+        <meta
+            name="twitter:description"
+            content="AI adaptive publishing: Obsidian/Notion → Twitter, IG, LinkedIn, TikTok. Free for pioneers."
+        />
+
+        <meta name="theme-color" content="#6A0DAD" />
+        <link rel="icon" href="assets/kross-node.webp" type="image/webp" />
+        <link rel="apple-touch-icon" href="assets/kross-node.webp" />
+        <link rel="manifest" href="manifest.en.json" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"
+        />
+        <link rel="stylesheet" href="css/styles.css" />
+        <link rel="stylesheet" href="css/animations.css" />
+        <link rel="stylesheet" href="css/roi-calculator.css" />
+        <script src="js/theme.js"></script>
+    </head>
+    <body>
+        <div class="ab-badge" id="abBadge"></div>
+
+        <!-- ═══ Navigation ═══ -->
+        <nav class="navbar" role="navigation" aria-label="Main navigation">
+            <div class="container nav-inner">
+                <a href="#" class="nav-brand" aria-label="OmniKross — home">
+                    <img
+                        src="assets/kross-node.webp"
+                        alt="OmniKross"
+                        width="36"
+                        height="36"
+                    />
+                    <span>OmniKross</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#simulator">AI Bridge</a></li>
+                    <li><a href="#pain">Problem</a></li>
+                    <li><a href="#value">Solution</a></li>
+                    <li><a href="#platforms">Platforms</a></li>
+                    <li><a href="#trust">Trust</a></li>
+                    <li><a href="#notes">Obsidian/Notion</a></li>
+                    <li><a href="#readiness">Readiness</a></li>
+                    <li><a href="#roadmap">Sprints</a></li>
+                    <li><a href="#reviews">Reviews</a></li>
+                    <li>
+                        <button class="theme-toggle" aria-label="Toggle theme">
+                            <i class="fa-solid fa-sun icon-sun"></i
+                            ><i class="fa-solid fa-moon icon-moon"></i>
+                        </button>
+                    </li>
+                    <li><a href="#hero" class="nav-cta">Enter the 500</a></li>
+                </ul>
+                <button
+                    class="hamburger"
+                    aria-label="Open menu"
+                    aria-expanded="false"
+                >
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </nav>
+
+        <div class="mobile-menu" role="dialog" aria-label="Mobile menu">
+            <a href="#hero">Home</a>
+            <a href="#simulator">AI Bridge</a>
+            <a href="#pain">Problem</a>
+            <a href="#value">Solution</a>
+            <a href="#platforms">Platforms</a>
+            <a href="#trust">Trust</a>
+            <a href="#notes">Obsidian/Notion</a>
+            <a href="#readiness">Readiness</a>
+            <a href="#roadmap">Sprints</a>
+            <a href="#reviews">Reviews</a>
+            <button
+                class="theme-toggle"
+                aria-label="Toggle theme"
+                style="margin: 0 auto"
+            >
+                <i class="fa-solid fa-sun icon-sun"></i
+                ><i class="fa-solid fa-moon icon-moon"></i>
+            </button>
+            <a href="index_ru.html">🌐 Русский</a>
+        </div>
+
+        <!-- ═══ Hero ═══ -->
+        <header class="hero" id="hero">
+            <div class="hero-bg"></div>
+            <div class="neuro-canvas" id="neuroCanvas" aria-hidden="true"></div>
+            <div class="hero-content container">
+                <img
+                    src="assets/kross-node.webp"
+                    class="logo pulse"
+                    alt="OmniKross neuro-node"
+                    width="120"
+                    height="120"
+                    loading="eager"
+                />
+
+                <h1 class="fade-in-up">One Content → Your Entire Ecosystem</h1>
+
+                <p class="hero-sub fade-in-up" style="animation-delay: 0.2s">
+                    Twitter · Instagram · LinkedIn · TikTok<br />
+                    Videos, UGC & articles — without manual work
+                </p>
+
+                <p
+                    class="hero-support fade-in-up"
+                    style="animation-delay: 0.3s"
+                >
+                    You spend hours adapting content.<br />
+                    OmniKross does it in minutes.
+                </p>
+
+                <div
+                    class="hero-cta-wrapper fade-in-up"
+                    style="animation-delay: 0.4s"
+                >
+                    <button
+                        class="scroll-roi-btn"
+                        onclick="
+                            document
+                                .getElementById('roi-calc')
+                                ?.scrollIntoView({ behavior: 'smooth' })
+                        "
+                    >
+                        👉 Calculate Your Savings
+                    </button>
+                    <span class="hero-note"
+                        >First 347 of 500 — free forever</span
+                    >
+                </div>
+
+                <form
+                    id="signupForm"
+                    class="signup-form fade-in-up"
+                    style="animation-delay: 0.5s"
+                    novalidate
+                >
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Email for early access"
+                        required
+                        autocomplete="email"
+                        aria-label="Email"
+                    />
+                    <span class="error-message" role="alert"></span>
+                    <input
+                        type="text"
+                        id="social"
+                        placeholder="@handle (Twitter or Instagram)"
+                        required
+                        aria-label="Social handle"
+                    />
+                    <span class="error-message" role="alert"></span>
+                    <button type="submit" id="ctaButton" class="cta-button">
+                        <span>Get My Time Back → Free</span>
+                    </button>
+                    <small class="cta-note">
+                        <i class="fa-solid fa-lock"></i> No card required · 347
+                        of 500 spots
+                    </small>
+                </form>
+
+                <div class="form-success" id="formSuccess">
+                    <p style="color: var(--accent-secondary); margin: 0 auto">
+                        🎉 Spot reserved:
+                    </p>
+                    <div class="success-number" id="successNumber">#—</div>
+                    <p style="margin: 8px auto 0; font-size: 0.9rem">
+                        of 500 OmniKross Pioneers
+                    </p>
+                </div>
+
+                <div class="slots fade-in-up" style="animation-delay: 0.6s">
+                    Remaining: <span id="slotsCount">500</span>/500 slots
+                    <span class="slots-joined" id="slotsJoined"></span>
+                </div>
+
+                <button
+                    class="tg-open-btn"
+                    onclick="
+                        window.open('https://t.me/omnikross_bot', '_blank')
+                    "
+                >
+                    <i class="fa-brands fa-telegram"></i> Open in Telegram
+                </button>
+            </div>
+        </header>
+
+        <!-- ═══ Pain Section ═══ -->
+        <section id="pain" class="reveal">
+            <div class="container">
+                <h2 class="pain-title">SMM isn't creativity. It's routine.</h2>
+
+                <p class="pain-text">
+                    The same message needs rewriting for every platform:
+                    Twitter, Instagram, LinkedIn, TikTok — each time manually.
+                </p>
+
+                <p class="pain-highlight">
+                    Every post — from scratch.<br />
+                    Every channel — separate thinking.
+                </p>
+            </div>
+        </section>
+
+        <!-- ═══ ROI Calculator ═══ -->
+        <section id="roi-calc" class="reveal">
+            <div class="container">
+                <h2>🕐 How Much Time Do You Waste on SMM?</h2>
+                <p class="roi-section-desc">
+                    Calculate losses from manual adaptation
+                </p>
+
+                <div class="calc-wrapper">
+                    <div class="calc-grid">
+                        <div class="calc-field">
+                            <label for="posts" class="calc-label"
+                                >Posts per week</label
+                            >
+                            <input
+                                id="posts"
+                                type="number"
+                                min="5"
+                                max="50"
+                                value="10"
+                                class="calc-input"
+                            />
+                        </div>
+
+                        <div class="calc-field">
+                            <label for="plats" class="calc-label"
+                                >Platforms</label
+                            >
+                            <input
+                                id="plats"
+                                type="number"
+                                min="1"
+                                max="9"
+                                value="4"
+                                class="calc-input"
+                            />
+                        </div>
+
+                        <div class="calc-field">
+                            <label for="mins" class="calc-label"
+                                >Minutes per post</label
+                            >
+                            <input
+                                id="mins"
+                                type="number"
+                                min="10"
+                                max="60"
+                                value="20"
+                                class="calc-input"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="calc-result">
+                        <div>
+                            <div id="timeResult" class="calc-time">—</div>
+                            <div class="calc-label-small">hours per month</div>
+                        </div>
+
+                        <div>
+                            <div class="calc-label-small">
+                                ≈ $<span id="moneyResult" class="calc-money"
+                                    >—</span
+                                >
+                                / year
+                            </div>
+                            <div class="calc-note">
+                                *at average SMM rate $25/hour
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button id="goSimulator" class="go-simulator-btn">
+                            <span>See How OmniKross Does It</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ Value Proposition ═══ -->
+        <section id="value" class="reveal">
+            <div class="container">
+                <h2 class="value-title">
+                    OmniKross — The Bridge Between Platforms
+                </h2>
+
+                <p class="value-text">
+                    This isn't auto-posting.<br />
+                    OmniKross understands platform context<br />
+                    and adapts one message to different formats.
+                </p>
+
+                <p class="value-highlight">
+                    One text → multiple versions → different audiences.
+                </p>
+            </div>
+        </section>
+
+        <!-- ═══ Platforms Section ═══ -->
+        <section id="platforms">
+            <div class="container">
+                <h2 class="reveal">
+                    <span>Full Audience Coverage</span>
+                </h2>
+
+                <h3>Currently</h3>
+                <div class="platforms-grid">
+                    <div class="platform-card">
+                        <i class="fa-brands fa-x-twitter"></i>
+                        <span>Twitter/X</span>
+                    </div>
+                    <div class="platform-card">
+                        <i class="fa-brands fa-instagram"></i>
+                        <span>Instagram</span>
+                    </div>
+                    <div class="platform-card">
+                        <i class="fa-brands fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </div>
+                    <div class="platform-card">
+                        <i class="fa-brands fa-tiktok"></i>
+                        <span>TikTok</span>
+                    </div>
+                </div>
+
+                <h3>Coming Soon</h3>
+                <div class="platforms-grid">
+                    <div class="platform-card">
+                        <i class="fa-brands fa-facebook"></i>
+                        <span>Facebook</span>
+                    </div>
+                    <div class="platform-card">
+                        <i class="fa-brands fa-youtube"></i>
+                        <span>YouTube</span>
+                    </div>
+                    <div class="platform-card">
+                        <i class="fa-brands fa-pinterest"></i>
+                        <span>Pinterest</span>
+                    </div>
+                    <div class="platform-card">
+                        <i class="fa-brands fa-reddit"></i>
+                        <span>Reddit</span>
+                    </div>
+                </div>
+
+                <div class="platform-special">
+                    <h3>Separately</h3>
+                    <p>Habr — articles, manual moderation (tech content)</p>
+                </div>
+
+                <p class="platform-note">
+                    Platform expansion — step by step, without risk of blocks
+                    and overpromise.
+                </p>
+            </div>
+        </section>
+
+        <!-- ═══ Trust Section ═══ -->
+        <section id="trust">
+            <div class="container">
+                <div class="trust-content">
+                    <p>
+                        OmniKross is used by content specialists, tested by
+                        agencies and teams working across multiple platforms
+                        simultaneously.
+                    </p>
+                    <p>We don't automate chaos. We eliminate it.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ AI Simulator (AI Bridge) ═══ -->
+        <section class="simulator" id="simulator">
+            <div class="container">
+                <h2 class="reveal">
+                    <span>AI Bridge: Draft → Publication</span>
+                </h2>
+                <p class="section-desc reveal">
+                    Paste text → pick platforms → get adapted versions in 3
+                    seconds
+                </p>
+
+                <div class="simulator-wrapper reveal">
+                    <p class="sim-hint">
+                        Below — not auto-posting.<br />
+                        These are examples of adapting one meaning for different
+                        platforms.
+                    </p>
+                    <div class="simulator-input-group">
+                        <textarea
+                            id="simInput"
+                            maxlength="280"
+                            placeholder='Paste your post text... e.g. "Just launched our beta! AI adapts content for every platform in seconds."'
+                            aria-label="Post text"
+                        ></textarea>
+                        <div class="char-counter" id="charCounter">0/280</div>
+                    </div>
+
+                    <div
+                        class="platform-selector stagger-children"
+                        role="group"
+                        aria-label="Platforms"
+                    >
+                        <button
+                            class="platform-btn"
+                            data-platform="twitter"
+                            type="button"
+                        >
+                            <i class="fa-brands fa-x-twitter"></i> Twitter/X
+                        </button>
+                        <button
+                            class="platform-btn"
+                            data-platform="instagram"
+                            type="button"
+                        >
+                            <i class="fa-brands fa-instagram"></i> Instagram
+                        </button>
+                        <button
+                            class="platform-btn"
+                            data-platform="linkedin"
+                            type="button"
+                        >
+                            <i class="fa-brands fa-linkedin"></i> LinkedIn
+                        </button>
+                        <button
+                            class="platform-btn"
+                            data-platform="tiktok"
+                            type="button"
+                        >
+                            <i class="fa-brands fa-tiktok"></i> TikTok
+                        </button>
+                    </div>
+
+                    <button
+                        class="generate-btn"
+                        id="generateBtn"
+                        disabled
+                        data-default="⚡ Adapt Now"
+                        data-loading="⚡ AI processing..."
+                        type="button"
+                    >
+                        ⚡ Adapt Now
+                    </button>
+                    <div
+                        class="preview-grid"
+                        id="previewGrid"
+                        aria-live="polite"
+                    ></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ Notes-to-Posts ═══ -->
+        <section class="notes-to-posts" id="notes">
+            <div class="container">
+                <h2 class="reveal">
+                    <span>Obsidian & Notion → Ready Posts</span>
+                </h2>
+                <p class="section-desc reveal">
+                    Your drafts already contain content. OmniKross
+                    <strong>proofreads, adapts, and publishes</strong> —
+                    automatically.
+                </p>
+
+                <div class="notes-grid stagger-children">
+                    <div class="note-card">
+                        <div class="note-card-icon">
+                            <svg
+                                width="48"
+                                height="48"
+                                viewBox="0 0 48 48"
+                                fill="none"
+                                aria-hidden="true"
+                            >
+                                <rect
+                                    width="48"
+                                    height="48"
+                                    rx="12"
+                                    fill="#7C3AED"
+                                    fill-opacity="0.15"
+                                />
+                                <path
+                                    d="M14 12h20v24H14z"
+                                    fill="none"
+                                    stroke="#7C3AED"
+                                    stroke-width="2"
+                                />
+                                <path
+                                    d="M26 12v24"
+                                    stroke="#7C3AED"
+                                    stroke-width="1.5"
+                                    stroke-dasharray="3 2"
+                                />
+                                <circle
+                                    cx="20"
+                                    cy="20"
+                                    r="3"
+                                    fill="#7C3AED"
+                                    opacity="0.6"
+                                />
+                                <circle
+                                    cx="20"
+                                    cy="28"
+                                    r="3"
+                                    fill="#7C3AED"
+                                    opacity="0.4"
+                                />
+                            </svg>
+                        </div>
+                        <h3>Obsidian Vault → Posts</h3>
+                        <p>
+                            Connect your vault. AI scans your knowledge graph,
+                            finds <strong>mature ideas</strong>, and turns
+                            Markdown drafts into social-ready content.
+                        </p>
+                        <ul class="note-features">
+                            <li>
+                                <i class="fa-solid fa-link"></i> Direct vault
+                                access
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                Strip [[wiki-links]] &amp; tags
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-spell-check"></i> Grammar
+                                + tone in <strong>0.8 sec</strong>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="note-card">
+                        <div class="note-card-icon">
+                            <svg
+                                width="48"
+                                height="48"
+                                viewBox="0 0 48 48"
+                                fill="none"
+                                aria-hidden="true"
+                            >
+                                <rect
+                                    width="48"
+                                    height="48"
+                                    rx="12"
+                                    fill="#00FF88"
+                                    fill-opacity="0.1"
+                                />
+                                <rect
+                                    x="12"
+                                    y="10"
+                                    width="24"
+                                    height="28"
+                                    rx="3"
+                                    fill="none"
+                                    stroke="#00FF88"
+                                    stroke-width="2"
+                                />
+                                <path
+                                    d="M18 18h12M18 23h8M18 28h10"
+                                    stroke="#00FF88"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                />
+                            </svg>
+                        </div>
+                        <h3>Notion DB → Auto-publish</h3>
+                        <p>
+                            Sync your Notion database. Set status to "Ready" —
+                            OmniKross
+                            <strong>proofreads, adapts, and publishes</strong>
+                            to 4 platforms in one trigger.
+                        </p>
+                        <ul class="note-features">
+                            <li>
+                                <i class="fa-solid fa-database"></i> Real-time
+                                sync
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-robot"></i> AI proofreader
+                                + editor
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-paper-plane"></i>
+                                Trigger-based publishing
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="note-card note-card-flow">
+                        <div class="note-card-icon">
+                            <svg
+                                width="48"
+                                height="48"
+                                viewBox="0 0 48 48"
+                                fill="none"
+                                aria-hidden="true"
+                            >
+                                <rect
+                                    width="48"
+                                    height="48"
+                                    rx="12"
+                                    fill="#6A0DAD"
+                                    fill-opacity="0.15"
+                                />
+                                <path
+                                    d="M10 24h8l4-8 4 16 4-8h8"
+                                    stroke="url(#flowGrad2)"
+                                    stroke-width="2.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                                <defs>
+                                    <linearGradient
+                                        id="flowGrad2"
+                                        x1="10"
+                                        y1="24"
+                                        x2="38"
+                                        y2="24"
+                                    >
+                                        <stop stop-color="#6A0DAD" />
+                                        <stop offset="1" stop-color="#00FF88" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <h3>Content Pipeline</h3>
+                        <div class="flow-steps">
+                            <div class="flow-step">
+                                <span class="flow-num">01</span
+                                ><span>Write a note in Obsidian / Notion</span>
+                            </div>
+                            <div class="flow-step">
+                                <span class="flow-num">02</span
+                                ><span>AI checks grammar &amp; style</span>
+                            </div>
+                            <div class="flow-step">
+                                <span class="flow-num">03</span
+                                ><span
+                                    >Adaptive publishing: tone, hashtags,
+                                    format</span
+                                >
+                            </div>
+                            <div class="flow-step">
+                                <span class="flow-num">04</span
+                                ><span
+                                    >Publish: Twitter, IG, LinkedIn, TikTok in 3
+                                    sec</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notes-cta reveal">
+                    <p class="notes-cta-text">
+                        📝 Stop copy-pasting.
+                        <strong
+                            >OmniKross does it for you — in 3 seconds.</strong
+                        >
+                    </p>
+                    <a href="#hero" class="btn-primary">Enter the 500</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ Readiness Index ═══ -->
+        <section class="evolution" id="readiness">
+            <div class="container">
+                <h2 class="reveal"><span>Adaptive Readiness Index</span></h2>
+                <p class="section-desc reveal">
+                    Submit the form above — AI will score how ready you are for
+                    <strong>adaptive publishing</strong>
+                </p>
+
+                <div class="evolution-wrapper reveal">
+                    <div class="evolution-bar">
+                        <div
+                            class="evolution-progress"
+                            id="evolutionProgress"
+                        ></div>
+                    </div>
+                    <p id="evolutionText">Index: — / 100</p>
+                    <div class="evolution-tips">
+                        <ul>
+                            <li>
+                                One note → <strong>4 platforms</strong> in 3
+                                seconds
+                            </li>
+                            <li>
+                                AI preserves your
+                                <strong>authentic voice</strong> and tone
+                            </li>
+                            <li>
+                                Auto-generated <strong>#hashtags</strong> per
+                                network
+                            </li>
+                            <li>
+                                Unified <strong>reach analytics</strong> in one
+                                dashboard
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ Roadmap — Sprint Q1-Q4 2026 ═══ -->
+        <section class="roadmap" id="roadmap">
+            <div class="container">
+                <h2 class="reveal"><span>Sprint Plan 2026</span></h2>
+                <p class="section-desc reveal">
+                    Four quarters, clear milestones — from closed beta to global
+                    launch
+                </p>
+
+                <div class="timeline stagger-children">
+                    <!-- Q1 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot active-dot"></div>
+                        <div class="timeline-date">
+                            Q1 · W01–W13 · Jan–Mar 2026
+                        </div>
+                        <div class="timeline-content">
+                            <h3>🔬 AI Core + Closed Beta</h3>
+                            <p>
+                                NLP adaptation engine. Obsidian/Notion
+                                integration. Twitter API + Instagram Graph.
+                                <strong>500 pioneers</strong> — first real
+                                publications.
+                            </p>
+                            <div class="timeline-tags">
+                                <span class="timeline-tag tag-active"
+                                    >W09 — beta launch</span
+                                >
+                                <span class="timeline-tag">NLP v0.1</span>
+                                <span class="timeline-tag">Twitter API</span>
+                                <span class="timeline-tag">IG Graph</span>
+                                <span class="timeline-tag">Obsidian</span>
+                                <span class="timeline-tag">Notion</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">
+                            Q2 · W14–W26 · Apr–Jun 2026
+                        </div>
+                        <div class="timeline-content">
+                            <h3>💼 LinkedIn + TikTok + Analytics</h3>
+                            <p>
+                                Professional long-form for LinkedIn. Short-form
+                                viral for TikTok.
+                                <strong>Unified dashboard</strong> across all
+                                channels. AI best-time recommendations.
+                            </p>
+                            <div class="timeline-tags">
+                                <span class="timeline-tag">LinkedIn API</span>
+                                <span class="timeline-tag">TikTok API</span>
+                                <span class="timeline-tag">Analytics</span>
+                                <span class="timeline-tag">Scheduler</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">
+                            Q3 · W27–W39 · Jul–Sep 2026
+                        </div>
+                        <div class="timeline-content">
+                            <h3>💰 Public Launch + Monetization</h3>
+                            <p>
+                                Public release. Freemium model. Team accounts
+                                for agencies. <strong>Developer API v1</strong>.
+                            </p>
+                            <div class="timeline-tags">
+                                <span class="timeline-tag">Public Launch</span>
+                                <span class="timeline-tag">Freemium</span>
+                                <span class="timeline-tag">Teams</span>
+                                <span class="timeline-tag">API v1</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">
+                            Q4 · W40–W52 · Oct–Dec 2026
+                        </div>
+                        <div class="timeline-content">
+                            <h3>🌍 Global Expansion + Intelligence</h3>
+                            <p>
+                                VK, Telegram, Дзен (RU market). Multilingual AI.
+                                <strong>Predictive analytics</strong>. AI
+                                content calendar. Full autopilot for SMM
+                                agencies.
+                            </p>
+                            <div class="timeline-tags">
+                                <span class="timeline-tag">RU APIs</span>
+                                <span class="timeline-tag">Multilang</span>
+                                <span class="timeline-tag">Predictive AI</span>
+                                <span class="timeline-tag">Autopilot</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ Testimonials ═══ -->
+        <section class="testimonials" id="reviews">
+            <div class="container">
+                <h2 class="reveal"><span>Beta Testers Say</span></h2>
+                <p class="section-desc reveal">
+                    Real feedback from content professionals who tested the
+                    prototype
+                </p>
+
+                <div class="testimonials-grid stagger-children">
+                    <div class="testimonial-card">
+                        <div class="quote">
+                            "I manage 3 Twitter accounts and an IG page. Used to
+                            take <strong>4 hours to adapt</strong>. With
+                            OmniKross — 12 minutes total. Paste my Obsidian
+                            note, AI handles the rest."
+                        </div>
+                        <div class="author">
+                            <div class="author-avatar">47</div>
+                            <div class="author-info">
+                                <span class="author-name">Beta Tester #47</span>
+                                <span class="author-role"
+                                    >Content Strategist · 200k followers · ROI
+                                    +340%</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="quote">
+                            "Notion → LinkedIn post in one action. AI doesn't
+                            just format — it
+                            <strong>genuinely improves the text</strong>.
+                            Engagement rate jumped 35% since the prototype."
+                        </div>
+                        <div class="author">
+                            <div class="author-avatar">112</div>
+                            <div class="author-info">
+                                <span class="author-name"
+                                    >Beta Tester #112</span
+                                >
+                                <span class="author-role"
+                                    >ProductHunt contributor · +35%
+                                    engagement</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="quote">
+                            "For our agency — this is scale. 20 clients × 4
+                            platforms = <strong>80 posts/day</strong>. OmniKross
+                            automates 80% of the grunt work. ROI paid for itself
+                            in week one."
+                        </div>
+                        <div class="author">
+                            <div class="author-avatar">203</div>
+                            <div class="author-info">
+                                <span class="author-name"
+                                    >Beta Tester #203</span
+                                >
+                                <span class="author-role"
+                                    >CEO Digital Agency · 20 clients · ROI in 7
+                                    days</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ Final CTA ═══ -->
+        <section id="final-cta">
+            <div class="container">
+                <h2>How much time are you wasting every month?</h2>
+                <a href="#hero" class="btn-primary">Get Your Time Back →</a>
+            </div>
+        </section>
+
+        <!-- ═══ Footer ═══ -->
+        <footer class="footer" role="contentinfo">
+            <div class="container footer-inner">
+                <div class="socials">
+                    <a
+                        href="https://twitter.com/omnikross"
+                        target="_blank"
+                        rel="noopener"
+                        ><i class="fa-brands fa-x-twitter"></i> Twitter</a
+                    >
+                    <a
+                        href="https://discord.gg/omnikross"
+                        target="_blank"
+                        rel="noopener"
+                        ><i class="fa-brands fa-discord"></i> Discord</a
+                    >
+                </div>
+                <div class="copy">
+                    © 2026 OmniKross. One text — every platform. Adaptive
+                    publishing.
+                </div>
+                <div class="lang">
+                    <a href="index_ru.html">🌐 Русский</a>
+                </div>
+            </div>
+        </footer>
+
+        <div class="geo-banner" id="geoBanner" role="alert">
+            <p class="geo-msg"></p>
+            <button class="geo-btn" type="button"></button>
+            <button class="geo-close" type="button" aria-label="Close">
+                ×
+            </button>
+        </div>
+
+        <script src="js/counter.js"></script>
+        <script src="js/simulator.js"></script>
+        <script src="js/roi-calculator.js"></script>
+        <script src="js/forms.js"></script>
+        <script>
+            if ("serviceWorker" in navigator)
+                navigator.serviceWorker.register("sw.js").catch(() => {});
+        </script>
+    </body>
+</html>
