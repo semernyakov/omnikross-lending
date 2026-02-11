@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1a0a2e"/>
+      <stop offset="100%" stop-color="#0A0A0A"/>
+    </radialGradient>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6A0DAD"/>
+      <stop offset="100%" stop-color="#00FF88"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Background -->
+  <circle cx="256" cy="256" r="256" fill="url(#bg)"/>
+  <!-- Outer ring -->
+  <circle cx="256" cy="256" r="200" fill="none" stroke="url(#grad)" stroke-width="2" opacity="0.3"/>
+  <circle cx="256" cy="256" r="160" fill="none" stroke="url(#grad)" stroke-width="1.5" opacity="0.2"/>
+  <!-- Connection lines -->
+  <g stroke="url(#grad)" stroke-width="1.5" opacity="0.4" filter="url(#glow)">
+    <line x1="256" y1="256" x2="156" y2="156"/>
+    <line x1="256" y1="256" x2="356" y2="156"/>
+    <line x1="256" y1="256" x2="156" y2="356"/>
+    <line x1="256" y1="256" x2="356" y2="356"/>
+    <line x1="256" y1="256" x2="256" y2="120"/>
+    <line x1="256" y1="256" x2="256" y2="392"/>
+    <line x1="256" y1="256" x2="120" y2="256"/>
+    <line x1="256" y1="256" x2="392" y2="256"/>
+  </g>
+  <!-- Outer nodes -->
+  <g filter="url(#glow)">
+    <circle cx="156" cy="156" r="10" fill="#6A0DAD"/>
+    <circle cx="356" cy="156" r="10" fill="#00FF88"/>
+    <circle cx="156" cy="356" r="10" fill="#00FF88"/>
+    <circle cx="356" cy="356" r="10" fill="#6A0DAD"/>
+    <circle cx="256" cy="120" r="8" fill="#9B30FF"/>
+    <circle cx="256" cy="392" r="8" fill="#00CC6A"/>
+    <circle cx="120" cy="256" r="8" fill="#00CC6A"/>
+    <circle cx="392" cy="256" r="8" fill="#9B30FF"/>
+  </g>
+  <!-- Central Kross node -->
+  <circle cx="256" cy="256" r="40" fill="url(#grad)" filter="url(#glow)"/>
+  <circle cx="256" cy="256" r="24" fill="#0A0A0A"/>
+  <!-- Cross in center -->
+  <g stroke="url(#grad)" stroke-width="4" stroke-linecap="round">
+    <line x1="244" y1="256" x2="268" y2="256"/>
+    <line x1="256" y1="244" x2="256" y2="268"/>
+  </g>
+  <!-- Text "OK" label (Omnikross) -->
+  <text x="256" y="262" text-anchor="middle" dominant-baseline="central" fill="url(#grad)" font-family="Helvetica Neue, sans-serif" font-size="16" font-weight="800" opacity="0">OK</text>
+</svg>

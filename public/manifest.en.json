@@ -1,0 +1,23 @@
+{
+  "name": "OmniKross — AI Adaptive Publishing",
+  "short_name": "OmniKross",
+  "description": "AI adaptive publishing: Obsidian/Notion → Twitter, Instagram, LinkedIn, TikTok",
+  "start_url": "/index_en.html",
+  "display": "standalone",
+  "background_color": "#0A0A0A",
+  "theme_color": "#6A0DAD",
+  "orientation": "portrait-primary",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "assets/kross-node.webp",
+      "sizes": "192x192",
+      "type": "image/webp"
+    },
+    {
+      "src": "assets/kross-node.webp",
+      "sizes": "512x512",
+      "type": "image/webp"
+    }
+  ]
+}
