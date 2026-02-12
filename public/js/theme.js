@@ -52,5 +52,27 @@
     }
   });
 
+  // Smooth scrolling for navigation links
+  function initSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        const target = document.querySelector(href);
+        
+        if (target) {
+          e.preventDefault();
+          const offset = 80; // Account for fixed navbar
+          const targetPosition = target.offsetTop - offset;
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  }
+
+  initSmoothScrolling();
+
   window.OmniTheme = { toggle: toggleTheme, apply: applyTheme, get: getPreferredTheme };
 })();

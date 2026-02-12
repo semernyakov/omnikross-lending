@@ -82,8 +82,64 @@
 
 <div class="ab-badge" id="abBadge"></div>
 
+<!-- SIMULATOR -->
+<section class="simulator" id="simulator">
+    <div class="container">
+        <h2>AI-мост: Текст → Платформы</h2>
+        <p class="subtitle">Нейро-адаптация сохраняет твой голос, но подстраивается под правила каждой площадки</p>
+        
+        <div class="simulator-demo">
+            <div class="simulator-input">
+                <label for="simulatorText">Твой текст:</label>
+                <textarea id="simulatorText" rows="6" placeholder="Введи свой текст здесь..."></textarea>
+                <button class="simulator-button" id="simulateBtn">Адаптировать →</button>
+            </div>
+            
+            <div class="simulator-output" id="simulatorOutput" style="display: none;">
+                <h3>Результаты адаптации:</h3>
+                <div class="simulator-results">
+                    <div class="result-platform">
+                        <h4>VK</h4>
+                        <p id="simVK"></p>
+                    </div>
+                    <div class="result-platform">
+                        <h4>Telegram</h4>
+                        <p id="simTG"></p>
+                    </div>
+                    <div class="result-platform">
+                        <h4>Дзен</h4>
+                        <p id="simDzen"></p>
+                    </div>
+                    <div class="result-platform">
+                        <h4>OK</h4>
+                        <p id="simOK"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="simulator-features">
+            <div class="feature-item">
+                <span class="feature-icon">🧠</span>
+                <h4>Нейро-адаптация</h4>
+                <p>AI понимает контекст и сохраняет стиль</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">⚡</span>
+                <h4>Мгновенно</h4>
+                <p>Адаптация за 12 секунд</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🎯</span>
+                <h4>Точно</h4>
+                <p>95% качества с первого раза</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- HERO -->
-<section class="hero">
+<section class="hero" id="hero">
     <div class="container">
         <h1>
             Ты рулишь SMM-агентством. 15-30 клиентов в работе.<br>
@@ -119,7 +175,7 @@
 </section>
 
 <!-- PAIN (Теневой труд) -->
-<section class="pain">
+<section class="pain" id="pain">
     <div class="container">
         <h2>Это называют "теневым трудом".</h2>
         <p class="subtitle">Никто не мерит часами.</p>
@@ -184,7 +240,7 @@
 </section>
 
 <!-- SOLUTION FRAME -->
-<section class="solution">
+<section class="solution" id="value">
     <div class="container">
         <h2>
             OmniKross <span class="not-equal">≠</span> автопостинг.<br>
@@ -364,8 +420,46 @@
     </div>
 </section>
 
+<!-- PLATFORMS -->
+<section class="platforms" id="platforms">
+    <div class="container">
+        <h2>Все платформы. Один голос.</h2>
+        <p class="subtitle">Адаптация сохраняет твой стиль, но подстраивается под правила</p>
+        
+        <div class="platforms-grid">
+            <div class="platform-card">
+                <div class="platform-icon">📱</div>
+                <h3>VK</h3>
+                <p>1200 знаков, хештеги, форматирование</p>
+                <p class="platform-note">Алгоритм любит структурированный контент</p>
+            </div>
+            
+            <div class="platform-card">
+                <div class="platform-icon">💬</div>
+                <h3>Telegram</h3>
+                <p>200 знаков, эмодзи, личный тон</p>
+                <p class="platform-note">Каналы ценят краткость и юмор</p>
+            </div>
+            
+            <div class="platform-card">
+                <div class="platform-icon">📖</div>
+                <h3>Дзен</h3>
+                <p>3000+ знаков, заголовки, абзацы</p>
+                <p class="platform-note">Длинные статьи получают больше охвата</p>
+            </div>
+            
+            <div class="platform-card">
+                <div class="platform-icon">👥</div>
+                <h3>OK</h3>
+                <p>800 знаков, локализация, дружелюбность</p>
+                <p class="platform-note">Семейная аудитория любит позитив</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- LIVE DEMO -->
-<section class="demo">
+<section class="demo" id="demo">
     <div class="container">
         <h2>Лучше раз увидеть.</h2>
         
@@ -457,7 +551,7 @@
 </section>
 
 <!-- SOCIAL PROOF -->
-<section class="social-proof">
+<section class="social-proof" id="reviews">
     <div class="container">
         <h2>Что говорят агентства</h2>
         
@@ -498,6 +592,119 @@
             <div class="logo-placeholder"></div>
             <div class="logo-placeholder"></div>
             <div class="logo-placeholder"></div>
+        </div>
+    </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust" id="trust">
+    <div class="container">
+        <h2>Почему нам доверяют</h2>
+        
+        <div class="trust-grid">
+            <div class="trust-item">
+                <div class="trust-icon">🔒</div>
+                <h3>Безопасность данных</h3>
+                <p>Все тексты зашифрованы. Никаких утечек.</p>
+            </div>
+            
+            <div class="trust-item">
+                <div class="trust-icon">⚡</div>
+                <h3>Скорость работы</h3>
+                <p>Адаптация за 12 секунд. Не минуты.</p>
+            </div>
+            
+            <div class="trust-item">
+                <div class="trust-icon">🎯</div>
+                <h3>Точность адаптации</h3>
+                <p>95% качества с первого раза.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- READINESS -->
+<section class="readiness" id="readiness">
+    <div class="container">
+        <h2>Готов к работе?</h2>
+        
+        <div class="readiness-checklist">
+            <div class="checklist-item">
+                <span class="checkmark">✓</span>
+                <p>Есть базовый текст для адаптации</p>
+            </div>
+            <div class="checklist-item">
+                <span class="checkmark">✓</span>
+                <p>Понимаешь свою аудиторию</p>
+            </div>
+            <div class="checklist-item">
+                <span class="checkmark">✓</span>
+                <p>Готов экономить 10+ часов в неделю</p>
+            </div>
+        </div>
+        
+        <div class="readiness-cta">
+            <p>Если всё "да" — OmniKross для тебя.</p>
+            <a href="#hero" class="cta-button primary">Начать бесплатно →</a>
+        </div>
+    </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="roadmap" id="roadmap">
+    <div class="container">
+        <h2>Спринты разработки</h2>
+        <p class="subtitle">Что будет в OmniKross в ближайшие месяцы</p>
+        
+        <div class="roadmap-timeline">
+            <div class="roadmap-item completed">
+                <div class="roadmap-marker">✓</div>
+                <div class="roadmap-content">
+                    <h3>Спринт 1: Базовая адаптация</h3>
+                    <p>VK, Telegram, Дзен, OK</p>
+                    <span class="roadmap-status">Завершено</span>
+                </div>
+            </div>
+            
+            <div class="roadmap-item completed">
+                <div class="roadmap-marker">✓</div>
+                <div class="roadmap-content">
+                    <h3>Спринт 2: UI/UX улучшения</h3>
+                    <p>Калькулятор ROI, демо-интерфейс</p>
+                    <span class="roadmap-status">Завершено</span>
+                </div>
+            </div>
+            
+            <div class="roadmap-item current">
+                <div class="roadmap-marker">🚀</div>
+                <div class="roadmap-content">
+                    <h3>Спринт 3: AI-улучшения</h3>
+                    <p>Нейро-адаптация под тон голоса</p>
+                    <span class="roadmap-status">В разработке</span>
+                </div>
+            </div>
+            
+            <div class="roadmap-item future">
+                <div class="roadmap-marker">📅</div>
+                <div class="roadmap-content">
+                    <h3>Спринт 4: Новые платформы</h3>
+                    <p>Instagram, Facebook, LinkedIn</p>
+                    <span class="roadmap-status">Q2 2026</span>
+                </div>
+            </div>
+            
+            <div class="roadmap-item future">
+                <div class="roadmap-marker">🎯</div>
+                <div class="roadmap-content">
+                    <h3>Спринт 5: Аналитика</h3>
+                    <p>Трекинг эффективности, A/B тесты</p>
+                    <span class="roadmap-status">Q3 2026</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="roadmap-note">
+            <p>💡 Все обновления бесплатны для ранних пользователей</p>
         </div>
     </div>
 </section>

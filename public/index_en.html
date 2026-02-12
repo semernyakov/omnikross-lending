@@ -82,8 +82,64 @@
 
 <div class="ab-badge" id="abBadge"></div>
 
+<!-- SIMULATOR -->
+<section class="simulator" id="simulator">
+    <div class="container">
+        <h2>AI Bridge: Text → Platforms</h2>
+        <p class="subtitle">Neuro-adaptation preserves your voice while fitting platform rules</p>
+        
+        <div class="simulator-demo">
+            <div class="simulator-input">
+                <label for="simulatorText">Your text:</label>
+                <textarea id="simulatorText" rows="6" placeholder="Enter your text here..."></textarea>
+                <button class="simulator-button" id="simulateBtn">Adapt →</button>
+            </div>
+            
+            <div class="simulator-output" id="simulatorOutput" style="display: none;">
+                <h3>Adaptation Results:</h3>
+                <div class="simulator-results">
+                    <div class="result-platform">
+                        <h4>VK</h4>
+                        <p id="simVK"></p>
+                    </div>
+                    <div class="result-platform">
+                        <h4>Telegram</h4>
+                        <p id="simTG"></p>
+                    </div>
+                    <div class="result-platform">
+                        <h4>Zen</h4>
+                        <p id="simDzen"></p>
+                    </div>
+                    <div class="result-platform">
+                        <h4>OK</h4>
+                        <p id="simOK"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="simulator-features">
+            <div class="feature-item">
+                <span class="feature-icon">🧠</span>
+                <h4>Neuro-adaptation</h4>
+                <p>AI understands context and preserves style</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">⚡</span>
+                <h4>Instant</h4>
+                <p>Adaptation in 12 seconds</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🎯</span>
+                <h4>Accurate</h4>
+                <p>95% quality on first try</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- HERO -->
-<section class="hero">
+<section class="hero" id="hero">
     <div class="container">
         <h1>
             Content exhausts you not mentally.<br>
@@ -116,7 +172,7 @@
 </section>
 
 <!-- PAIN -->
-<section class="pain">
+<section class="pain" id="pain">
     <div class="container">
         <h2>Evening. Should be resting.</h2>
         <p class="subtitle">But you're sitting here:</p>
@@ -171,7 +227,7 @@
 </section>
 
 <!-- SOLUTION -->
-<section class="solution">
+<section class="solution" id="value">
     <div class="container">
         <h2>One text — ready versions.</h2>
         
@@ -331,7 +387,51 @@
                 <div class="micro-win-time">5 minutes</div>
                 <p>Publish to all platforms</p>
                 <p class="micro-win-result">Feel the difference</p>
-<section class="demo">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PLATFORMS -->
+<section class="platforms" id="platforms">
+    <div class="container">
+        <h2>All platforms. One voice.</h2>
+        <p class="subtitle">Adaptation preserves your style while fitting platform rules</p>
+        
+        <div class="platforms-grid">
+            <div class="platform-card">
+                <div class="platform-icon">📱</div>
+                <h3>VK</h3>
+                <p>1200 chars, hashtags, formatting</p>
+                <p class="platform-note">Algorithm loves structured content</p>
+            </div>
+            
+            <div class="platform-card">
+                <div class="platform-icon">💬</div>
+                <h3>Telegram</h3>
+                <p>200 chars, emojis, personal tone</p>
+                <p class="platform-note">Channels value brevity and humor</p>
+            </div>
+            
+            <div class="platform-card">
+                <div class="platform-icon">📖</div>
+                <h3>Zen</h3>
+                <p>3000+ chars, headlines, paragraphs</p>
+                <p class="platform-note">Long articles get more reach</p>
+            </div>
+            
+            <div class="platform-card">
+                <div class="platform-icon">👥</div>
+                <h3>OK</h3>
+                <p>800 chars, localization, friendliness</p>
+                <p class="platform-note">Family audience loves positivity</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DEMO -->
+<section class="demo" id="demo">
     <div class="container">
         <h2>Let's try it. <strong>Right now.</strong></h2>
         
@@ -442,7 +542,7 @@
 </section>
 
 <!-- SOCIAL PROOF -->
-<section class="social-proof">
+<section class="social-proof" id="reviews">
     <div class="container">
         <h2>Real stories</h2>
         
@@ -509,6 +609,65 @@
                     <p>Registration via Telegram. That's it.</p>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="roadmap" id="roadmap">
+    <div class="container">
+        <h2>Development Sprints</h2>
+        <p class="subtitle">What's coming to OmniKross in the next months</p>
+        
+        <div class="roadmap-timeline">
+            <div class="roadmap-item completed">
+                <div class="roadmap-marker">✓</div>
+                <div class="roadmap-content">
+                    <h3>Sprint 1: Basic Adaptation</h3>
+                    <p>VK, Telegram, Zen, OK</p>
+                    <span class="roadmap-status">Completed</span>
+                </div>
+            </div>
+            
+            <div class="roadmap-item completed">
+                <div class="roadmap-marker">✓</div>
+                <div class="roadmap-content">
+                    <h3>Sprint 2: UI/UX Improvements</h3>
+                    <p>ROI Calculator, Demo Interface</p>
+                    <span class="roadmap-status">Completed</span>
+                </div>
+            </div>
+            
+            <div class="roadmap-item current">
+                <div class="roadmap-marker">🚀</div>
+                <div class="roadmap-content">
+                    <h3>Sprint 3: AI Enhancements</h3>
+                    <p>Neuro-adaptation for voice tone</p>
+                    <span class="roadmap-status">In Development</span>
+                </div>
+            </div>
+            
+            <div class="roadmap-item future">
+                <div class="roadmap-marker">📅</div>
+                <div class="roadmap-content">
+                    <h3>Sprint 4: New Platforms</h3>
+                    <p>Instagram, Facebook, LinkedIn</p>
+                    <span class="roadmap-status">Q2 2026</span>
+                </div>
+            </div>
+            
+            <div class="roadmap-item future">
+                <div class="roadmap-marker">🎯</div>
+                <div class="roadmap-content">
+                    <h3>Sprint 5: Analytics</h3>
+                    <p>Performance tracking, A/B tests</p>
+                    <span class="roadmap-status">Q3 2026</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="roadmap-note">
+            <p>💡 All updates are free for early users</p>
         </div>
     </div>
 </section>
