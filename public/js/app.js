@@ -31,15 +31,68 @@
 
   const UI = {
     initTheme() {
-      document.documentElement.setAttribute("data-theme", state.theme);
+      const STORAGE_KEY = "omnikross_theme";
+
+      function getPreferredTheme() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) return stored;
+        return window.matchMedia("(prefers-color-scheme: light)").matches
+          ? "light"
+          : "dark";
+      }
+
+      function applyTheme(theme, animate) {
+        if (animate) {
+          document.documentElement.classList.add("theme-transitioning");
+          setTimeout(
+            () =>
+              document.documentElement.classList.remove("theme-transitioning"),
+            500,
+          );
+        }
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem(STORAGE_KEY, theme);
+
+        // Update meta theme-color
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) {
+          meta.setAttribute(
+            "content",
+            theme === "light" ? "#F8F8FC" : "#6A0DAD",
+          );
+        }
+      }
+
+      function toggleTheme() {
+        const current =
+          document.documentElement.getAttribute("data-theme") || "dark";
+        const next = current === "dark" ? "light" : "dark";
+        applyTheme(next, true);
+      }
+
+      // Apply theme ASAP (before DOMContentLoaded to prevent flash)
+      applyTheme(getPreferredTheme(), false);
+
+      // Bind toggle buttons after DOM ready
       document.querySelectorAll(".theme-toggle").forEach((btn) => {
-        btn.onclick = (e) => {
-          e.preventDefault();
-          state.theme = state.theme === "dark" ? "light" : "dark";
-          document.documentElement.setAttribute("data-theme", state.theme);
-          localStorage.setItem("omni-theme", state.theme);
-        };
+        btn.addEventListener("click", toggleTheme);
       });
+
+      // Listen for system preference changes
+      window
+        .matchMedia("(prefers-color-scheme: light)")
+        .addEventListener("change", (e) => {
+          if (!localStorage.getItem(STORAGE_KEY)) {
+            applyTheme(e.matches ? "light" : "dark", true);
+          }
+        });
+
+      // Expose theme functions
+      window.OmniTheme = {
+        toggle: toggleTheme,
+        apply: applyTheme,
+        get: getPreferredTheme,
+      };
     },
 
     async updateSlots() {
@@ -49,281 +102,93 @@
         const data = await res.json();
         document.querySelectorAll(".slots-count, #slotsLeft").forEach((el) => {
           el.textContent = data.remaining;
-          if (data.remaining < 50) el.classList.add("urgent");
+        });
+        document.querySelectorAll("#slotsJoined").forEach((el) => {
+          el.textContent = `· Уже записались: ${data.filled}`;
         });
       } catch (e) {
-        console.warn("Offline mode: Slots not synced");
+        console.warn("Slot update failed:", e);
       }
     },
 
-    showError(msg) {
-      // Вместо alert используем более мягкое уведомление если есть контейнер
-      const errEl = document.getElementById("formError");
-      if (errEl) {
-        errEl.textContent = msg;
-        errEl.style.display = "block";
-      } else {
-        alert(msg);
+    showSuccess(slotNumber, remaining) {
+      const success = document.getElementById("formSuccess");
+      const successNumber = document.getElementById("successNumber");
+      if (success && successNumber) {
+        successNumber.textContent = `#${slotNumber}`;
+        success.classList.add("show");
+        success.style.animation = "fadeInScale 0.6s ease";
       }
-    },
-  };
 
-  const ROICalc = {
-    init() {
-      const form = document.getElementById("roiForm");
-      if (!form) return;
-
-      const inputs = ["posts", "plats", "avgTime", "clients"];
-      inputs.forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) el.oninput = () => this.calculate();
+      document.querySelectorAll(".cta-button").forEach((btn) => {
+        btn.disabled = true;
+        btn.classList.add("success");
+        btn.innerHTML = `<span>✓ ${
+          state.lang === "ru" ? "Вы пионер #" : "You're Pioneer #"
+        }${slotNumber}!</span>`;
       });
-      this.calculate();
+
+      document.querySelectorAll(".cta-note").forEach((note) => {
+        note.innerHTML = `<i class="fa-solid fa-check"></i> ${
+          state.lang === "ru" ? "Место зарезервировано · " : "Spot reserved · "
+        }${remaining} ${state.lang === "ru" ? "из 500 осталось" : "of 500 left"}`;
+        note.style.color = "var(--accent-secondary)";
+        note.style.fontWeight = "600";
+      });
     },
 
-    calculate() {
-      const v = {
-        posts: +document.getElementById("posts")?.value || 0,
-        plats: +document.getElementById("plats")?.value || 0,
-        mins: +document.getElementById("avgTime")?.value || 0,
-        clients: +document.getElementById("clients")?.value || 1,
-      };
-
-      // Формула: посты * 4 недели * площадки * время * клиенты / 60 мин
-      const hoursMonth = (v.posts * 4 * v.plats * v.mins * v.clients) / 60;
-      const rate = CONFIG.RATES[state.lang].hour;
-      const moneyYear = hoursMonth * 12 * rate;
-
-      const timeEl = document.getElementById("totalHours");
-      const moneyEl = document.getElementById("lostMoney");
-
-      if (timeEl) timeEl.textContent = Math.round(hoursMonth);
-      if (moneyEl)
-        moneyEl.textContent =
-          Math.round(moneyYear).toLocaleString() +
-          " " +
-          CONFIG.RATES[state.lang].currency;
-    },
-  };
-
-  const Demo = {
-    init() {
-      const area = document.getElementById("demoText");
-      const btn = document.getElementById("demoButton");
-      const resultContainer = document.getElementById("demoResult");
-
-      if (!area || !btn || !resultContainer) return;
-
-      btn.onclick = () => {
-        if (!area.value.trim()) return;
-        btn.disabled = true;
-        this.runDemo(area.value, btn, resultContainer);
-      };
-    },
-
-    runDemo(text, btn, resultContainer) {
-      // Show original text
-      document.getElementById("demoOriginal").textContent = text;
-
-      // Show skeleton loading
-      document
-        .querySelectorAll("#demoVK, #demoTG, #demoDzen, #demoOK")
-        .forEach((el) => {
-          el.innerHTML =
-            '<div class="skeleton-line"></div><div class="skeleton-line short"></div>';
-        });
-
-      setTimeout(() => {
-        const results = this.adapt(text);
-
-        // Update each platform version
-        document.getElementById("demoVK").textContent = results.vk;
-        document.getElementById("demoTG").textContent = results.tg;
-        document.getElementById("demoDzen").textContent = results.dzen;
-        document.getElementById("demoOK").textContent = results.ok;
-
-        // Show the results container
-        resultContainer.style.display = "block";
-
-        // Scroll to results
-        resultContainer.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest",
-        });
-
-        btn.disabled = false;
-      }, 1200);
-    },
-
-    adapt(text) {
-      const clean = text.trim();
-      return {
-        vk:
-          clean.substring(0, 1200) +
-          (clean.length > 1200 ? "..." : "") +
-          "\n\n👥 Подписывайтесь на наш паблик!\n🔔 Ставьте лайк и делитесь с друзьями!",
-        tg:
-          "📢 " +
-          clean.substring(0, 200).replace(/\n/g, " ") +
-          "... \n\n💬 Обсуждение в комментариях ↓",
-        dzen:
-          "📝 " +
-          clean.substring(0, 3000).toUpperCase() +
-          (clean.length > 3000 ? "..." : "") +
-          "\n\n⭐ Поставьте лайк, если было полезно!\n📖 Читайте другие статьи на канале",
-        ok:
-          "🌟 " +
-          clean.substring(0, 800) +
-          (clean.length > 800 ? "..." : "") +
-          "\n\n💐 Поделитесь с друзьями!\n❤️ Поставьте «Класс!» если понравилось",
-      };
-    },
-  };
-
-  const Simulator = {
-    init() {
-      // Simulator functionality is handled by simulator.js
-      // This is kept for backward compatibility
-    },
-  };
-
-  const Signup = {
-    init() {
-      // Check if forms.js has already initialized the form
-      // If forms.js is present, let it handle the form
-      if (window.OmniForms) {
-        console.log("Signup form handled by forms.js");
-        return;
-      }
-
-      const form = document.getElementById("signupForm");
-      if (!form) return;
-
-      form.onsubmit = async (e) => {
-        e.preventDefault();
-        if (state.isSubmitting) return;
-
-        const email = document.getElementById("email").value.trim();
-        const social = document.getElementById("social").value.trim();
-        const btn = form.querySelector("button");
-
-        // Фронтенд-валидация
-        if (!CONFIG.VALIDATION.email.test(email)) {
-          return UI.showError(
-            state.lang === "ru" ? "Введите корректный Email" : "Invalid Email",
-          );
-        }
-        if (social) {
-          const socialPattern =
-            state.lang === "ru"
-              ? CONFIG.VALIDATION.socialRu
-              : CONFIG.VALIDATION.socialEn;
-          if (!socialPattern.test(social)) {
-            return UI.showError(
-              state.lang === "ru"
-                ? "Ник должен начинаться с @"
-                : "Social must start with @",
-            );
-          }
-        }
-
-        state.isSubmitting = true;
-        btn.disabled = true;
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<span class="loader"></span>';
-
-        try {
-          const res = await fetch(CONFIG.API.signup, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, social, lang: state.lang }),
-          });
-
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error || "Server Error");
-
-          form.innerHTML = `
-                        <div class="success-card fade-in">
-                            <div class="icon">✅</div>
-                            <h3>${state.lang === "ru" ? "Место забронировано!" : "Success!"}</h3>
-                            <p>Pioneer ID: <strong>#${data.slotNumber}</strong></p>
-                            <small>${state.lang === "ru" ? "Проверьте почту скоро" : "Check your email soon"}</small>
-                        </div>`;
-
-          UI.updateSlots();
-        } catch (err) {
-          UI.showError(err.message);
-          btn.disabled = false;
-          btn.innerHTML = originalText;
-        } finally {
-          state.isSubmitting = false;
-        }
-      };
-    },
-  };
-
-  // Главная точка входа
-  const init = () => {
-    UI.initTheme();
-    UI.updateSlots();
-    ROICalc.init();
-    Demo.init();
-    Simulator.init();
-    Signup.init();
-
-    // Интервал обновления счетчика (раз в 30 сек)
-    setInterval(() => UI.updateSlots(), 30000);
-  };
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
-})();
-/* ═══════════════════════════════════════════════════════════
-   OMNIKROSS v2.1 — Forms, Validation, A/B Testing, Analytics
-   Expert Audit V2: Леня/Боня/Люся recommendations applied
-   ═══════════════════════════════════════════════════════════ */
-
-(function () {
-  "use strict";
-
-  // ─── A/B Testing ───
-  // Even day = A, Odd day = B (per original spec)
-  const AB = {
-    variant: new Date().getDate() % 2 === 0 ? "A" : "B",
-    variants: {
-      ru: { A: "Забрать место из 500", B: "Войти в пионеры" },
-      en: { A: "Lock in Spot of 500", B: "Enter the 500" },
-    },
-    init() {
-      const lang = document.documentElement.lang || "ru";
+    showError(message) {
       const btn = document.getElementById("ctaButton");
-      if (btn && this.variants[lang]) {
-        btn.textContent = this.variants[lang][this.variant];
+      if (btn) {
+        btn.textContent =
+          state.lang === "ru" ? "Ошибка, попробуйте снова" : "Error, try again";
+        setTimeout(() => {
+          btn.textContent =
+            state.lang === "ru"
+              ? "Забрать место из 500"
+              : "Lock in Spot of 500";
+        }, 3000);
       }
-      // Show A/B badge (dev mode)
-      const badge = document.getElementById("abBadge");
-      if (badge)
-        badge.textContent =
-          "A/B: V" + this.variant + " | " + lang.toUpperCase();
-
-      trackEvent("ab_variant_shown", { variant: this.variant, lang });
+      alert(message);
     },
   };
 
-  // ─── Form Validation ───
-  function validateEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  }
+  // ─── FORM VALIDATION ───
+  function validateForm() {
+    const email = document.getElementById("email")?.value.trim() || "";
+    const social = document.getElementById("social")?.value.trim() || "";
 
-  function validateSocial(value, lang) {
-    if (!value) return false;
-    if (lang === "ru") {
-      return /^@[\w\u0400-\u04FF]{2,}$/i.test(value);
+    let valid = true;
+
+    // Email validation
+    if (!CONFIG.VALIDATION.email.test(email)) {
+      showError(
+        document.getElementById("email"),
+        state.lang === "ru"
+          ? "Введите корректный email"
+          : "Enter a valid email",
+      );
+      valid = false;
+    } else {
+      clearError(document.getElementById("email"));
     }
-    return /^@[\w]{2,}$/i.test(value);
+
+    // Social validation
+    const socialPattern =
+      state.lang === "ru"
+        ? CONFIG.VALIDATION.socialRu
+        : CONFIG.VALIDATION.socialEn;
+    if (!socialPattern.test(social)) {
+      showError(
+        document.getElementById("social"),
+        state.lang === "ru" ? "Формат: @username" : "Format: @handle",
+      );
+      valid = false;
+    } else {
+      clearError(document.getElementById("social"));
+    }
+
+    return valid;
   }
 
   function showError(input, message) {
@@ -343,457 +208,121 @@
     }
   }
 
-  // ─── Evolution Index Calculator (V2: based on input, not random) ───
-  function calculateEvolutionIndex(email, social) {
-    let score = 40; // base
+  // ─── FORM SUBMISSION ───
+  async function submitForm(e) {
+    e.preventDefault();
+    if (state.isSubmitting) return;
 
-    // Email domain scoring
-    const domain = email.split("@")[1] || "";
-    if (
-      domain.includes("gmail") ||
-      domain.includes("outlook") ||
-      domain.includes("yahoo")
-    )
-      score += 10;
-    if (domain.includes(".ru") || domain.includes(".com")) score += 5;
-    if (email.length > 15) score += 5;
+    if (!validateForm()) return;
 
-    // Social handle scoring
-    if (social.length > 5) score += 10;
-    if (social.length > 10) score += 5;
+    const formData = {
+      email: document.getElementById("email").value,
+      social: document.getElementById("social").value,
+      lang: state.lang,
+    };
 
-    // Slight randomization for variety but still input-based
-    score += Math.floor(Math.random() * 15);
-
-    return Math.min(100, Math.max(40, score));
-  }
-
-  // ─── Social Proof: Joined counter ───
-  async function updateJoinedDisplay() {
-    const el = document.getElementById("slotsJoined");
-    const slotsLeftEl = document.getElementById("slotsLeft");
-    const slotsCountEl = document.getElementById("slotsCount");
-
-    if (!el) return;
+    state.isSubmitting = true;
+    const btn = document.getElementById("ctaButton");
+    btn.disabled = true;
+    btn.textContent = state.lang === "ru" ? "Отправка..." : "Submitting...";
 
     try {
-      // Fetch real slot count from API
-      const response = await fetch("/api/slots");
-      if (!response.ok)
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const response = await fetch(CONFIG.API.signup, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-      const data = await response.json();
-      const remaining = data.remaining;
-      const filled = data.filled;
-
-      if (filled > 0) {
-        const lang = document.documentElement.lang || "ru";
-        el.textContent =
-          lang === "ru"
-            ? "· Уже записались: " + filled
-            : "· Already joined: " + filled;
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.error || `HTTP ${response.status}`);
       }
 
-      // Update remaining slots count
-      if (slotsLeftEl) {
-        slotsLeftEl.textContent = remaining;
+      const result = await response.json();
+      UI.showSuccess(result.slotNumber, result.remaining);
+      UI.updateSlots();
+
+      // Track event
+      if (window.omniTrack) {
+        window.omniTrack("form_submit", {
+          lang: state.lang,
+          slot_number: result.slotNumber,
+          remaining_slots: result.remaining,
+        });
       }
 
-      // Update slots count display
-      if (slotsCountEl) {
-        slotsCountEl.textContent = remaining;
-      }
+      // Vibration feedback
+      if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
     } catch (error) {
-      console.warn("[OmniKross] Failed to fetch slot count from API:", error);
-      // Fallback to default value if API fails
-      const current = 500;
-      const joined = 500 - current;
-      if (joined > 0) {
-        const lang = document.documentElement.lang || "ru";
-        el.textContent =
-          lang === "ru"
-            ? "· Уже записались: " + joined
-            : "· Already joined: " + joined;
-      }
-
-      if (slotsLeftEl) {
-        slotsLeftEl.textContent = current;
-      }
-
-      if (slotsCountEl) {
-        slotsCountEl.textContent = current;
-      }
+      console.error("Signup failed:", error);
+      UI.showError(
+        state.lang === "ru"
+          ? "Ошибка при регистрации. Попробуйте позже."
+          : "Registration error. Please try again later.",
+      );
+    } finally {
+      state.isSubmitting = false;
     }
   }
 
-  // ─── Form Submission ───
-  function initForm() {
-    const form = document.getElementById("signupForm");
-    if (!form) return;
-
-    const lang = document.documentElement.lang || "ru";
-    const emailInput = document.getElementById("email");
-    const socialInput = document.getElementById("social");
-    const ctaButton = document.getElementById("ctaButton");
-    const progressBar = document.getElementById("evolutionProgress");
-    const progressText = document.getElementById("evolutionText");
-    const successMsg = document.getElementById("formSuccess");
-    const successNumber = document.getElementById("successNumber");
-
-    // Live validation
-    emailInput.addEventListener("blur", () => {
-      if (emailInput.value && !validateEmail(emailInput.value)) {
-        showError(
-          emailInput,
-          lang === "ru" ? "Введите корректный email" : "Enter a valid email",
-        );
-      } else {
-        clearError(emailInput);
+  // ─── A/B TESTING ───
+  const AB_TEST = {
+    variant: new Date().getDate() % 2 === 0 ? "A" : "B",
+    variants: {
+      ru: { A: "Забрать место из 500", B: "Войти в пионеры" },
+      en: { A: "Lock in Spot of 500", B: "Enter the 500" },
+    },
+    init() {
+      const btn = document.getElementById("ctaButton");
+      if (btn) {
+        btn.textContent = this.variants[state.lang][this.variant];
       }
-    });
-
-    socialInput.addEventListener("blur", () => {
-      if (socialInput.value && !validateSocial(socialInput.value, lang)) {
-        showError(
-          socialInput,
-          lang === "ru" ? "Формат: @username" : "Format: @handle",
-        );
-      } else {
-        clearError(socialInput);
+      const badge = document.getElementById("abBadge");
+      if (badge) {
+        badge.textContent = `A/B: V${this.variant} | ${state.lang.toUpperCase()}`;
       }
-    });
-
-    emailInput.addEventListener("input", () => clearError(emailInput));
-    socialInput.addEventListener("input", () => clearError(socialInput));
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      let valid = true;
-
-      if (!validateEmail(emailInput.value)) {
-        showError(
-          emailInput,
-          lang === "ru" ? "Введите корректный email" : "Enter a valid email",
-        );
-        valid = false;
-      }
-
-      if (!validateSocial(socialInput.value, lang)) {
-        showError(
-          socialInput,
-          lang === "ru" ? "Формат: @username" : "Format: @handle",
-        );
-        valid = false;
-      }
-
-      if (!valid) return;
-
-      // Disable button during submission
-      ctaButton.disabled = true;
-      ctaButton.textContent = lang === "ru" ? "Отправка..." : "Submitting...";
-
-      try {
-        // Submit to real API
-        const response = await fetch("/api/signup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: emailInput.value,
-            social: socialInput.value,
-            lang: lang,
-          }),
+      if (window.omniTrack) {
+        window.omniTrack("ab_variant_shown", {
+          variant: this.variant,
+          lang: state.lang,
         });
-
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-          throw new Error(
-            errorData.error || `HTTP error! status: ${response.status}`,
-          );
-        }
-
-        const result = await response.json();
-
-        // Calculate evolution index (V2: input-based)
-        const evolutionIndex = calculateEvolutionIndex(
-          emailInput.value,
-          socialInput.value,
-        );
-
-        // Show success
-        const slotNumber = result.slotNumber;
-        const remaining = result.remaining;
-
-        // Update progress bar and text
-        if (progressBar) {
-          progressBar.style.width = evolutionIndex + "%";
-          progressBar.classList.add("progress-animate");
-        }
-
-        if (progressText) {
-          const indexMsg =
-            lang === "ru"
-              ? "Ваш индекс: <strong>" +
-                evolutionIndex +
-                "/100</strong> — Вы готовы к нейро-адаптации!"
-              : "Your index: <strong>" +
-                evolutionIndex +
-                "/100</strong> — You're ready for adaptive publishing!";
-          progressText.innerHTML = indexMsg;
-        }
-
-        // Улучшенный успешный результат
-        if (successMsg && successNumber) {
-          successNumber.textContent = "#" + slotNumber;
-          successMsg.classList.add("show");
-
-          // Микро-анимация успеха
-          successMsg.style.animation = "fadeInScale 0.6s ease";
-        }
-
-        // Обновляем CTA с улучшенной анимацией
-        ctaButton.disabled = true;
-        ctaButton.classList.add("success");
-        ctaButton.innerHTML =
-          "<span>✓ " +
-          (result.message ||
-            (lang === "ru" ? "Вы пионер #" : "You're Pioneer #") +
-              slotNumber +
-              "!") +
-          "</span>";
-
-        // Обновляем CTA note
-        const ctaNote = document.querySelector(".cta-note");
-        if (ctaNote) {
-          ctaNote.innerHTML =
-            '<i class="fa-solid fa-check"></i> ' +
-            (lang === "ru" ? "Место зарезервировано · " : "Spot reserved · ") +
-            remaining +
-            (lang === "ru" ? " из 500 осталось" : " of 500 left");
-          ctaNote.style.color = "var(--accent-secondary)";
-          ctaNote.style.fontWeight = "600";
-        }
-
-        // Обновляем счетчик в hero
-        updateJoinedDisplay();
-
-        // Трекинг события с ROI данными
-        const roiData =
-          typeof window.OmniROI !== "undefined"
-            ? window.OmniROI.getValues()
-            : null;
-        trackEvent("form_submit", {
-          variant: AB.variant,
-          evolution_index: evolutionIndex,
-          slot_number: slotNumber,
-          remaining_slots: remaining,
-          lang: lang,
-          roi_hours: roiData ? Math.round(roiData.hours) : null,
-          roi_posts: roiData ? roiData.posts : null,
-          roi_platforms: roiData ? roiData.platforms : null,
-        });
-
-        // Вибро-отклик (если поддерживается)
-        if (navigator.vibrate) {
-          navigator.vibrate([100, 50, 100]);
-        }
-      } catch (error) {
-        console.error("[OmniKross] Signup failed:", error);
-
-        // Show error to user
-        ctaButton.disabled = false;
-        ctaButton.textContent =
-          lang === "ru" ? "Ошибка, попробуйте снова" : "Error, try again";
-
-        // Reset button after delay
-        setTimeout(() => {
-          const originalText = AB.variants[lang][AB.variant];
-          ctaButton.textContent = originalText;
-        }, 3000);
-
-        // Show generic error message
-        const errorMsg =
-          lang === "ru"
-            ? "Ошибка при регистрации. Попробуйте позже."
-            : "Registration error. Please try again later.";
-
-        alert(errorMsg);
       }
-    });
-  }
+    },
+  };
 
-  // ─── Analytics (Mock) ───
-  function initAnalytics() {
-    const lang = document.documentElement.lang || "ru";
-
-    if (lang === "ru") {
-      console.log("[Analytics] Yandex.Metrica initialized (mock) for .ru");
-      window.ym =
-        window.ym ||
-        function () {
-          console.log("[YM]", ...arguments);
-        };
-    } else {
-      console.log("[Analytics] Google Analytics 4 initialized (mock) for .com");
-      window.gtag =
-        window.gtag ||
-        function () {
-          console.log("[GA4]", ...arguments);
-        };
-    }
-
-    console.log("[Analytics] Hotjar heatmap initialized (mock)");
-    trackEvent("page_view", {
-      lang,
-      url: window.location.href,
-      referrer: document.referrer,
-    });
-  }
-
-  // ─── Event Tracking ───
-  function trackEvent(name, data) {
-    const events = JSON.parse(sessionStorage.getItem("omni_events") || "[]");
-    events.push({ name, data, timestamp: Date.now() });
-    sessionStorage.setItem("omni_events", JSON.stringify(events));
-
-    if (typeof window.ym === "function") {
-      window.ym("reachGoal", name, data);
-    }
-    if (typeof window.gtag === "function") {
-      window.gtag("event", name, data);
-    }
-  }
-
-  window.omniTrack = trackEvent;
-
-  // ─── Geo-Redirect ───
-  function initGeoRedirect() {
-    const lang = document.documentElement.lang || "ru";
-    const browserLang = (
-      navigator.language ||
-      navigator.userLanguage ||
-      ""
-    ).substring(0, 2);
-    const dismissed = sessionStorage.getItem("geo_dismissed");
-
-    if (dismissed) return;
-
-    const banner = document.getElementById("geoBanner");
-    if (!banner) return;
-
-    if (lang === "ru" && browserLang !== "ru") {
-      const msgEl = banner.querySelector(".geo-msg");
-      if (msgEl)
-        msgEl.textContent = "It looks like English might be your language.";
-      const btnEl = banner.querySelector(".geo-btn");
-      if (btnEl) {
-        btnEl.textContent = "Switch to English";
-        btnEl.onclick = () => {
-          window.location.href = "index_en.html";
-        };
-      }
-      setTimeout(() => banner.classList.add("show"), 2000);
-    } else if (lang === "en" && browserLang === "ru") {
-      const msgEl = banner.querySelector(".geo-msg");
-      if (msgEl) msgEl.textContent = "Похоже, вам подойдёт русская версия.";
-      const btnEl = banner.querySelector(".geo-btn");
-      if (btnEl) {
-        btnEl.textContent = "Перейти на русский";
-        btnEl.onclick = () => {
-          window.location.href = "index_ru.html";
-        };
-      }
-      setTimeout(() => banner.classList.add("show"), 2000);
-    }
-
-    const closeBtn = banner.querySelector(".geo-close");
-    if (closeBtn) {
-      closeBtn.onclick = () => {
-        banner.classList.remove("show");
-        sessionStorage.setItem("geo_dismissed", "1");
-      };
-    }
-  }
-
-  // ─── Telegram Mini App Detection ───
-  function initTelegramDetect() {
-    const ua = navigator.userAgent || "";
-    if (ua.includes("Telegram") || window.Telegram) {
-      document.body.classList.add("tg-mini-app");
-    }
-  }
-
-  // ─── Navbar Scroll ───
-  function initNavbar() {
-    const navbar = document.querySelector(".navbar");
-    if (!navbar) return;
-
+  // ─── NAVIGATION & SCROLLING ───
+  function initNavigation() {
+    // Navbar scroll effect
     window.addEventListener(
       "scroll",
       () => {
-        navbar.classList.toggle("scrolled", window.scrollY > 50);
+        document
+          .querySelector(".navbar")
+          ?.classList.toggle("scrolled", window.scrollY > 50);
       },
       { passive: true },
     );
 
-    // Smooth scrolling for navigation links
-    document
-      .querySelectorAll('a[href^="#"]:not([href="#"])')
-      .forEach((anchor) => {
-        anchor.addEventListener("click", function (e) {
-          e.preventDefault();
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener("click", function (e) {
+        e.preventDefault();
+        const href = this.getAttribute("href");
+        const target = document.querySelector(href);
 
-          const targetId = this.getAttribute("href");
-          if (targetId === "#" || !targetId) return; // Skip if just '#' or empty
-
-          const targetElement = document.querySelector(targetId);
-          if (targetElement) {
-            // Close mobile menu if open
-            const hamburger = document.querySelector(".hamburger");
-            const mobileMenu = document.querySelector(".mobile-menu");
-            if (hamburger && mobileMenu) {
-              hamburger.classList.remove("active");
-              mobileMenu.classList.remove("open");
-              document.body.style.overflow = "";
-            }
-
-            // Scroll to target with offset for fixed navbar
-            const offsetTop =
-              targetElement.offsetTop - (navbar.offsetHeight + 20);
-            window.scrollTo({
-              top: offsetTop,
-              behavior: "smooth",
-            });
-          }
-        });
+        if (target) {
+          const offset = 80; // Account for fixed navbar
+          const targetPosition = target.offsetTop - offset;
+          window.scrollTo({
+            top: targetPosition,
+            behavior: "smooth",
+          });
+        }
       });
-
-    // Hamburger menu
-    const hamburger = document.querySelector(".hamburger");
-    const mobileMenu = document.querySelector(".mobile-menu");
-
-    if (hamburger && mobileMenu) {
-      hamburger.addEventListener("click", () => {
-        hamburger.classList.toggle("active");
-        mobileMenu.classList.toggle("open");
-        document.body.style.overflow = mobileMenu.classList.contains("open")
-          ? "hidden"
-          : "";
-      });
-
-      mobileMenu.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => {
-          hamburger.classList.remove("active");
-          mobileMenu.classList.remove("open");
-          document.body.style.overflow = "";
-        });
-      });
-    }
+    });
   }
 
-  // ─── Scroll Reveal ───
+  // ─── SCROLL REVEAL ───
   function initScrollReveal() {
     const reveals = document.querySelectorAll(".reveal, .stagger-children");
     if (!reveals.length) return;
@@ -812,7 +341,7 @@
     reveals.forEach((el) => observer.observe(el));
   }
 
-  // ─── Neuro Canvas (SVG background) ───
+  // ─── NEURO CANVAS (SVG background) ───
   function initNeuroCanvas() {
     const canvas = document.getElementById("neuroCanvas");
     if (!canvas) return;
@@ -872,207 +401,477 @@
     canvas.appendChild(svg);
   }
 
-  // ─── Performance: Page Load Time ───
-  function logPerformance() {
-    try {
-      const entries = performance.getEntriesByType("navigation");
-      if (entries.length) {
-        const loadTime = (entries[0].loadEventEnd / 1000).toFixed(2);
-        if (loadTime > 0) console.log("[OmniKross] Page load:", loadTime + "s");
-      }
-    } catch (e) {
-      /* silently fail in unsupported environments */
-    }
+  // ─── FAQ ACCORDION ───
+  function initFAQ() {
+    const faqItems = document.querySelectorAll(".faq-item");
+
+    faqItems.forEach((item) => {
+      const question = item.querySelector(".faq-question");
+
+      question.addEventListener("click", () => {
+        // Закрыть другие открытые вопросы
+        faqItems.forEach((otherItem) => {
+          if (otherItem !== item) {
+            otherItem.classList.remove("active");
+          }
+        });
+
+        // Toggle текущий
+        item.classList.toggle("active");
+      });
+    });
   }
 
-  // ─── Init Everything ───
-  document.addEventListener("DOMContentLoaded", async () => {
-    initTelegramDetect();
-    initNavbar();
-    AB.init();
-    initForm();
-    initAnalytics();
-    initGeoRedirect();
-    initScrollReveal();
-    initNeuroCanvas();
+  // ─── CALCULATOR ───
+  function initCalculator() {
+    const calculateButton = document.getElementById("calculateButton");
+    const clientsInput = document.getElementById("clients");
+    const postsInput = document.getElementById("posts");
+    const resultDiv = document.getElementById("calcResult");
+    const hoursWastedEl = document.getElementById("hoursWasted");
 
-    // Wait for DOM to be fully loaded before fetching data
-    await updateJoinedDisplay();
-    setTimeout(logPerformance, 100);
-  });
+    if (!calculateButton) return;
 
-  // Expose
-  window.OmniForms = { AB, trackEvent };
-})();
-/* ═══════════════════════════════════════════════════════════
-   ROI Calculator for OmniKross
-   Neuro-minimalism 2035 conversion engine
-   ═══════════════════════════════════════════════════════════ */
+    calculateButton.addEventListener("click", () => {
+      const clients = parseInt(clientsInput.value) || 15;
+      const posts = parseInt(postsInput.value) || 3;
 
-(function() {
-    'use strict';
+      // Формула: клиенты × посты в неделю × 1.5 часа на адаптацию
+      const hoursWasted = Math.round(clients * posts * 1.5);
 
-    function initROICalc() {
-        const posts = document.getElementById('posts');
-        const plats = document.getElementById('plats');
-        const avgTime = document.getElementById('avgTime');
-        const clients = document.getElementById('clients');
+      // Показываем результат
+      hoursWastedEl.textContent = hoursWasted;
+      resultDiv.style.display = "block";
 
-        if (!posts || !plats || !avgTime) return;
+      // Анимация появления
+      resultDiv.style.opacity = "0";
+      setTimeout(() => {
+        resultDiv.style.transition = "opacity 0.5s ease";
+        resultDiv.style.opacity = "1";
+      }, 10);
 
-        const form = document.getElementById('roiForm');
-        const resultDiv = document.getElementById('calcResult');
-        const totalHoursEl = document.getElementById('totalHours');
-        const lostMoneyEl = document.getElementById('lostMoney');
-        const savedHoursEl = document.getElementById('savedHours');
-        const savedMoneyEl = document.getElementById('savedMoney');
-
-        // Для RU: 600₽/час, для EN: $25/час
-        const HOUR_RATE = document.documentElement.lang === 'ru' ? 600 : 25;
-        const CURRENCY = document.documentElement.lang === 'ru' ? '₽' : '$';
-        const RATE_TEXT = document.documentElement.lang === 'ru' 
-            ? '*при средней ставке SMM 600₽/час' 
-            : '*at average SMM rate $25/hour';
-
-        // Обновляем текст в calc-note
-        const calcNote = document.querySelector('.calc-note');
-        if (calcNote) {
-            calcNote.textContent = RATE_TEXT;
-        }
-
-        function formatTime(hours) {
-            const days = Math.floor(hours / 8);
-            const weeks = Math.floor(days / 5);
-            if (weeks >= 1) {
-                return `${Math.round(hours)} ч (${weeks} нед)`;
-            }
-            return `${Math.round(hours)} ч`;
-        }
-
-        function formatMoney(amount) {
-            if (CURRENCY === '₽') {
-                return `${Math.round(amount).toLocaleString('ru-RU')}`;
-            } else {
-                return `${Math.round(amount).toLocaleString('en-US')}`;
-            }
-        }
-
-        function calculate() {
-            const p = +posts.value || 10;
-            const pl = +plats.value || 4;
-            const cl = +clients.value || (document.documentElement.lang === 'ru' ? 15 : 8);
-            const m = +avgTime.value || 20;
-
-            // Calculate weekly hours: posts * platforms * minutes * clients / 60
-            const hoursWeek = (p * pl * m * cl) / 60;
-            const moneyWeek = hoursWeek * HOUR_RATE;
-            
-            // Calculate savings (90% time reduction)
-            const savedHoursWeek = hoursWeek * 0.9;
-            const savedMoneyWeek = savedHoursWeek * HOUR_RATE;
-
-            if (totalHoursEl) {
-                totalHoursEl.textContent = Math.round(hoursWeek);
-            }
-            
-            if (lostMoneyEl) {
-                lostMoneyEl.textContent = formatMoney(moneyWeek);
-            }
-
-            if (savedHoursEl) {
-                savedHoursEl.textContent = Math.round(savedHoursWeek);
-            }
-
-            if (savedMoneyEl) {
-                savedMoneyEl.textContent = formatMoney(savedMoneyWeek);
-            }
-
-            // Show result
-            if (resultDiv) {
-                resultDiv.style.display = 'block';
-            }
-
-            // Трекинг события
-            trackROIEvent(p, pl, cl, m, hoursWeek, moneyWeek, savedHoursWeek, savedMoneyWeek);
-        }
-
-        function trackROIEvent(posts, platforms, clients, minutes, hours, money, savedHours, savedMoney) {
-            if (typeof window.omniTrack === 'function') {
-                window.omniTrack('roi_calculated', {
-                    posts_per_week: posts,
-                    platforms: platforms,
-                    clients: clients,
-                    minutes_per_post: minutes,
-                    hours_per_week: Math.round(hours),
-                    money_per_week: Math.round(money),
-                    saved_hours_per_week: Math.round(savedHours),
-                    saved_money_per_week: Math.round(savedMoney),
-                    currency: CURRENCY,
-                    lang: document.documentElement.lang
-                });
-            }
-        }
-
-        // Обработчики событий
-        [posts, plats, avgTime, clients].forEach(i => {
-            if (i) {
-                i.addEventListener('input', calculate);
-                i.addEventListener('change', calculate);
-            }
+      // Трекинг
+      if (typeof window.omniTrack === "function") {
+        window.omniTrack("calculator_used", {
+          clients: clients,
+          posts: posts,
+          hours_wasted: hoursWasted,
         });
+      }
+    });
+  }
 
-        // Обработчик формы
-        if (form) {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                calculate();
-                
-                // Scroll to results
-                if (resultDiv) {
-                    resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
-            });
-        }
+  // ─── COUNTDOWN TIMER ───
+  function initCountdown() {
+    const hoursEl = document.getElementById("hours");
+    const minutesEl = document.getElementById("minutes");
+    const secondsEl = document.getElementById("seconds");
 
-        // Инициализация при загрузке
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(calculate, 100);
-            
-            // Анимация появления калькулятора
-            const roiSection = document.getElementById('roi-calc');
-            if (roiSection) {
-                roiSection.classList.add('reveal');
-                setTimeout(() => {
-                    roiSection.classList.add('visible');
-                }, 300);
-            }
-        });
+    if (!hoursEl || !minutesEl || !secondsEl) return;
 
-        // Экспорт функций для глобального использования
-        window.OmniROI = {
-            calculate,
-            getValues: () => ({
-                posts: +posts.value,
-                platforms: +plats.value,
-                clients: +clients.value,
-                minutes: +avgTime.value,
-                hours: ((+posts.value || 10) * 4 * (+plats.value || 4) * (+avgTime.value || 20) * (+clients.value || (document.documentElement.lang === 'ru' ? 15 : 8))) / 60
-            })
-        };
+    // Устанавливаем дедлайн (завтра в 23:59:59)
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(23, 59, 59, 0);
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = tomorrow.getTime() - now;
+
+      if (distance < 0) {
+        hoursEl.textContent = "00";
+        minutesEl.textContent = "00";
+        secondsEl.textContent = "00";
+        return;
+      }
+
+      const hours = Math.floor(distance / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      hoursEl.textContent = String(hours).padStart(2, "0");
+      minutesEl.textContent = String(minutes).padStart(2, "0");
+      secondsEl.textContent = String(seconds).padStart(2, "0");
     }
 
-    // Инициализация калькулятора
-    initROICalc();
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  }
 
-})();/* ═══════════════════════════════════════════════════════════
-   OMNIKROSS — AI Preview Simulator
-   Generates platform-adapted content previews
-   ═══════════════════════════════════════════════════════════ */
+  // ─── DEMO SIMULATOR ───
+  function initDemo() {
+    const demoButton = document.getElementById("demoButton");
+    const demoText = document.getElementById("demoText");
+    const demoResult = document.getElementById("demoResult");
+    const demoOriginal = document.getElementById("demoOriginal");
+    const demoVK = document.getElementById("demoVK");
+    const demoTG = document.getElementById("demoTG");
+    const demoDzen = document.getElementById("demoDzen");
+    const demoOK = document.getElementById("demoOK");
 
-(function () {
-  "use strict";
+    if (!demoButton) return;
 
-  const MAX_CHARS = 280;
+    demoButton.addEventListener("click", async () => {
+      const originalText = demoText.value.trim();
+
+      if (!originalText) {
+        alert("Вставьте текст для демо");
+        return;
+      }
+
+      // Показываем загрузку
+      demoButton.textContent = "Адаптируем...";
+      demoButton.disabled = true;
+
+      // Имитация задержки обработки (в реальности — API запрос)
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // Симуляция адаптаций
+      const adaptations = simulateAdaptations(originalText);
+
+      // Показываем результаты
+      demoOriginal.textContent = originalText;
+      demoVK.textContent = adaptations.vk;
+      demoTG.textContent = adaptations.telegram;
+      demoDzen.textContent = adaptations.dzen;
+      demoOK.textContent = adaptations.ok;
+
+      demoResult.style.display = "block";
+
+      // Скролл к результату
+      demoResult.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      // Возвращаем кнопку
+      demoButton.textContent = "Протестировать снова →";
+      demoButton.disabled = false;
+
+      // Трекинг
+      if (typeof window.omniTrack === "function") {
+        window.omniTrack("demo_used", {
+          text_length: originalText.length,
+        });
+      }
+    });
+  }
+
+  // ─── Симуляция адаптаций (заглушка для демо) ───
+  function simulateAdaptations(text) {
+    const sentences = text.split(/[.!?]+/).filter((s) => s.trim().length > 0);
+
+    return {
+      // VK — укорачиваем до ~1200 знаков, добавляем хештеги
+      vk:
+        text.length > 1200
+          ? text.substring(0, 1200) + "... #SMM #контент"
+          : text + " #SMM #контент",
+
+      // Telegram — сжимаем в ~200 знаков
+      telegram:
+        sentences.length > 0
+          ? sentences[0].trim() + (sentences.length > 1 ? "..." : "") + " 👉"
+          : text.substring(0, 200),
+
+      // Дзен — расширяем до ~3000 знаков с подробностями
+      dzen:
+        text +
+        "\n\n" +
+        (text.length < 1000
+          ? "Важно понимать контекст этого вопроса. В современном мире адаптация контента под различные платформы — это не просто техническая задача, а стратегическое решение..."
+          : ""),
+
+      // OK — адаптируем под локальную специфику
+      ok:
+        text
+          .replace(/VK/gi, "Одноклассники")
+          .replace(/Telegram/gi, "мессенджеры") + " 👍",
+    };
+  }
+
+  // ─── ROI CALCULATOR ───
+  function initROICalc() {
+    const posts = document.getElementById("posts");
+    const plats = document.getElementById("plats");
+    const mins = document.getElementById("mins");
+
+    if (!posts || !plats || !mins) return;
+
+    const timeEl = document.getElementById("timeResult");
+    const moneyEl = document.getElementById("moneyResult");
+    const goSimulatorBtn = document.getElementById("goSimulator");
+
+    // Для RU: 600₽/час, для EN: $25/час
+    const HOUR_RATE = document.documentElement.lang === "ru" ? 600 : 25;
+    const CURRENCY = document.documentElement.lang === "ru" ? "₽" : "$";
+    const RATE_TEXT =
+      document.documentElement.lang === "ru"
+        ? "*при средней ставке SMM 600₽/час"
+        : "*at average SMM rate $25/hour";
+
+    // Обновляем текст в calc-note
+    const calcNote = document.querySelector(".calc-note");
+    if (calcNote) {
+      calcNote.textContent = RATE_TEXT;
+    }
+
+    function formatTime(hours) {
+      const days = Math.floor(hours / 8);
+      const weeks = Math.floor(days / 5);
+      if (weeks >= 1) {
+        return `${Math.round(hours)} ч (${weeks} нед)`;
+      }
+      return `${Math.round(hours)} ч`;
+    }
+
+    function formatMoney(amount) {
+      if (CURRENCY === "₽") {
+        return `${Math.round(amount).toLocaleString("ru-RU")}`;
+      } else {
+        return `${Math.round(amount).toLocaleString("en-US")}`;
+      }
+    }
+
+    function recalc() {
+      const p = +posts.value || 10;
+      const pl = +plats.value || 4;
+      const m = +mins.value || 20;
+
+      const hoursMonth = (p * 4 * pl * m) / 60;
+      const moneyYear = hoursMonth * 12 * HOUR_RATE;
+
+      if (timeEl) {
+        timeEl.textContent = formatTime(hoursMonth);
+      }
+
+      if (moneyEl) {
+        moneyEl.textContent = formatMoney(moneyYear);
+      }
+
+      // Трекинг события
+      trackROIEvent(p, pl, m, hoursMonth, moneyYear);
+    }
+
+    function trackROIEvent(posts, platforms, minutes, hours, money) {
+      if (typeof window.omniTrack === "function") {
+        window.omniTrack("roi_calculated", {
+          posts_per_week: posts,
+          platforms: platforms,
+          minutes_per_post: minutes,
+          hours_per_month: Math.round(hours),
+          money_per_year: Math.round(money),
+          currency: CURRENCY,
+          lang: document.documentElement.lang,
+        });
+      }
+    }
+
+    // Обработчики событий
+    [posts, plats, mins].forEach((i) => {
+      if (i) {
+        i.addEventListener("input", recalc);
+        i.addEventListener("change", recalc);
+      }
+    });
+
+    // Обработчик кнопки перехода к симулятору
+    if (goSimulatorBtn) {
+      goSimulatorBtn.addEventListener("click", () => {
+        const simulator = document.getElementById("simulator");
+        if (simulator) {
+          // Трекинг клика
+          if (typeof window.omniTrack === "function") {
+            window.omniTrack("roi_to_simulator_click", {
+              lang: document.documentElement.lang,
+            });
+          }
+
+          simulator.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+
+          // Анимация кнопки
+          goSimulatorBtn.style.transform = "scale(0.98)";
+          setTimeout(() => {
+            goSimulatorBtn.style.transform = "";
+          }, 200);
+        }
+      });
+    }
+
+    // Инициализация при загрузке
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(recalc, 100);
+
+      // Анимация появления калькулятора
+      const roiSection = document.getElementById("roi-calc");
+      if (roiSection) {
+        roiSection.classList.add("reveal");
+        setTimeout(() => {
+          roiSection.classList.add("visible");
+        }, 300);
+      }
+    });
+  }
+
+  // ─── SIMULATOR ───
+  function initSimulator() {
+    const textarea = document.getElementById("simInput");
+    const charCounter = document.getElementById("charCounter");
+    const generateBtn = document.getElementById("generateBtn");
+    const previewGrid = document.getElementById("previewGrid");
+    const platformBtns = document.querySelectorAll(".platform-btn");
+
+    if (!textarea || !generateBtn) return;
+
+    const selectedPlatforms = new Set();
+
+    // Set default platforms
+    ["vk", "telegram", "dzen", "ok"].forEach((p) => {
+      selectedPlatforms.add(p);
+      document
+        .querySelector(`.platform-btn[data-platform="${p}"]`)
+        ?.classList.add("active");
+    });
+
+    // Character counter
+    textarea.addEventListener("input", () => {
+      const len = textarea.value.length;
+      charCounter.textContent = len + "/280";
+      charCounter.classList.toggle("warn", len > 280 * 0.85);
+      if (len > 280) {
+        textarea.value = textarea.value.substring(0, 280);
+        charCounter.textContent = "280/280";
+      }
+      updateGenerateBtn();
+    });
+
+    // Platform selection
+    platformBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const platform = btn.dataset.platform;
+        if (selectedPlatforms.has(platform)) {
+          selectedPlatforms.delete(platform);
+          btn.classList.remove("active");
+        } else {
+          selectedPlatforms.add(platform);
+          btn.classList.add("active");
+        }
+        updateGenerateBtn();
+      });
+    });
+
+    function updateGenerateBtn() {
+      generateBtn.disabled =
+        !textarea.value.trim() || selectedPlatforms.size === 0;
+    }
+
+    // Generate previews
+    generateBtn.addEventListener("click", () => {
+      const text = textarea.value.trim();
+      if (!text || selectedPlatforms.size === 0) return;
+
+      // Track event
+      trackEvent("simulator_generate", {
+        platforms: [...selectedPlatforms].join(","),
+        text_length: text.length,
+      });
+
+      previewGrid.innerHTML = "";
+      previewGrid.style.opacity = "0";
+
+      // Simulate AI processing delay
+      generateBtn.disabled = true;
+      generateBtn.textContent =
+        generateBtn.dataset.loading || "⚡ Generating...";
+
+      setTimeout(
+        () => {
+          selectedPlatforms.forEach((platform) => {
+            const tmpl = TEMPLATES[platform];
+            if (!tmpl) return;
+
+            const card = document.createElement("div");
+            card.className = "preview-card fade-in-scale";
+
+            const adapted = tmpl.transform(text);
+
+            card.innerHTML = `
+            <div class="preview-card-header">
+              <i class="fa-brands ${tmpl.icon}"></i>
+              <span>${tmpl.name}</span>
+            </div>
+            <div class="preview-card-body">${escapeHtml(adapted).replace(/\n/g, "<br>")}</div>
+          `;
+
+            previewGrid.appendChild(card);
+          });
+
+          // После генерации превью
+          previewGrid.style.opacity = "1";
+          generateBtn.disabled = false;
+          generateBtn.textContent =
+            generateBtn.dataset.default || "⚡ Generate Preview";
+
+          // Интеллектуальный скролл (только если пользователь не скроллил дальше)
+          const currentScroll = window.scrollY;
+          const signupTop =
+            document.getElementById("signupForm")?.offsetTop ||
+            document.getElementById("hero")?.offsetTop;
+
+          if (currentScroll < signupTop - 300) {
+            // Если пользователь еще не долистал до формы
+            setTimeout(() => {
+              const signupForm = document.getElementById("signupForm");
+              if (signupForm) {
+                signupForm.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+
+                // Микро-анимация CTA
+                const ctaButton = document.getElementById("ctaButton");
+                if (ctaButton) {
+                  ctaButton.style.animation = "pulse 2s ease 2";
+                  setTimeout(() => {
+                    ctaButton.style.animation = "";
+                  }, 4000);
+
+                  // Добавляем микро-всплывающую подсказку
+                  if (!document.querySelector(".cta-micro-tip")) {
+                    const tip = document.createElement("div");
+                    tip.className = "cta-micro-tip";
+                    tip.innerHTML =
+                      '<i class="fa-solid fa-bolt"></i> Верните время, которое только что сэкономили';
+                    tip.style.cssText = `
+                      position: fixed;
+                      bottom: 100px;
+                      right: 20px;
+                      background: var(--gradient-main);
+                      color: var(--bg-main);
+                      padding: 12px 20px;
+                      border-radius: 12px;
+                      font-size: 14px;
+                      font-weight: 600;
+                      z-index: 9999;
+                      animation: fadeInUp 0.5s ease;
+                      box-shadow: var(--shadow-deep);
+                      max-width: 300px;
+                    `;
+                    document.body.appendChild(tip);
+
+                    setTimeout(() => {
+                      tip.remove();
+                    }, 5000);
+                  }
+                }
+              }
+            }, 800);
+          }
+        },
+        800 + Math.random() * 600,
+      );
+    });
+  }
 
   // Platform adaptation templates
   const TEMPLATES = {
@@ -1211,166 +1010,6 @@
     return unique.map((w) => "#" + w);
   }
 
-  // Initialize simulator
-  function initSimulator() {
-    const textarea = document.getElementById("simInput");
-    const charCounter = document.getElementById("charCounter");
-    const generateBtn = document.getElementById("generateBtn");
-    const previewGrid = document.getElementById("previewGrid");
-    const platformBtns = document.querySelectorAll(".platform-btn");
-
-    if (!textarea || !generateBtn) return;
-
-    const selectedPlatforms = new Set();
-
-    // Set default platforms
-    ["vk", "telegram", "dzen", "ok"].forEach((p) => {
-      selectedPlatforms.add(p);
-      document
-        .querySelector(`.platform-btn[data-platform="${p}"]`)
-        ?.classList.add("active");
-    });
-
-    // Character counter
-    textarea.addEventListener("input", () => {
-      const len = textarea.value.length;
-      charCounter.textContent = len + "/" + MAX_CHARS;
-      charCounter.classList.toggle("warn", len > MAX_CHARS * 0.85);
-      if (len > MAX_CHARS) {
-        textarea.value = textarea.value.substring(0, MAX_CHARS);
-        charCounter.textContent = MAX_CHARS + "/" + MAX_CHARS;
-      }
-      updateGenerateBtn();
-    });
-
-    // Platform selection
-    platformBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const platform = btn.dataset.platform;
-        if (selectedPlatforms.has(platform)) {
-          selectedPlatforms.delete(platform);
-          btn.classList.remove("active");
-        } else {
-          selectedPlatforms.add(platform);
-          btn.classList.add("active");
-        }
-        updateGenerateBtn();
-      });
-    });
-
-    function updateGenerateBtn() {
-      generateBtn.disabled =
-        !textarea.value.trim() || selectedPlatforms.size === 0;
-    }
-
-    // Generate previews
-    generateBtn.addEventListener("click", () => {
-      const text = textarea.value.trim();
-      if (!text || selectedPlatforms.size === 0) return;
-
-      // Track event
-      trackEvent("simulator_generate", {
-        platforms: [...selectedPlatforms].join(","),
-        text_length: text.length,
-      });
-
-      previewGrid.innerHTML = "";
-      previewGrid.style.opacity = "0";
-
-      // Simulate AI processing delay
-      generateBtn.disabled = true;
-      generateBtn.textContent =
-        generateBtn.dataset.loading || "⚡ Generating...";
-
-      setTimeout(
-        () => {
-          selectedPlatforms.forEach((platform) => {
-            const tmpl = TEMPLATES[platform];
-            if (!tmpl) return;
-
-            const card = document.createElement("div");
-            card.className = "preview-card fade-in-scale";
-
-            const adapted = tmpl.transform(text);
-
-            card.innerHTML = `
-            <div class="preview-card-header">
-              <i class="fa-brands ${tmpl.icon}"></i>
-              <span>${tmpl.name}</span>
-            </div>
-            <div class="preview-card-body">${escapeHtml(adapted).replace(/\n/g, "<br>")}</div>
-          `;
-
-            previewGrid.appendChild(card);
-          });
-
-          // После генерации превью
-          previewGrid.style.opacity = "1";
-          generateBtn.disabled = false;
-          generateBtn.textContent =
-            generateBtn.dataset.default || "⚡ Generate Preview";
-
-          // Интеллектуальный скролл (только если пользователь не скроллил дальше)
-          const currentScroll = window.scrollY;
-          const signupTop =
-            document.getElementById("signupForm")?.offsetTop ||
-            document.getElementById("hero")?.offsetTop;
-
-          if (currentScroll < signupTop - 300) {
-            // Если пользователь еще не долистал до формы
-            setTimeout(() => {
-              const signupForm = document.getElementById("signupForm");
-              if (signupForm) {
-                signupForm.scrollIntoView({
-                  behavior: "smooth",
-                  block: "center",
-                });
-
-                // Микро-анимация CTA
-                const ctaButton = document.getElementById("ctaButton");
-                if (ctaButton) {
-                  ctaButton.style.animation = "pulse 2s ease 2";
-                  setTimeout(() => {
-                    ctaButton.style.animation = "";
-                  }, 4000);
-
-                  // Добавляем микро-всплывающую подсказку
-                  if (!document.querySelector(".cta-micro-tip")) {
-                    const tip = document.createElement("div");
-                    tip.className = "cta-micro-tip";
-                    tip.innerHTML =
-                      '<i class="fa-solid fa-bolt"></i> Верните время, которое только что сэкономили';
-                    tip.style.cssText = `
-                      position: fixed;
-                      bottom: 100px;
-                      right: 20px;
-                      background: var(--gradient-main);
-                      color: var(--bg-main);
-                      padding: 12px 20px;
-                      border-radius: 12px;
-                      font-size: 14px;
-                      font-weight: 600;
-                      z-index: 9999;
-                      animation: fadeInUp 0.5s ease;
-                      box-shadow: var(--shadow-deep);
-                      max-width: 300px;
-                    `;
-                    document.body.appendChild(tip);
-
-                    setTimeout(() => {
-                      tip.remove();
-                    }, 5000);
-                  }
-                }
-              }
-            }, 800);
-          }
-        },
-        800 + Math.random() * 600,
-      );
-    });
-  }
-
   // HTML escape
   function escapeHtml(text) {
     const div = document.createElement("div");
@@ -1386,87 +1025,175 @@
     console.log("[Omnikross Track]", name, data);
   }
 
-  // Auto-init
-  document.addEventListener("DOMContentLoaded", initSimulator);
+  // ─── GEO REDIRECT ───
+  function initGeoRedirect() {
+    const lang = document.documentElement.lang || "ru";
+    const browserLang = (
+      navigator.language ||
+      navigator.userLanguage ||
+      ""
+    ).substring(0, 2);
+    const dismissed = sessionStorage.getItem("geo_dismissed");
+
+    if (dismissed) return;
+
+    const banner = document.getElementById("geoBanner");
+    if (!banner) return;
+
+    if (lang === "ru" && browserLang !== "ru") {
+      const msgEl = banner.querySelector(".geo-msg");
+      if (msgEl)
+        msgEl.textContent = "It looks like English might be your language.";
+      const btnEl = banner.querySelector(".geo-btn");
+      if (btnEl) {
+        btnEl.textContent = "Switch to English";
+        btnEl.onclick = () => {
+          window.location.href = "index_en.html";
+        };
+      }
+      setTimeout(() => banner.classList.add("show"), 2000);
+    } else if (lang === "en" && browserLang === "ru") {
+      const msgEl = banner.querySelector(".geo-msg");
+      if (msgEl) msgEl.textContent = "Похоже, вам подойдёт русская версия.";
+      const btnEl = banner.querySelector(".geo-btn");
+      if (btnEl) {
+        btnEl.textContent = "Перейти на русский";
+        btnEl.onclick = () => {
+          window.location.href = "index_ru.html";
+        };
+      }
+      setTimeout(() => banner.classList.add("show"), 2000);
+    }
+
+    const closeBtn = banner.querySelector(".geo-close");
+    if (closeBtn) {
+      closeBtn.onclick = () => {
+        banner.classList.remove("show");
+        sessionStorage.setItem("geo_dismissed", "1");
+      };
+    }
+  }
+
+  // ─── INITIALIZATION ───
+  function init() {
+    // Initialize all components
+    UI.initTheme();
+    AB_TEST.init();
+    initNavigation();
+    initScrollReveal();
+    initNeuroCanvas();
+    initFAQ();
+    initCalculator();
+    initCountdown();
+    initDemo();
+    initROICalc();
+    initSimulator();
+
+    // Initialize form
+    const form = document.getElementById("signupForm");
+    if (form) {
+      form.addEventListener("submit", submitForm);
+
+      // Live validation
+      const emailInput = document.getElementById("email");
+      const socialInput = document.getElementById("social");
+
+      if (emailInput) {
+        emailInput.addEventListener("blur", () => {
+          if (
+            emailInput.value &&
+            !CONFIG.VALIDATION.email.test(emailInput.value)
+          ) {
+            showError(
+              emailInput,
+              state.lang === "ru"
+                ? "Введите корректный email"
+                : "Enter a valid email",
+            );
+          } else {
+            clearError(emailInput);
+          }
+        });
+
+        emailInput.addEventListener("input", () => clearError(emailInput));
+      }
+
+      if (socialInput) {
+        socialInput.addEventListener("blur", () => {
+          const socialPattern =
+            state.lang === "ru"
+              ? CONFIG.VALIDATION.socialRu
+              : CONFIG.VALIDATION.socialEn;
+          if (socialInput.value && !socialPattern.test(socialInput.value)) {
+            showError(
+              socialInput,
+              state.lang === "ru" ? "Формат: @username" : "Format: @handle",
+            );
+          } else {
+            clearError(socialInput);
+          }
+        });
+
+        socialInput.addEventListener("input", () => clearError(socialInput));
+      }
+    }
+
+    // Update slots periodically
+    UI.updateSlots();
+    setInterval(UI.updateSlots, 30000); // Every 30 seconds
+
+    // Initialize geo redirect
+    initGeoRedirect();
+
+    console.log("[OmniKross] Application initialized");
+  }
+
+  // Run initialization when DOM is ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 
   // Expose for external use
+  window.OmniApp = {
+    UI,
+    AB_TEST,
+    CONFIG,
+    state,
+    init,
+    submitForm,
+    validateForm,
+  };
+
+  // Expose specific modules for backward compatibility
   window.OmniSimulator = { init: initSimulator, TEMPLATES };
-})();
-/* ═══════════════════════════════════════════════════════════
-   OMNIKROSS v2 — Theme Switcher (Dark / Light)
-   Persists to localStorage, respects system preference
-   ═══════════════════════════════════════════════════════════ */
+  window.OmniROI = {
+    recalc: typeof recalc !== "undefined" ? recalc : function () {},
+    getValues: () => {
+      const postsEl = document.getElementById("posts");
+      const platsEl = document.getElementById("plats");
+      const minsEl = document.getElementById("mins");
 
-(function() {
-  'use strict';
-
-  const STORAGE_KEY = 'omnikross_theme';
-
-  function getPreferredTheme() {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) return stored;
-    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-  }
-
-  function applyTheme(theme, animate) {
-    if (animate) {
-      document.documentElement.classList.add('theme-transitioning');
-      setTimeout(() => document.documentElement.classList.remove('theme-transitioning'), 500);
-    }
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem(STORAGE_KEY, theme);
-
-    // Update meta theme-color
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) {
-      meta.setAttribute('content', theme === 'light' ? '#F8F8FC' : '#6A0DAD');
-    }
-  }
-
-  function toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme') || 'dark';
-    const next = current === 'dark' ? 'light' : 'dark';
-    applyTheme(next, true);
-  }
-
-  // Apply theme ASAP (before DOMContentLoaded to prevent flash)
-  applyTheme(getPreferredTheme(), false);
-
-  // Bind toggle buttons after DOM ready
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.theme-toggle').forEach(btn => {
-      btn.addEventListener('click', toggleTheme);
-    });
-  });
-
-  // Listen for system preference changes
-  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
-    if (!localStorage.getItem(STORAGE_KEY)) {
-      applyTheme(e.matches ? 'light' : 'dark', true);
-    }
-  });
-
-  // Smooth scrolling for navigation links
-  function initSmoothScrolling() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-        const target = document.querySelector(href);
-        
-        if (target) {
-          e.preventDefault();
-          const offset = 80; // Account for fixed navbar
-          const targetPosition = target.offsetTop - offset;
-          window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-          });
-        }
-      });
-    });
-  }
-
-  initSmoothScrolling();
-
-  window.OmniTheme = { toggle: toggleTheme, apply: applyTheme, get: getPreferredTheme };
+      return {
+        posts: postsEl ? +postsEl.value : 0,
+        platforms: platsEl ? +platsEl.value : 0,
+        minutes: minsEl ? +minsEl.value : 0,
+        hours:
+          postsEl && platsEl && minsEl
+            ? ((+postsEl.value || 10) *
+                4 *
+                (+platsEl.value || 4) *
+                (+minsEl.value || 20)) /
+              60
+            : 0,
+      };
+    },
+  };
+  window.OmniInteractive = {
+    initFAQ,
+    initCalculator,
+    initCountdown,
+    initDemo,
+  };
 })();
