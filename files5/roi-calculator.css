@@ -1,9 +1,9 @@
 /* ═══════════════════════════════════════════════════════════
-   OMNIKROSS v2.3 — ROI Calculator Styles
-   Production-ready with enhanced interactions
+   ROI CALCULATOR & SPECIAL SECTIONS v2.3
+   Согласовано с roi-calculator.js и index_ru.html
    ═══════════════════════════════════════════════════════════ */
 
-/* ─── Main ROI Calculator Container ─── */
+/* ─── ROI Calculator Section ─── */
 #roi-calc {
     max-width: 960px;
     margin: 60px auto 120px;
@@ -49,7 +49,7 @@
     scroll-margin-top: 120px;
 }
 
-/* ─── Input Grid ─── */
+/* ─── Calculator Grid ─── */
 .calc-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -85,6 +85,7 @@
     text-align: center;
     width: 100%;
     box-sizing: border-box;
+    will-change: border-color, background, box-shadow;
 }
 
 .calc-input:hover {
@@ -96,11 +97,16 @@
     border-color: var(--accent-secondary);
     background: rgba(0, 255, 136, 0.08);
     box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.15);
-    outline: 0;
+    outline: none;
     transform: translateY(-2px);
 }
 
-/* ─── Results Display ─── */
+.calc-input:focus-visible {
+    outline: 2px solid var(--accent-secondary);
+    outline-offset: 2px;
+}
+
+/* ─── Calculator Result ─── */
 .calc-result {
     display: flex;
     justify-content: space-between;
@@ -108,7 +114,11 @@
     padding: 40px;
     margin-bottom: 40px;
     border-radius: 20px;
-    background: linear-gradient(45deg, rgba(106, 13, 173, 0.25), rgba(0, 255, 136, 0.15));
+    background: linear-gradient(
+        45deg,
+        rgba(106, 13, 173, 0.25),
+        rgba(0, 255, 136, 0.15)
+    );
     font-size: 22px;
     font-weight: 700;
     border: 1px solid rgba(106, 13, 173, 0.3);
@@ -141,16 +151,6 @@
     animation: resultPulse 0.6s ease;
 }
 
-@keyframes resultPulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-        color: var(--accent-cta);
-    }
-}
-
 .calc-money {
     color: var(--accent-secondary);
     text-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
@@ -166,12 +166,18 @@
     font-size: 1.2rem;
     color: var(--text-secondary);
     display: block;
-    margin-top: 10px;
-    font-family: var(--font-mono);
-    text-align: center;
+    margin-top: 8px;
 }
 
-/* ─── Action Button ─── */
+.calc-note {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 10px;
+    font-family: var(--font-mono);
+}
+
+/* ─── Go to Simulator Button ─── */
 .go-simulator-btn {
     width: 100%;
     padding: 24px;
@@ -179,7 +185,11 @@
     font-weight: 800;
     border-radius: 18px;
     border: none;
-    background: linear-gradient(45deg, var(--accent-main), var(--accent-secondary));
+    background: linear-gradient(
+        45deg,
+        var(--accent-main),
+        var(--accent-secondary)
+    );
     background-size: 200% auto;
     color: var(--bg-main);
     cursor: pointer;
@@ -191,6 +201,7 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
+    will-change: transform, box-shadow;
 }
 
 .go-simulator-btn::before {
@@ -221,6 +232,11 @@
     transform: translateY(0);
 }
 
+.go-simulator-btn:focus-visible {
+    outline: 2px solid var(--accent-secondary);
+    outline-offset: 4px;
+}
+
 .go-simulator-btn i {
     transition: transform 0.3s ease;
 }
@@ -229,7 +245,7 @@
     transform: translateX(5px);
 }
 
-/* ─── Pain & Value Sections ─── */
+/* ─── Pain Section Styles ─── */
 #pain {
     padding: 80px 0;
     background: rgba(255, 255, 255, 0.02);
@@ -260,6 +276,7 @@
     margin-top: 20px;
 }
 
+/* ─── Value Proposition Section ─── */
 #value {
     padding: 80px 0;
 }
@@ -289,7 +306,7 @@
     text-align: center;
 }
 
-/* ─── Simulator Integration ─── */
+/* ─── Simulator ROI Hint ─── */
 .sim-roi-hint {
     margin: 24px 0 32px;
     font-size: 1.1rem;
@@ -330,19 +347,11 @@
     color: var(--accent-secondary);
 }
 
+/* ─── Success State for CTA ─── */
 .cta-button.success {
     background: linear-gradient(45deg, #00ff88, #00cc6a) !important;
     box-shadow: 0 0 30px rgba(0, 255, 136, 0.5) !important;
     animation: successPulse 0.6s ease;
-}
-
-@keyframes successPulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
 }
 
 .cta-button.success::before {
@@ -350,14 +359,14 @@
     margin-right: 8px;
 }
 
-/* ─── Hero CTA Styles ─── */
+/* ─── Hero CTA Wrapper ─── */
 .hero-cta-wrapper {
     margin-bottom: 30px;
 }
 
 .scroll-roi-btn {
     background: var(--gradient-cta);
-    color: #fff;
+    color: white;
     border: none;
     padding: 16px 32px;
     border-radius: var(--radius-md);
@@ -368,11 +377,17 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
+    will-change: transform, box-shadow;
 }
 
 .scroll-roi-btn:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-deep);
+}
+
+.scroll-roi-btn:focus-visible {
+    outline: 2px solid var(--accent-secondary);
+    outline-offset: 4px;
 }
 
 .hero-note {
@@ -383,7 +398,87 @@
     text-align: center;
 }
 
-/* ─── Light Theme Overrides ─── */
+/* ─── Simulator Section ─── */
+.simulator {
+    background: var(--gradient-bg);
+    padding: 80px 0;
+}
+
+.simulator-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.simulator-input-group {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.simulator-input-group textarea {
+    width: 100%;
+    min-height: 140px;
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    font-size: 1rem;
+    resize: vertical;
+    outline: none;
+    transition: var(--transition);
+    line-height: 1.5;
+}
+
+.simulator-input-group textarea:focus {
+    border-color: var(--accent-main);
+    background: rgba(106, 13, 173, 0.06);
+    box-shadow: 0 0 0 3px rgba(106, 13, 173, 0.1);
+}
+
+.char-counter {
+    position: absolute;
+    bottom: 12px;
+    right: 16px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    transition: var(--transition);
+}
+
+.char-counter.warn {
+    color: var(--accent-cta);
+}
+
+.generate-btn {
+    display: block;
+    margin: 0 auto 32px;
+    padding: 14px 40px;
+    border-radius: 50px;
+    border: none;
+    background: var(--gradient-cta);
+    background-size: 200% auto;
+    color: #fff;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.generate-btn:hover {
+    background-position: right center;
+    box-shadow: var(--shadow-deep);
+    transform: translateY(-2px);
+}
+
+.generate-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ─── Light Theme Adjustments ─── */
 [data-theme="light"] #roi-calc {
     background: var(--bg-card);
     border-color: rgba(91, 8, 160, 0.4);
@@ -395,48 +490,25 @@
 }
 
 [data-theme="light"] .calc-result {
-    background: linear-gradient(45deg, rgba(91, 8, 160, 0.15), rgba(0, 184, 94, 0.1));
+    background: linear-gradient(
+        45deg,
+        rgba(91, 8, 160, 0.15),
+        rgba(0, 184, 94, 0.1)
+    );
 }
 
 [data-theme="light"] .go-simulator-btn {
-    background: linear-gradient(45deg, var(--accent-main), var(--accent-secondary));
+    background: linear-gradient(
+        45deg,
+        var(--accent-main),
+        var(--accent-secondary)
+    );
     color: #fff;
 }
 
 [data-theme="light"] .sim-roi-hint {
     background: rgba(0, 184, 94, 0.08);
     border-left-color: var(--accent-secondary);
-}
-
-
-/* ─── Platform Note ─── */
-.platform-note {
-    text-align: center;
-    font-style: italic;
-    color: var(--text-muted);
-    margin-top: 20px;
-    padding: 16px;
-    border-top: 1px solid var(--border-subtle);
-}
-
-/* ─── Trust Section ─── */
-.trust-content {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    text-align: center;
-}
-
-.trust-content p {
-    font-size: 1.2rem;
-    line-height: 1.7;
-    margin: 20px 0;
-    color: var(--text-secondary);
-}
-
-.trust-content p:first-child {
-    font-size: 1.3rem;
-    color: var(--text-primary);
 }
 
 /* ─── Responsive Design ─── */
@@ -459,11 +531,11 @@
     }
 
     .calc-time {
-        font-size: 36px;
+        font-size: 2.5rem;
     }
 
     .calc-money {
-        font-size: 24px;
+        font-size: 1.5rem;
     }
 
     .go-simulator-btn {
@@ -481,14 +553,6 @@
         font-size: 1.1rem;
         padding: 0 16px;
     }
-
-    .platforms-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .trust-content {
-        padding: 20px 16px;
-    }
 }
 
 @media (max-width: 480px) {
@@ -498,11 +562,36 @@
     }
 
     .calc-time {
-        font-size: 32px;
+        font-size: 2rem;
     }
 
     .go-simulator-btn {
         font-size: 16px;
         padding: 18px;
+    }
+}
+
+/* ─── Print Support ─── */
+@media print {
+    #roi-calc {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+
+    .go-simulator-btn {
+        display: none;
+    }
+}
+
+/* ─── Reduced Motion Support ─── */
+@media (prefers-reduced-motion: reduce) {
+    .calc-time.updated,
+    .calc-money.updated,
+    .cta-button.success {
+        animation: none;
+    }
+
+    .go-simulator-btn:hover {
+        transform: none;
     }
 }

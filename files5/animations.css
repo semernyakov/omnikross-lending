@@ -1,9 +1,9 @@
 /* ═══════════════════════════════════════════════════════════
-   OMNIKROSS v2.3 — Animation System
-   Neuro-pulse, connections, reveals
+   OMNIKROSS — Animation System v2.3
+   GPU-оптимизация + Reduced Motion Support
    ═══════════════════════════════════════════════════════════ */
 
-/* ─── Kross Node Pulse ─── */
+/* ─── Pulse Animation (Kross Node) ─── */
 @keyframes pulse {
     0% {
         transform: scale3d(1, 1, 1);
@@ -27,24 +27,10 @@
     will-change: transform, opacity;
 }
 
-/* ─── Neuro Connection Lines ─── */
-@keyframes dash {
-    to {
-        stroke-dashoffset: -100;
-    }
-}
-
-.connection-line {
-    stroke: url(#neuroGrad);
-    stroke-width: 1;
-    stroke-dasharray: 8 12;
-    animation: dash 20s linear infinite;
-    opacity: 0.4;
-}
-
-/* ─── Floating Elements ─── */
+/* ─── Float Animation ─── */
 @keyframes float {
-    0%, 100% {
+    0%,
+    100% {
         transform: translate3d(0, 0, 0);
     }
     50% {
@@ -57,13 +43,15 @@
     will-change: transform;
 }
 
-/* ─── Glow Pulse Effects ─── */
+/* ─── Glow Pulse ─── */
 @keyframes glowPulse {
-    0%, 100% {
+    0%,
+    100% {
         box-shadow: 0 0 20px rgba(106, 13, 173, 0.2);
     }
     50% {
-        box-shadow: 0 0 40px rgba(106, 13, 173, 0.5), 0 0 80px rgba(0, 255, 136, 0.15);
+        box-shadow: 0 0 40px rgba(106, 13, 173, 0.5),
+                    0 0 80px rgba(0, 255, 136, 0.15);
     }
 }
 
@@ -72,7 +60,7 @@
     will-change: box-shadow;
 }
 
-/* ─── Fade In Animations ─── */
+/* ─── Fade In Up ─── */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -89,6 +77,7 @@
     will-change: opacity, transform;
 }
 
+/* ─── Fade In Scale ─── */
 @keyframes fadeInScale {
     from {
         opacity: 0;
@@ -105,7 +94,7 @@
     will-change: opacity, transform;
 }
 
-/* ─── Gradient Text Animation ─── */
+/* ─── Gradient Shift (for animated text) ─── */
 @keyframes gradientShift {
     0% {
         background-position: 0% 50%;
@@ -129,10 +118,12 @@
 
 /* ─── Typing Cursor ─── */
 @keyframes blink {
-    0%, 50% {
+    0%,
+    50% {
         border-color: var(--accent-secondary);
     }
-    51%, 100% {
+    51%,
+    100% {
         border-color: transparent;
     }
 }
@@ -143,7 +134,7 @@
     padding-right: 4px;
 }
 
-/* ─── Progress Animation ─── */
+/* ─── Progress Bar Fill ─── */
 @keyframes progressFill {
     from {
         transform: scaleX(0);
@@ -160,36 +151,6 @@
     will-change: transform;
 }
 
-/* ─── Particle Animation ─── */
-@keyframes particleFloat {
-    0% {
-        transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
-        opacity: 0.6;
-    }
-    33% {
-        transform: translate3d(30px, -50px, 0) scale3d(1.2, 1.2, 1);
-        opacity: 1;
-    }
-    66% {
-        transform: translate3d(-20px, -100px, 0) scale3d(0.8, 0.8, 1);
-        opacity: 0.4;
-    }
-    100% {
-        transform: translate3d(10px, -150px, 0) scale3d(0.5, 0.5, 1);
-        opacity: 0;
-    }
-}
-
-.particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: var(--accent-secondary);
-    border-radius: 50%;
-    pointer-events: none;
-    will-change: transform, opacity;
-}
-
 /* ─── Ripple Effect ─── */
 @keyframes ripple {
     0% {
@@ -202,7 +163,8 @@
     }
 }
 
-.btn-primary::after {
+.btn-primary::after,
+.cta-button::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -216,11 +178,12 @@
     pointer-events: none;
 }
 
-.btn-primary:active::after {
+.btn-primary:active::after,
+.cta-button:active::after {
     animation: ripple 0.6s ease-out;
 }
 
-/* ─── Counter Animation ─── */
+/* ─── Counter Tick ─── */
 @keyframes counterTick {
     0% {
         transform: scale3d(1, 1, 1);
@@ -240,7 +203,7 @@
     will-change: transform;
 }
 
-/* ─── Staggered Children Animation ─── */
+/* ─── Stagger Children ─── */
 .stagger-children > * {
     opacity: 0;
     transform: translate3d(0, 20px, 0);
@@ -284,15 +247,23 @@
     transform: translate3d(0, 0, 0);
 }
 
-/* ─── Utility Animations ─── */
+/* ─── Shake Animation ─── */
 @keyframes shake {
-    0%, 100% {
+    0%,
+    100% {
         transform: translate3d(0, 0, 0);
     }
-    10%, 30%, 50%, 70%, 90% {
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
         transform: translate3d(-2px, 0, 0);
     }
-    20%, 40%, 60%, 80% {
+    20%,
+    40%,
+    60%,
+    80% {
         transform: translate3d(2px, 0, 0);
     }
 }
@@ -301,6 +272,7 @@
     animation: shake 0.5s ease;
 }
 
+/* ─── Bounce In ─── */
 @keyframes bounceIn {
     0% {
         transform: scale3d(0, 0, 1);
@@ -321,6 +293,7 @@
     will-change: transform, opacity;
 }
 
+/* ─── Slide In Right ─── */
 @keyframes slideInRight {
     from {
         transform: translate3d(100%, 0, 0);
@@ -337,6 +310,7 @@
     will-change: transform, opacity;
 }
 
+/* ─── Slide In Left ─── */
 @keyframes slideInLeft {
     from {
         transform: translate3d(-100%, 0, 0);
@@ -353,6 +327,7 @@
     will-change: transform, opacity;
 }
 
+/* ─── Rotate In ─── */
 @keyframes rotateIn {
     from {
         transform: rotate3d(0, 0, 1, -200deg);
@@ -369,6 +344,7 @@
     will-change: transform, opacity;
 }
 
+/* ─── Heart Beat ─── */
 @keyframes heartBeat {
     0% {
         transform: scale3d(1, 1, 1);
@@ -392,7 +368,7 @@
     will-change: transform;
 }
 
-/* ─── Loading Animations ─── */
+/* ─── Shimmer Effect ─── */
 @keyframes shimmer {
     0% {
         background-position: -1000px 0;
@@ -403,13 +379,20 @@
 }
 
 .shimmer {
-    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 100%
+    );
     background-size: 1000px 100%;
     animation: shimmer 2s infinite;
 }
 
+/* ─── Loading Dots ─── */
 @keyframes loadingDots {
-    0%, 20% {
+    0%,
+    20% {
         opacity: 0;
         transform: scale3d(0, 0, 1);
     }
@@ -442,6 +425,7 @@
     animation-delay: 0.4s;
 }
 
+/* ─── Skeleton Loading ─── */
 @keyframes skeleton {
     0% {
         background-position: -200% 0;
@@ -452,13 +436,172 @@
 }
 
 .skeleton {
-    background: linear-gradient(90deg, var(--bg-card) 0%, rgba(255, 255, 255, 0.06) 50%, var(--bg-card) 100%);
+    background: linear-gradient(
+        90deg,
+        var(--bg-card) 0%,
+        rgba(255, 255, 255, 0.06) 50%,
+        var(--bg-card) 100%
+    );
     background-size: 200% 100%;
     animation: skeleton 1.5s infinite;
     border-radius: var(--radius-sm);
 }
 
-/* ─── Accessibility & Performance ─── */
+/* ─── Slot Update Animation ─── */
+@keyframes slotPulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+        color: var(--accent-cta);
+    }
+}
+
+.slots span.updated {
+    animation: slotPulse 0.6s ease;
+}
+
+/* ─── Success Animation ─── */
+@keyframes successSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-success.show {
+    animation: successSlideIn 0.6s var(--transition-smooth) forwards;
+}
+
+/* ─── Number Count Animation ─── */
+@keyframes numberCount {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.success-number {
+    animation: numberCount 1s ease forwards;
+}
+
+/* ─── Menu Slide In ─── */
+@keyframes menuSlideIn {
+    from {
+        transform: translateY(-20px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.mobile-menu.open {
+    animation: menuSlideIn 0.4s var(--transition-smooth) forwards;
+}
+
+/* ─── Result Pulse (ROI Calculator) ─── */
+@keyframes resultPulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+        color: var(--accent-cta);
+    }
+}
+
+.calc-time.updated,
+.calc-money.updated {
+    animation: resultPulse 0.6s ease;
+}
+
+/* ─── Success Pulse (CTA Button) ─── */
+@keyframes successPulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.cta-button.success {
+    animation: successPulse 0.6s ease;
+}
+
+/* ─── Neuro Connection Lines ─── */
+@keyframes dash {
+    to {
+        stroke-dashoffset: -100;
+    }
+}
+
+.connection-line {
+    stroke: url(#neuroGrad);
+    stroke-width: 1;
+    stroke-dasharray: 8 12;
+    animation: dash 20s linear infinite;
+    opacity: 0.4;
+}
+
+/* ─── Particle Float ─── */
+@keyframes particleFloat {
+    0% {
+        transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+        opacity: 0.6;
+    }
+    33% {
+        transform: translate3d(30px, -50px, 0) scale3d(1.2, 1.2, 1);
+        opacity: 1;
+    }
+    66% {
+        transform: translate3d(-20px, -100px, 0) scale3d(0.8, 0.8, 1);
+        opacity: 0.4;
+    }
+    100% {
+        transform: translate3d(10px, -150px, 0) scale3d(0.5, 0.5, 1);
+        opacity: 0;
+    }
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--accent-secondary);
+    border-radius: 50%;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+/* ─── Hero Glow Animation ─── */
+@keyframes heroGlow {
+    0%,
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+/* Applied in styles.css to .hero-bg::before */
+
+/* ─── Reduced Motion Support ─── */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -472,11 +615,14 @@
     .pulse,
     .float,
     .glow-pulse,
-    .connection-line {
+    .connection-line,
+    .gradient-text-animated,
+    .shimmer {
         animation: none !important;
     }
 }
 
+/* ─── Print Support ─── */
 @media print {
     *,
     *::before,

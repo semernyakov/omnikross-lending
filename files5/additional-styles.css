@@ -1,0 +1,349 @@
+/* ═══════════════════════════════════════════════════════════
+   OMNIKROSS — Additional Styles v2.3
+   Стили для блоков: Solution Flow, Calculator, Scarcity
+   Дополнение к основным CSS файлам
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Solution Flow ─── */
+.solution-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 32px auto;
+    max-width: 900px;
+}
+
+.flow-step {
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    transition: var(--transition);
+}
+
+.flow-step:hover {
+    background: rgba(106, 13, 173, 0.08);
+    border-color: var(--accent-main);
+    transform: translateY(-2px);
+}
+
+.flow-arrow {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    opacity: 0.5;
+}
+
+.not-equal {
+    color: var(--accent-cta);
+    font-weight: 700;
+}
+
+.solution-emphasis {
+    font-size: 1.3rem;
+    text-align: center;
+    margin-top: 32px;
+    color: var(--text-secondary);
+}
+
+.solution-emphasis strong {
+    color: var(--accent-secondary);
+    font-weight: 700;
+}
+
+.solution-screenshot {
+    margin-top: 48px;
+    text-align: center;
+}
+
+.solution-screenshot img {
+    max-width: 100%;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-glow);
+    box-shadow: var(--shadow-deep);
+}
+
+.screenshot-caption {
+    margin-top: 16px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}
+
+/* ─── Calculator Section ─── */
+.calculator {
+    padding: 80px 0;
+    background: var(--gradient-bg);
+}
+
+.calculator-form {
+    max-width: 500px;
+    margin: 32px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    padding: 16px 20px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    background: var(--input-bg);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: var(--transition);
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: var(--accent-main);
+    background: var(--input-focus-bg);
+    box-shadow: 0 0 0 3px rgba(106, 13, 173, 0.15);
+}
+
+.calculator-result {
+    max-width: 600px;
+    margin: 40px auto 0;
+    padding: 40px;
+    background: rgba(0, 255, 136, 0.08);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    border-radius: var(--radius-lg);
+    text-align: center;
+}
+
+.result-value {
+    font-family: var(--font-mono);
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--accent-cta);
+    text-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
+    margin-bottom: 8px;
+}
+
+.result-label {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+.result-equivalents {
+    margin: 24px 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius-md);
+}
+
+.result-equivalents p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin: 8px 0;
+}
+
+.equiv-symbol {
+    color: var(--accent-secondary);
+    font-weight: 700;
+    margin-right: 8px;
+}
+
+/* ─── Demo Result Grid ─── */
+.char-count {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+/* ─── Scarcity Section ─── */
+.scarcity {
+    padding: 80px 0;
+    background: rgba(255, 107, 107, 0.05);
+    text-align: center;
+}
+
+.scarcity-explanation {
+    max-width: 500px;
+    margin: 32px auto;
+}
+
+.scarcity-explanation p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+}
+
+.scarcity-explanation ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.scarcity-explanation li {
+    padding: 8px 0;
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.scarcity-explanation li::before {
+    content: "✓ ";
+    color: var(--accent-secondary);
+    font-weight: 700;
+    margin-right: 8px;
+}
+
+.scarcity-count {
+    font-size: 1.3rem;
+    margin: 32px auto;
+    color: var(--text-secondary);
+}
+
+.spots-left {
+    font-family: var(--font-mono);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--accent-cta);
+    text-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
+}
+
+.scarcity-count strong {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.cta-button.large {
+    padding: 20px 60px;
+    font-size: 1.2rem;
+}
+
+/* ─── Countdown Timer ─── */
+.countdown {
+    margin-top: 32px;
+}
+
+.countdown p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.countdown-timer {
+    font-family: var(--font-mono);
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--accent-cta);
+    text-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
+}
+
+.countdown-timer span {
+    display: inline-block;
+    min-width: 50px;
+}
+
+/* ─── Security Badges ─── */
+.security-badges {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}
+
+.badge {
+    padding: 8px 16px;
+    background: rgba(0, 255, 136, 0.08);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    color: var(--accent-secondary);
+    font-weight: 500;
+}
+
+/* ─── Client Logos ─── */
+.client-logos {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 48px;
+    flex-wrap: wrap;
+    opacity: 0.4;
+}
+
+.logo-placeholder {
+    width: 100px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+    .solution-flow {
+        flex-direction: column;
+    }
+
+    .flow-arrow {
+        transform: rotate(90deg);
+    }
+
+    .calculator-form {
+        padding: 0 16px;
+    }
+
+    .result-value {
+        font-size: 3rem;
+    }
+
+    .scarcity-explanation {
+        padding: 0 16px;
+    }
+
+    .countdown-timer {
+        font-size: 2rem;
+    }
+
+    .security-badges {
+        flex-direction: column;
+    }
+
+    .client-logos {
+        gap: 16px;
+    }
+
+    .logo-placeholder {
+        width: 80px;
+        height: 32px;
+    }
+}
+
+@media (max-width: 480px) {
+    .flow-step {
+        font-size: 0.85rem;
+        padding: 10px 16px;
+    }
+
+    .result-value {
+        font-size: 2.5rem;
+    }
+
+    .countdown-timer {
+        font-size: 1.8rem;
+    }
+}

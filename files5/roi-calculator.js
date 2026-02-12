@@ -9,17 +9,13 @@
     function initROICalc() {
         const posts = document.getElementById('posts');
         const plats = document.getElementById('plats');
-        const avgTime = document.getElementById('avgTime');
-        const clients = document.getElementById('clients');
+        const mins = document.getElementById('mins');
 
-        if (!posts || !plats || !avgTime) return;
+        if (!posts || !plats || !mins) return;
 
-        const form = document.getElementById('roiForm');
-        const resultDiv = document.getElementById('calcResult');
-        const totalHoursEl = document.getElementById('totalHours');
-        const lostMoneyEl = document.getElementById('lostMoney');
-        const savedHoursEl = document.getElementById('savedHours');
-        const savedMoneyEl = document.getElementById('savedMoney');
+        const timeEl = document.getElementById('timeResult');
+        const moneyEl = document.getElementById('moneyResult');
+        const goSimulatorBtn = document.getElementById('goSimulator');
 
         // Для RU: 600₽/час, для EN: $25/час
         const HOUR_RATE = document.documentElement.lang === 'ru' ? 600 : 25;
@@ -51,56 +47,34 @@
             }
         }
 
-        function calculate() {
+        function recalc() {
             const p = +posts.value || 10;
             const pl = +plats.value || 4;
-            const cl = +clients.value || (document.documentElement.lang === 'ru' ? 15 : 8);
-            const m = +avgTime.value || 20;
+            const m = +mins.value || 20;
 
-            // Calculate weekly hours: posts * platforms * minutes * clients / 60
-            const hoursWeek = (p * pl * m * cl) / 60;
-            const moneyWeek = hoursWeek * HOUR_RATE;
-            
-            // Calculate savings (90% time reduction)
-            const savedHoursWeek = hoursWeek * 0.9;
-            const savedMoneyWeek = savedHoursWeek * HOUR_RATE;
+            const hoursMonth = (p * 4 * pl * m) / 60;
+            const moneyYear = hoursMonth * 12 * HOUR_RATE;
 
-            if (totalHoursEl) {
-                totalHoursEl.textContent = Math.round(hoursWeek);
+            if (timeEl) {
+                timeEl.textContent = formatTime(hoursMonth);
             }
             
-            if (lostMoneyEl) {
-                lostMoneyEl.textContent = formatMoney(moneyWeek);
-            }
-
-            if (savedHoursEl) {
-                savedHoursEl.textContent = Math.round(savedHoursWeek);
-            }
-
-            if (savedMoneyEl) {
-                savedMoneyEl.textContent = formatMoney(savedMoneyWeek);
-            }
-
-            // Show result
-            if (resultDiv) {
-                resultDiv.style.display = 'block';
+            if (moneyEl) {
+                moneyEl.textContent = formatMoney(moneyYear);
             }
 
             // Трекинг события
-            trackROIEvent(p, pl, cl, m, hoursWeek, moneyWeek, savedHoursWeek, savedMoneyWeek);
+            trackROIEvent(p, pl, m, hoursMonth, moneyYear);
         }
 
-        function trackROIEvent(posts, platforms, clients, minutes, hours, money, savedHours, savedMoney) {
+        function trackROIEvent(posts, platforms, minutes, hours, money) {
             if (typeof window.omniTrack === 'function') {
                 window.omniTrack('roi_calculated', {
                     posts_per_week: posts,
                     platforms: platforms,
-                    clients: clients,
                     minutes_per_post: minutes,
-                    hours_per_week: Math.round(hours),
-                    money_per_week: Math.round(money),
-                    saved_hours_per_week: Math.round(savedHours),
-                    saved_money_per_week: Math.round(savedMoney),
+                    hours_per_month: Math.round(hours),
+                    money_per_year: Math.round(money),
                     currency: CURRENCY,
                     lang: document.documentElement.lang
                 });
@@ -108,29 +82,42 @@
         }
 
         // Обработчики событий
-        [posts, plats, avgTime, clients].forEach(i => {
+        [posts, plats, mins].forEach(i => {
             if (i) {
-                i.addEventListener('input', calculate);
-                i.addEventListener('change', calculate);
+                i.addEventListener('input', recalc);
+                i.addEventListener('change', recalc);
             }
         });
 
-        // Обработчик формы
-        if (form) {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                calculate();
-                
-                // Scroll to results
-                if (resultDiv) {
-                    resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        // Обработчик кнопки перехода к симулятору
+        if (goSimulatorBtn) {
+            goSimulatorBtn.addEventListener('click', () => {
+                const simulator = document.getElementById('simulator');
+                if (simulator) {
+                    // Трекинг клика
+                    if (typeof window.omniTrack === 'function') {
+                        window.omniTrack('roi_to_simulator_click', {
+                            lang: document.documentElement.lang
+                        });
+                    }
+                    
+                    simulator.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Анимация кнопки
+                    goSimulatorBtn.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        goSimulatorBtn.style.transform = '';
+                    }, 200);
                 }
             });
         }
 
         // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(calculate, 100);
+            setTimeout(recalc, 100);
             
             // Анимация появления калькулятора
             const roiSection = document.getElementById('roi-calc');
@@ -144,18 +131,20 @@
 
         // Экспорт функций для глобального использования
         window.OmniROI = {
-            calculate,
+            recalc,
             getValues: () => ({
                 posts: +posts.value,
                 platforms: +plats.value,
-                clients: +clients.value,
-                minutes: +avgTime.value,
-                hours: ((+posts.value || 10) * 4 * (+plats.value || 4) * (+avgTime.value || 20) * (+clients.value || (document.documentElement.lang === 'ru' ? 15 : 8))) / 60
+                minutes: +mins.value,
+                hours: ((+posts.value || 10) * 4 * (+plats.value || 4) * (+mins.value || 20)) / 60
             })
         };
     }
 
-    // Инициализация калькулятора
-    initROICalc();
-
+    // Auto-init
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initROICalc);
+    } else {
+        initROICalc();
+    }
 })();

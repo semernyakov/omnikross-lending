@@ -1,0 +1,609 @@
+/* ═══════════════════════════════════════════════════════════
+   OMNIKROSS — Updates & New Sections CSS v2.3
+   FAQ, Demo, Timeline, Micro-Wins, Objections, Future Pacing
+   Согласовано с omnikross-interactive.js и index_en.html
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── FAQ Accordion ─── */
+.faq-accordion {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    margin-bottom: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.faq-item:hover {
+    border-color: var(--border-glow);
+}
+
+.faq-item.active {
+    border-color: var(--accent-secondary);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+}
+
+.faq-question {
+    width: 100%;
+    padding: 20px 24px;
+    background: none;
+    border: none;
+    text-align: left;
+    font-family: var(--font-main);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    transition: var(--transition);
+}
+
+.faq-question:hover {
+    color: var(--accent-secondary);
+}
+
+.faq-question::after {
+    content: "+";
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-secondary);
+    transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-question::after {
+    transform: rotate(45deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 500px;
+    padding: 0 24px 20px;
+}
+
+.faq-answer p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* ─── Demo Section ─── */
+.demo {
+    background: var(--gradient-bg);
+    padding: 80px 0;
+}
+
+.demo-interface {
+    max-width: 600px;
+    margin: 0 auto 32px;
+}
+
+.demo-interface label {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.demo-interface textarea {
+    width: 100%;
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    font-size: 1rem;
+    resize: vertical;
+    outline: none;
+    transition: var(--transition);
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+.demo-interface textarea:focus {
+    border-color: var(--accent-main);
+    background: rgba(106, 13, 173, 0.06);
+    box-shadow: 0 0 0 3px rgba(106, 13, 173, 0.1);
+}
+
+.demo-result {
+    margin-top: 48px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.demo-result.visible {
+    opacity: 1;
+}
+
+.demo-split {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+    margin-top: 24px;
+}
+
+.demo-column h3 {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+    color: var(--accent-secondary);
+}
+
+.demo-original {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.demo-versions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.demo-version {
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--accent-secondary);
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.demo-version:hover {
+    background: rgba(0, 255, 136, 0.05);
+    transform: translateX(4px);
+}
+
+.demo-version h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent-secondary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.demo-version p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* ─── Micro-Wins Section ─── */
+.micro-wins {
+    padding: 80px 0;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.micro-wins-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    margin-top: 32px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.micro-win-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 32px 24px;
+    text-align: center;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.micro-win-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-main);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.micro-win-card:hover {
+    border-color: var(--border-glow);
+    box-shadow: var(--shadow-card);
+    transform: translateY(-4px);
+}
+
+.micro-win-card:hover::before {
+    opacity: 1;
+}
+
+.micro-win-time {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-secondary);
+    margin-bottom: 16px;
+}
+
+.micro-win-card p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin: 8px 0;
+}
+
+.micro-win-result {
+    font-weight: 600;
+    color: var(--accent-secondary) !important;
+    margin-top: 12px !important;
+}
+
+/* ─── Objections Section ─── */
+.objections {
+    padding: 80px 0;
+}
+
+.objections h2 {
+    margin-bottom: 40px;
+}
+
+/* ─── Timeline Section ─── */
+.timeline {
+    padding: 80px 0;
+    background: var(--gradient-bg);
+}
+
+.timeline-steps {
+    max-width: 700px;
+    margin: 32px auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.timeline-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    transition: var(--transition);
+}
+
+.timeline-step:hover {
+    border-color: var(--border-glow);
+    box-shadow: var(--shadow-card);
+    transform: translateX(8px);
+}
+
+.step-number {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--gradient-main);
+    color: var(--bg-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.step-content h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.step-time {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent-secondary);
+    margin-bottom: 8px;
+}
+
+.step-content p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* ─── Future Pacing Section ─── */
+.future-pacing {
+    padding: 80px 0;
+}
+
+.future-scene {
+    max-width: 600px;
+    margin: 32px auto;
+    text-align: center;
+}
+
+.future-scene p {
+    font-size: 1.3rem;
+    margin: 16px auto;
+    color: var(--text-secondary);
+}
+
+.future-scene strong {
+    color: var(--accent-secondary);
+    font-weight: 700;
+}
+
+.future-question {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 32px;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* ─── Social Proof Section ─── */
+.social-proof {
+    padding: 80px 0;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+}
+
+.testimonial-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    text-align: left;
+    transition: var(--transition);
+}
+
+.testimonial-card:hover {
+    border-color: var(--border-glow);
+    box-shadow: var(--shadow-card);
+    transform: translateY(-4px);
+}
+
+.testimonial-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    font-style: italic;
+    position: relative;
+    padding-left: 20px;
+    border-left: 2px solid var(--accent-main);
+}
+
+.testimonial-author {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* ─── Final CTA Section ─── */
+.final-cta {
+    padding: 100px 0;
+    background: var(--gradient-bg);
+    text-align: center;
+}
+
+.final-cta h2 {
+    margin-bottom: 32px;
+}
+
+.cta-guarantees {
+    margin-top: 24px;
+}
+
+.cta-guarantees p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin: 0 auto;
+}
+
+.cta-reassurance {
+    font-size: 1.1rem;
+    color: var(--accent-secondary);
+    font-weight: 600;
+    margin-top: 16px;
+}
+
+/* ─── Countdown Timer (если используется) ─── */
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin: 32px 0;
+}
+
+.countdown-item {
+    text-align: center;
+}
+
+.countdown-number {
+    font-family: var(--font-mono);
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--accent-secondary);
+    text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+    display: block;
+}
+
+.countdown-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ─── Calculator Result Display (для omnikross-interactive.js) ─── */
+#calcResult {
+    margin-top: 32px;
+    padding: 32px;
+    background: rgba(0, 255, 136, 0.08);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    display: none;
+}
+
+#calcResult.show {
+    display: block;
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+#calcResult h3 {
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+    color: var(--accent-secondary);
+}
+
+#hoursWasted {
+    font-family: var(--font-mono);
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--accent-cta);
+    text-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
+}
+
+/* ─── CTA Micro Tip (появляется после генерации в симуляторе) ─── */
+.cta-micro-tip {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    background: var(--gradient-main);
+    color: var(--bg-main);
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 9999;
+    animation: fadeInUp 0.5s ease;
+    box-shadow: var(--shadow-deep);
+    max-width: 300px;
+}
+
+.cta-micro-tip i {
+    margin-right: 8px;
+}
+
+/* ─── Responsive Design ─── */
+@media (max-width: 768px) {
+    .demo-split {
+        grid-template-columns: 1fr;
+    }
+
+    .micro-wins-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .timeline-step {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .step-number {
+        margin: 0 auto 16px;
+    }
+
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .countdown {
+        gap: 16px;
+    }
+
+    .countdown-number {
+        font-size: 2rem;
+    }
+
+    .cta-micro-tip {
+        bottom: 60px;
+        left: 20px;
+        right: 20px;
+        max-width: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .faq-question {
+        font-size: 1rem;
+        padding: 16px 20px;
+    }
+
+    .demo-interface textarea {
+        font-size: 0.95rem;
+        padding: 16px;
+    }
+
+    .micro-win-time {
+        font-size: 1.2rem;
+    }
+
+    .timeline-step {
+        padding: 20px;
+    }
+
+    .step-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .future-scene p {
+        font-size: 1.1rem;
+    }
+}
+
+/* ─── Print Support ─── */
+@media print {
+    .demo-interface,
+    .countdown,
+    .cta-micro-tip {
+        display: none !important;
+    }
+
+    .testimonial-card {
+        page-break-inside: avoid;
+    }
+}
+
+/* ─── Reduced Motion Support ─── */
+@media (prefers-reduced-motion: reduce) {
+    .faq-answer {
+        transition: none;
+    }
+
+    .timeline-step:hover {
+        transform: none;
+    }
+
+    .cta-micro-tip {
+        animation: none;
+    }
+}

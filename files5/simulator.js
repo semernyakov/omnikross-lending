@@ -326,38 +326,3 @@
   // Expose for external use
   window.OmniSimulator = { init: initSimulator, TEMPLATES };
 })();
-
-// ROI Calculator
-(function initROICalc() {
-  const posts = document.getElementById("posts");
-  const plats = document.getElementById("plats");
-  const mins = document.getElementById("mins");
-
-  if (!posts || !plats || !mins) return;
-
-  const timeEl = document.getElementById("timeResult");
-  const moneyEl = document.getElementById("moneyResult");
-
-  const HOUR_RATE = 600; // ₽ / час
-
-  function recalc() {
-    const p = +posts.value;
-    const pl = +plats.value;
-    const m = +mins.value;
-
-    const hoursMonth = (p * 4 * pl * m) / 60;
-    const moneyYear = hoursMonth * 12 * HOUR_RATE;
-
-    timeEl.textContent = `${Math.round(hoursMonth)} ч / месяц`;
-    moneyEl.textContent = `${Math.round(moneyYear).toLocaleString()} ₽ / год`;
-  }
-
-  [posts, plats, mins].forEach((i) => i.addEventListener("input", recalc));
-  recalc();
-
-  document.getElementById("goSimulator")?.addEventListener("click", () => {
-    document
-      .getElementById("simulator")
-      ?.scrollIntoView({ behavior: "smooth" });
-  });
-})();
