@@ -1,215 +1,95 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>OmniKross — AI Cross-Posting Platform</title>
-        <meta
-            name="description"
-            content="OmniKross — AI-powered content adaptation platform. Choose your language."
+        <title>OmniKross — Choose your path</title>
+        <meta name="robots" content="noindex" />
+        <link rel="icon" href="/assets/kross-node.svg" type="image/svg+xml" />
+
+        <link rel="stylesheet" href="/css/core.css" />
+        <link rel="stylesheet" href="/css/components.css" />
+        <link rel="stylesheet" href="/css/conversions.css" />
+        <link rel="stylesheet" href="/css/index.css" />
+
+        <!--<link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap"
+            rel="stylesheet"
         />
-        <link rel="icon" href="assets/kross-node.svg" type="image/svg+xml" />
-
-        <!-- Preload CSS for faster loading -->
-        <link rel="preload" href="css/style.css" as="style" />
-
-        <style>
-            /* Inline critical CSS for instant display */
-            :root {
-                --bg: #0a0a0a;
-                --accent: #6a0dad;
-                --green: #00ff88;
-            }
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-            body {
-                min-height: 100vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: var(--bg);
-                color: #fff;
-                font-family: "Helvetica Neue", "Inter", sans-serif;
-                text-align: center;
-                padding: 24px;
-                background-image:
-                    radial-gradient(
-                        ellipse at 20% 50%,
-                        rgba(106, 13, 173, 0.15) 0%,
-                        transparent 50%
-                    ),
-                    radial-gradient(
-                        ellipse at 80% 20%,
-                        rgba(0, 255, 136, 0.08) 0%,
-                        transparent 50%
-                    );
-            }
-            .container {
-                max-width: 480px;
-            }
-            img {
-                width: 96px;
-                height: 96px;
-                margin-bottom: 24px;
-                filter: drop-shadow(0 0 30px rgba(106, 13, 173, 0.5));
-                animation: pulse 3s ease-in-out infinite;
-            }
-            h1 {
-                font-size: 2rem;
-                font-weight: 800;
-                margin-bottom: 8px;
-            }
-            h1 span {
-                background: linear-gradient(135deg, #6a0dad, #00ff88);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-            }
-            p {
-                color: rgba(255, 255, 255, 0.6);
-                margin-bottom: 40px;
-                font-size: 1.05rem;
-            }
-            .buttons {
-                display: flex;
-                gap: 16px;
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            .buttons a {
-                padding: 16px 40px;
-                border-radius: 14px;
-                text-decoration: none;
-                font-weight: 700;
-                font-size: 1.1rem;
-                transition: 0.3s ease;
-                min-width: 180px;
-            }
-            .btn-ru {
-                background: linear-gradient(135deg, #6a0dad 0%, #9b30ff 100%);
-                color: #fff;
-            }
-            .btn-en {
-                background: linear-gradient(135deg, #00cc6a 0%, #00ff88 100%);
-                color: #0a0a0a;
-            }
-            .buttons a:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 12px 40px rgba(106, 13, 173, 0.4);
-            }
-            .auto-redirect {
-                font-size: 0.8rem;
-                color: rgba(255, 255, 255, 0.3);
-                margin-top: 32px;
-                font-family: "JetBrains Mono", monospace;
-            }
-            @keyframes pulse {
-                0%,
-                100% {
-                    opacity: 0.8;
-                    transform: scale(1);
-                }
-                50% {
-                    opacity: 1;
-                    transform: scale(1.05);
-                }
-            }
-        </style>
-
-        <script>
-            // Enhanced language detection with geo-IP fallback
-            (function () {
-                const lang = (
-                    navigator.language ||
-                    navigator.userLanguage ||
-                    ""
-                ).substring(0, 2);
-                const redirected = sessionStorage.getItem("omni_lang_choice");
-                const geoPreferred = localStorage.getItem("omni_geo_pref");
-
-                // Don't auto-redirect if user already made a choice
-                if (!redirected && !geoPreferred) {
-                    // Check for Russian-speaking countries
-                    const russianSpeaking = [
-                        "ru",
-                        "uk",
-                        "be",
-                        "kz",
-                        "uz",
-                        "am",
-                        "az",
-                        "kg",
-                        "md",
-                        "tj",
-                        "tm",
-                    ];
-                    const userLang =
-                        navigator.language || navigator.userLanguage || "";
-
-                    let targetLang = "en";
-
-                    if (
-                        russianSpeaking.some((code) => userLang.includes(code))
-                    ) {
-                        targetLang = "ru";
-                    } else if (
-                        lang === "ru" ||
-                        document.documentElement.lang === "ru"
-                    ) {
-                        targetLang = "ru";
-                    }
-
-                    // Store geo preference
-                    localStorage.setItem("omni_geo_pref", targetLang);
-
-                    // Redirect with slight delay for better UX
-                    setTimeout(() => {
-                        window.location.href =
-                            targetLang === "ru"
-                                ? "index_ru.html"
-                                : "index_en.html";
-                    }, 100);
-                }
-            })();
-        </script>
-    </head>
-    <body>
-        <div class="container">
-            <img
-                src="assets/kross-node.svg"
-                alt="OmniKross"
-                width="96"
-                height="96"
-            />
-            <h1><span>OmniKross</span></h1>
-            <p>Choose your language / Выберите язык</p>
-            <div class="buttons">
-                <a
-                    href="index_ru.html"
-                    class="btn-ru"
-                    onclick="sessionStorage.setItem('omni_lang_choice', 'ru')"
-                    >🇷🇺 Русский</a
-                >
-                <a
-                    href="index_en.html"
-                    class="btn-en"
-                    onclick="sessionStorage.setItem('omni_lang_choice', 'en')"
-                    >🇬🇧 English</a
-                >
-            </div>
-            <p class="auto-redirect">Auto-detecting language... Yap</p>
-        </div>
-
-        <!-- Load main CSS asynchronously -->
         <link
             rel="stylesheet"
-            href="css/style.css"
-            media="print"
-            onload="this.media = 'all'"
-        />
-        <noscript><link rel="stylesheet" href="css/style.css" /></noscript>
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />-->
+    </head>
+    <body>
+        <div class="index-container">
+            <div>
+                <img
+                    src="/assets/kross-node.svg"
+                    alt="OmniKross"
+                    width="96"
+                    height="96"
+                    class="index-logo"
+                />
+                <h1><span class="gradient-text">OmniKross</span></h1>
+                <p class="subhead">
+                    AI‑powered content adaptation<br />Выберите язык и формат
+                    работы
+                </p>
+
+                <h3 class="section-title-mb">1. Язык / Language</h3>
+                <div class="selector-grid">
+                    <div class="selector-card" data-lang="ru">
+                        <div class="selector-icon">🇷🇺</div>
+                        <h4>Русский</h4>
+                        <p class="platform-hint">VK, Telegram, Дзен, OK</p>
+                    </div>
+                    <div class="selector-card" data-lang="en">
+                        <div class="selector-icon">🇬🇧</div>
+                        <h4>English</h4>
+                        <p class="platform-hint">
+                            Twitter, LinkedIn, Instagram, TikTok
+                        </p>
+                    </div>
+                </div>
+
+                <h3 class="section-title-mb section-title-mt-48">
+                    2. Роль / Role
+                </h3>
+                <div class="selector-grid">
+                    <div class="selector-card" data-role="agency">
+                        <div class="selector-icon">
+                            <i class="fa-solid fa-building"></i>
+                        </div>
+                        <h4>Агентство / Agency</h4>
+                        <p class="platform-hint">
+                            10–50 клиентов, масштабирование
+                        </p>
+                    </div>
+                    <div class="selector-card" data-role="solo">
+                        <div class="selector-icon">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <h4>Соло / Freelancer</h4>
+                        <p class="platform-hint">
+                            Один автор, экономия времени
+                        </p>
+                    </div>
+                </div>
+
+                <button
+                    id="proceedBtn"
+                    class="cta-button primary proceed-btn"
+                    disabled
+                    data-text-ready="Продолжить / Continue"
+                    data-text-wait="Выберите язык и роль"
+                >
+                    Выберите язык и роль
+                </button>
+            </div>
+        </div>
+
+        <script src="/js/config.js"></script>
+        <script src="/js/router.js"></script>
     </body>
 </html>

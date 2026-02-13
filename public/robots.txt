@@ -1,7 +1,17 @@
+# OmniKross – robots.txt v3.0
+
 User-agent: *
 Allow: /
-Sitemap: /sitemap.xml
+Disallow: /api/
+Disallow: /*?*
+Disallow: /assets/
+Allow: /assets/kross-node.svg
+Allow: /assets/kross-node.webp
 
-# Omnikross Landing
-# .ru — Russian market
-# .com — Global market
+# Sitemap
+Sitemap: https://omnikross.ru/sitemap.xml
+Sitemap: https://omnikross.com/sitemap.xml
+
+# Host
+Host: https://omnikross.ru
+Host: https://omnikross.com
