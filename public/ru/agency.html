@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>OmniKross — Адаптация для агентств</title>
+        <meta
+            name="description"
+            content="Один текст → VK, Telegram, Дзен, OK за 12 секунд. Масштабируй агентство без найма."
+        />
+        <link rel="icon" href="/assets/kross-node.svg" />
+
+        <link rel="stylesheet" href="/css/core.css" />
+        <link rel="stylesheet" href="/css/components.css" />
+        <link rel="stylesheet" href="/css/conversions.css" />
+
+        <!--<link-->
+        <!--href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />-->
+    </head>
+    <body data-role="agency">
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="/" class="nav-logo"
+                    ><img
+                        src="/assets/kross-node.svg"
+                        alt="OmniKross"
+                        width="32"
+                        height="32"
+                        style="margin-right: 8px"
+                    /><span class="gradient-text">OmniKross</span></a
+                >
+                <div class="nav-links">
+                    <a href="#pain" class="nav-link">Боль</a>
+                    <a href="#solution" class="nav-link">Решение</a>
+                    <a href="#demo" class="nav-link">Демо</a>
+                    <a href="#pricing" class="nav-link">Цены</a>
+                    <a href="#" class="theme-toggle"
+                        ><i class="fa-solid fa-circle-half-stroke"></i
+                    ></a>
+                </div>
+                <div class="hamburger">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <section class="hero section">
+                <div class="container">
+                    <h1>
+                        Ты управляешь агентством.
+                        <span class="highlight"
+                            >30 клиентов. 4 платформы. 1 команда на
+                            пределе.</span
+                        >
+                    </h1>
+                    <p class="hero-pain">
+                        Не потому, что контент плохой. А потому, что каждый пост
+                        — вручную: VK — 1200 знаков. Telegram — 200. Дзен —
+                        3000. OK — локаль.
+                    </p>
+                    <div class="price-anchor">
+                        <span class="old-price">4 900 ₽/мес</span>
+                        <span class="new-price"
+                            >Для первых 500 — бесплатно навсегда</span
+                        >
+                    </div>
+                    <button class="cta-button primary" id="ctaButton">
+                        Забрать бесплатный доступ →
+                    </button>
+                    <div class="micro-trust">
+                        <p>⚡ Без карты · 30 дней гарантии · Отмена в 1 клик</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="pain" class="pain section">
+                <div class="container">
+                    <h2>Это называется «теневая сверхурочка».</h2>
+                    <p class="subtitle">
+                        Её не видно в отчётах, но она съедает 47% времени.
+                    </p>
+                    <div class="pain-breakdown">
+                        <div class="pain-item">
+                            <span class="pain-icon">📱</span>
+                            <strong>VK:</strong> переписать под алгоритм — 15
+                            мин
+                        </div>
+                        <div class="pain-item">
+                            <span class="pain-icon">✈️</span>
+                            <strong>Telegram:</strong> ужать в 6 раз — 10 мин
+                        </div>
+                        <div class="pain-item">
+                            <span class="pain-icon">📖</span>
+                            <strong>Дзен:</strong> развернуть в эссе — 25 мин
+                        </div>
+                        <div class="pain-item">
+                            <span class="pain-icon">👥</span>
+                            <strong>OK:</strong> «переобуть» под локаль — 12 мин
+                        </div>
+                    </div>
+                    <p class="pain-finale">
+                        <strong>1 текст = 1 час ручной работы.</strong> 20
+                        клиентов = 20 часов в неделю. Полставки копирайтера.
+                    </p>
+                </div>
+            </section>
+
+            <section id="solution" class="comparison">
+                <div class="container">
+                    <h2>Один черновик — четыре готовых поста</h2>
+                    <div class="comparison-grid">
+                        <div class="comparison-col">
+                            <div class="comparison-label">
+                                Было (исходный текст)
+                            </div>
+                            <div class="comparison-before">
+                                <p>
+                                    «Новая коллекция уже в наличии! 🔥 Скидки до
+                                    50% только до конца недели. Заходите в
+                                    магазин или заказывайте на сайте. Доставка
+                                    по всей России.»
+                                </p>
+                                <span class="badge">112 символов</span>
+                            </div>
+                        </div>
+                        <div class="comparison-arrow">→</div>
+                        <div class="comparison-col">
+                            <div class="comparison-label">
+                                Стало (4 версии за 12 сек)
+                            </div>
+                            <div class="comparison-after">
+                                <div class="platform-version">
+                                    📱 VK: Новая коллекция уже в наличии! 🔥
+                                    Скидки до 50%… #sale
+                                </div>
+                                <div class="platform-version">
+                                    ✈️ Telegram: Новая коллекция — скидки до 50%
+                                    до конца недели 👉
+                                </div>
+                                <div class="platform-version">
+                                    📖 Дзен: В преддверии весны мы запустили…
+                                    [развёрнутый текст]
+                                </div>
+                                <div class="platform-version">
+                                    👥 OK: Друзья, у нас обновка! Скидки до 50%
+                                    🔥
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="social-proof section">
+                <div class="container">
+                    <h2>Что говорят агентства</h2>
+                    <div class="testimonials-grid">
+                        <div class="testimonial-card">
+                            <div class="testimonial-avatar">
+                                <img
+                                    src="/assets/avatar-anna.webp"
+                                    alt="Анна К."
+                                />
+                            </div>
+                            <div class="testimonial-content">
+                                <p class="testimonial-text">
+                                    «Раньше на адаптацию уходило 3–4 часа в
+                                    день. Сейчас — 20 минут. Взяли двух новых
+                                    клиентов без расширения штата.»
+                                </p>
+                                <p class="testimonial-author">
+                                    <strong>Анна К.</strong>, владелец
+                                    «СММ-Фактор», 32 клиента
+                                </p>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <div class="testimonial-avatar">
+                                <img
+                                    src="/assets/avatar-peter.webp"
+                                    alt="Пётр Л."
+                                />
+                            </div>
+                            <div class="testimonial-content">
+                                <p class="testimonial-text">
+                                    «Предсказуемо. Масштабируем без страха.
+                                    Первый месяц проверяли каждую запятую,
+                                    сейчас доверяем.»
+                                </p>
+                                <p class="testimonial-author">
+                                    <strong>Пётр Л.</strong>, Digital-агентство,
+                                    28 клиентов
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="pricing" class="scarcity section">
+                <div class="container">
+                    <h2>Мы подключаем агентства вручную</h2>
+                    <div class="scarcity-explanation">
+                        <p>
+                            Чтобы не потерять качество онбординга, в марте мы
+                            берём только <strong>5 агентств</strong>.
+                        </p>
+                        <p>Следующий набор — в апреле.</p>
+                    </div>
+                    <div class="slots-visual">
+                        <div class="progress-bar-container">
+                            <div
+                                class="progress-bar-fill"
+                                id="progressBarFill"
+                            ></div>
+                        </div>
+                        <p class="slots-text">
+                            <span class="spots-left" id="spotsLeft">5</span> из
+                            25 мест осталось
+                        </p>
+                    </div>
+                    <button class="cta-button primary large">
+                        Забронировать место →
+                    </button>
+                    <div class="countdown">
+                        <p>Набор закроется через:</p>
+                        <div class="countdown-timer">
+                            <span id="hours">14</span>:<span id="minutes"
+                                >23</span
+                            >:<span id="seconds">47</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="demo" class="demo section">
+                <div class="container">
+                    <h2>Лучше раз увидеть</h2>
+                    <div class="demo-interface">
+                        <label for="demoText">Вставь свой текст клиента:</label>
+                        <textarea
+                            id="demoText"
+                            rows="6"
+                            placeholder="Новая коллекция уже в наличии! 🔥 Скидки до 50% только до конца недели..."
+                        ></textarea>
+                        <button class="cta-button primary" id="demoButton">
+                            Протестировать прямо сейчас →
+                        </button>
+                    </div>
+                    <div class="demo-result hidden" id="demoResult">
+                        <div class="demo-notice">
+                            <i class="fa-solid fa-flask"></i>
+                            <strong>Демо-режим</strong> — вы видите
+                            симулированную адаптацию. Полный AI-движок выйдет в
+                            Q2 2026.
+                            <span class="demo-badge">Preview</span>
+                        </div>
+                        <div class="demo-split">
+                            <div class="demo-column">
+                                <h3>Исходный текст</h3>
+                                <div
+                                    class="demo-original"
+                                    id="demoOriginal"
+                                ></div>
+                            </div>
+                            <div class="demo-column">
+                                <h3>4 версии</h3>
+                                <div class="demo-versions-grid">
+                                    <div class="demo-version-block">
+                                        <div class="platform-header">
+                                            <div class="platform-icon">📱</div>
+                                            <h4>VK</h4>
+                                            <span class="char-count"
+                                                >(1200 зн)</span
+                                            >
+                                        </div>
+                                        <p id="demo-vk"></p>
+                                    </div>
+                                    <div class="demo-version-block">
+                                        <div class="platform-header">
+                                            <div class="platform-icon">✈️</div>
+                                            <h4>Telegram</h4>
+                                            <span class="char-count"
+                                                >(200 зн)</span
+                                            >
+                                        </div>
+                                        <p id="demo-telegram"></p>
+                                    </div>
+                                    <div class="demo-version-block">
+                                        <div class="platform-header">
+                                            <div class="platform-icon">📖</div>
+                                            <h4>Дзен</h4>
+                                            <span class="char-count"
+                                                >(3000 зн)</span
+                                            >
+                                        </div>
+                                        <p id="demo-dzen"></p>
+                                    </div>
+                                    <div class="demo-version-block">
+                                        <div class="platform-header">
+                                            <div class="platform-icon">👥</div>
+                                            <h4>OK</h4>
+                                            <span class="char-count"
+                                                >(локаль)</span
+                                            >
+                                        </div>
+                                        <p id="demo-ok"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="calculator section">
+                <div class="container">
+                    <h2>Прикинем твою утечку:</h2>
+                    <div class="calculator-form">
+                        <div class="input-group">
+                            <label for="clients">Клиентов в работе:</label>
+                            <input
+                                type="number"
+                                id="clients"
+                                placeholder="15"
+                                min="1"
+                                value="15"
+                            />
+                        </div>
+                        <div class="input-group">
+                            <label for="posts"
+                                >Постов в неделю на клиента:</label
+                            >
+                            <input
+                                type="number"
+                                id="posts"
+                                placeholder="3"
+                                min="1"
+                                value="3"
+                            />
+                        </div>
+                        <button
+                            class="cta-button secondary"
+                            id="calculateButton"
+                        >
+                            Рассчитать →
+                        </button>
+                    </div>
+                    <div id="calcResult" class="calculator-result hidden">
+                        <div class="result-value" id="hoursWasted">18</div>
+                        <p class="result-label">часов ручного труда в неделю</p>
+                        <div class="result-equivalents">
+                            <p>
+                                <span class="equiv-symbol">≡</span> +1 клиент
+                                без найма
+                            </p>
+                            <p>
+                                <span class="equiv-symbol">≡</span> команде +25%
+                                запаса сил
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="final-cta section">
+                <div class="container">
+                    <h2>Места кончаются.</h2>
+                    <button class="cta-button primary xlarge">
+                        Забронировать сейчас →
+                    </button>
+                    <div class="cta-guarantees">
+                        <p>⚡ Без карты · 30 дней гарантии · Отмена в 1 клик</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-bottom">
+                    <p>© 2026 OmniKross. Adaptive Publishing.</p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="/js/config.js"></script>
+        <script src="/js/app.js"></script>
+        <script src="/js/pages.js"></script>
+        <script src="/js/validation.js"></script>
+        <script src="/js/performance-a11y.js"></script>
+        <script src="/js/responsive.js"></script>
+    </body>
+</html>

@@ -1,0 +1,110 @@
+/*
+
+═══════════════════════════════════════════════════════════
+
+OMNIKROSS v3.1 — Index / Entry Page
+
+═══════════════════════════════════════════════════════════
+*/
+
+.index-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.index-logo {
+    margin-bottom: 2rem;
+    filter: drop-shadow(0 0 20px rgba(106, 13, 173, 0.4));
+}
+
+.subhead {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ─── Selector Cards ─── */
+.selector-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 600px;
+    margin: 24px auto 48px;
+}
+
+.selector-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.selector-card:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-deep);
+}
+
+.selector-card.selected {
+    border-color: var(--color-secondary);
+    background: rgba(0, 255, 136, 0.05);
+    box-shadow: 0 0 0 2px var(--color-secondary);
+}
+
+.selector-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+.selector-card h4 {
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+.platform-hint {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.section-title-mb {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+}
+
+/* ─── Proceed Button Animation ─── */
+.proceed-btn {
+    transition: all 0.3s ease;
+    opacity: 0.5;
+    filter: grayscale(1);
+}
+
+.proceed-btn:not(:disabled) {
+    opacity: 1;
+    filter: grayscale(0);
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(106, 13, 173, 0.6);
+}
+
+.pulse-ready {
+    animation: pulse 1.5s infinite;
+}
+
+@media (max-width: 600px) {
+    .selector-grid {
+        grid-template-columns: 1fr;
+    }
+}

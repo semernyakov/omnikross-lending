@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>OmniKross — Адаптация для фрилансеров</title>
+        <meta
+            name="description"
+            content="Один текст → VK, Telegram, Дзен, OK за 12 секунд. Экономь часы каждый день."
+        />
+        <link rel="icon" href="/assets/kross-node.svg" />
+
+        <link rel="stylesheet" href="/css/core.css" />
+        <link rel="stylesheet" href="/css/components.css" />
+        <link rel="stylesheet" href="/css/conversions.css" />
+
+        <!--<link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />-->
+    </head>
+    <body data-role="solo">
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="/" class="nav-logo"
+                    ><img
+                        src="/assets/kross-node.svg"
+                        alt="OmniKross"
+                        width="32"
+                        height="32"
+                        style="margin-right: 8px"
+                    /><span class="gradient-text">OmniKross</span></a
+                >
+                <div class="nav-links">
+                    <a href="#pain" class="nav-link">Боль</a>
+                    <a href="#solution" class="nav-link">Решение</a>
+                    <a href="#demo" class="nav-link">Демо</a>
+                    <a href="#" class="theme-toggle"
+                        ><i class="fa-solid fa-circle-half-stroke"></i
+                    ></a>
+                </div>
+                <div class="hamburger">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <section class="hero section">
+                <div class="container">
+                    <h1>
+                        Контент выматывает не мозгами.<br /><span
+                            class="highlight"
+                            >А этой... переписалкой.</span
+                        >
+                    </h1>
+                    <p class="hero-pain">
+                        VK. Telegram. Дзен. OK. Один смысл — четыре версии.
+                    </p>
+                    <div class="price-anchor">
+                        <span class="old-price">4 900 ₽/мес</span>
+                        <span class="new-price"
+                            >Для первых 500 — бесплатно навсегда</span
+                        >
+                    </div>
+                    <button class="cta-button primary" id="ctaButton">
+                        Проверить на МОЁМ тексте →
+                    </button>
+                    <div class="micro-trust">
+                        <p>⚡ Без карты · 30 дней гарантии · Отмена в 1 клик</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="pain" class="pain section">
+                <div class="container">
+                    <h2>Вечер. Ты должен отдыхать.</h2>
+                    <p class="subtitle">Но сидишь:</p>
+                    <div class="pain-list-casual">
+                        <p>VK подгоняешь…</p>
+                        <p>Telegram ужимаешь…</p>
+                        <p>Дзен разворачиваешь…</p>
+                        <p>OK «локализуешь»…</p>
+                    </div>
+                    <p class="pain-finale">Фокус улетает. Энергия — на нуле.</p>
+                    <p class="pain-conclusion">
+                        <strong>Не рост. Износ.</strong>
+                    </p>
+                </div>
+            </section>
+
+            <section id="solution" class="comparison">
+                <div class="container">
+                    <h2>Один черновик — четыре готовых поста</h2>
+                    <div class="comparison-grid">
+                        <div class="comparison-col">
+                            <div class="comparison-label">Было</div>
+                            <div class="comparison-before">
+                                <p>
+                                    «Сегодня поделюсь лайфхаком, который
+                                    экономит мне 2 часа в день...»
+                                </p>
+                                <span class="badge">80 символов</span>
+                            </div>
+                        </div>
+                        <div class="comparison-arrow">→</div>
+                        <div class="comparison-col">
+                            <div class="comparison-label">
+                                Стало (12 секунд)
+                            </div>
+                            <div class="comparison-after">
+                                <div class="platform-version">
+                                    📱 VK: Лайфхак для продуктивности, который
+                                    спасает меня каждый день 🔥 #лайфхак
+                                </div>
+                                <div class="platform-version">
+                                    ✈️ Telegram: Лайфхак: 2 часа в день — на это
+                                    уходит 👇
+                                </div>
+                                <div class="platform-version">
+                                    📖 Дзен: Когда я открыл этот метод, я
+                                    перестал работать по вечерам…
+                                </div>
+                                <div class="platform-version">
+                                    👥 OK: Делюсь находкой! Экономит кучу
+                                    времени 👍
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="social-proof section">
+                <div class="container">
+                    <h2>Реальные истории</h2>
+                    <div class="testimonials-grid">
+                        <div class="testimonial-card">
+                            <div class="testimonial-avatar">
+                                <img
+                                    src="/assets/avatar-maria.webp"
+                                    alt="Мария Ш."
+                                />
+                            </div>
+                            <div class="testimonial-content">
+                                <p class="testimonial-text">
+                                    «Адаптация занимает пару минут, а не почти
+                                    час. Раньше уходил вечер, теперь успеваю к
+                                    ужину.»
+                                </p>
+                                <p class="testimonial-author">
+                                    <strong>Мария Ш.</strong>, SMM-специалист,
+                                    Москва
+                                </p>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <div class="testimonial-avatar">
+                                <img
+                                    src="/assets/avatar-dmitry.webp"
+                                    alt="Дмитрий К."
+                                />
+                            </div>
+                            <div class="testimonial-content">
+                                <p class="testimonial-text">
+                                    «Стало легче держать регулярность. Не
+                                    выгораю. Появилось время на себя.»
+                                </p>
+                                <p class="testimonial-author">
+                                    <strong>Дмитрий К.</strong>, контент-автор,
+                                    СПб
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="demo" class="demo section">
+                <div class="container">
+                    <h2>Давай попробуем. Сейчас.</h2>
+                    <div class="demo-interface">
+                        <label for="demoText">Кидай черновик:</label>
+                        <textarea
+                            id="demoText"
+                            rows="6"
+                            placeholder="Сегодня поделюсь лайфхаком, который экономит мне 2 часа в день..."
+                        ></textarea>
+                        <button class="cta-button primary" id="demoButton">
+                            Старт →
+                        </button>
+                    </div>
+                    <div class="demo-result hidden" id="demoResult">
+                        <div class="demo-notice">
+                            <i class="fa-solid fa-flask"></i>
+                            <strong>Демо-режим</strong> — симулированная
+                            адаптация.
+                            <span class="demo-badge">Preview</span>
+                        </div>
+                        <div class="demo-split">
+                            <div class="demo-column">
+                                <h3>Твой текст</h3>
+                                <div
+                                    class="demo-original"
+                                    id="demoOriginal"
+                                ></div>
+                            </div>
+                            <div class="demo-column">
+                                <h3>Версии для:</h3>
+                                <div class="demo-versions-grid">
+                                    <div class="demo-version-block">
+                                        <div class="platform-header">
+                                            <div class="platform-icon">📱</div>
+                                            <h4>VK</h4>
+                                            <span class="char-count"
+                                                >(1200 зн)</span
+                                            >
+                                        </div>
+                                        <p id="demo-vk"></p>
+                                    </div>
+                                    <div class="demo-version-block">
+                                        <div class="platform-header">
+                                            <div class="platform-icon">✈️</div>
+                                            <h4>Telegram</h4>
+                                            <span class="char-count"
+                                                >(200 зн)</span
+                                            >
+                                        </div>
+                                        <p id="demo-telegram"></p>
+                                    </div>
+                                    <div class="demo-version-block">
+                                        <div class="platform-header">
+                                            <div class="platform-icon">📖</div>
+                                            <h4>Дзен</h4>
+                                            <span class="char-count"
+                                                >(3000 зн)</span
+                                            >
+                                        </div>
+                                        <p id="demo-dzen"></p>
+                                    </div>
+                                    <div class="demo-version-block">
+                                        <div class="platform-header">
+                                            <div class="platform-icon">👥</div>
+                                            <h4>OK</h4>
+                                            <span class="char-count"
+                                                >(локаль)</span
+                                            >
+                                        </div>
+                                        <p id="demo-ok"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="future-pacing section">
+                <div class="container">
+                    <h2>Представь вечер…</h2>
+                    <div class="future-scene">
+                        <div class="future-before">
+                            <p>❌ 18:00 — начинаешь переписывать для VK</p>
+                            <p>❌ 19:30 — всё ещё мучаешь Дзен</p>
+                            <p>❌ 21:00 — пост готов, сил нет</p>
+                        </div>
+                        <div class="future-arrow">↓</div>
+                        <div class="future-after">
+                            <p>✅ 18:00 — вставил черновик → 4 версии готовы</p>
+                            <p>✅ 18:10 — поправил один заголовок</p>
+                            <p>✅ 18:30 — запланировал, вечер свободен</p>
+                            <p>
+                                <strong
+                                    >✅ 20:00 — хобби, друзья, жизнь.</strong
+                                >
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="final-cta section">
+                <div class="container">
+                    <h2>Начать бесплатно. Без риска.</h2>
+                    <button class="cta-button primary xlarge">
+                        Попробовать →
+                    </button>
+                    <div class="cta-guarantees">
+                        <p>⚡ Без карты · 30 дней гарантии · Отмена в 1 клик</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-bottom">
+                    <p>© 2026 OmniKross. Adaptive Publishing.</p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="/js/config.js"></script>
+        <script src="/js/app.js"></script>
+        <script src="/js/pages.js"></script>
+        <script src="/js/validation.js"></script>
+        <script src="/js/performance-a11y.js"></script>
+        <script src="/js/responsive.js"></script>
+    </body>
+</html>
