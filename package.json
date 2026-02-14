@@ -1,23 +1,19 @@
 {
   "name": "omnikross-landing",
-  "version": "1.0.0",
-  "description": "OmniKross landing page with API and frontend build system",
   "type": "module",
   "scripts": {
-    "dev": "bun --hot src/index.ts",
-    "start": "bun src/index.ts",
-    "db:init": "bun src/db.ts",
-    "build": "bun run build-bun-native.js",
-    "build:css": "bun tailwindcss -i public/css/core.css -o dist/css/core.css --minify",
-    "preview": "bun serve -l 4173 dist"
+    "dev": "bun run dev:server & bun run dev:css",
+    "dev:server": "bun --hot src/index.ts",
+    "dev:css": "tailwindcss -i public/css/core.css -o dist/css/core.css --watch",
+    "build": "bun run build:css",
+    "build:css": "tailwindcss -i public/css/core.css -o dist/css/core.css --minify",
+    "start": "bun src/index.ts"
   },
   "dependencies": {
-    "bun-plugin-html": "^2.2.8",
     "hono": "^4.11.9",
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@types/bun": "latest",
     "tailwindcss": "^3.4.19"
   }
 }

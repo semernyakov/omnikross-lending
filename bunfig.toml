@@ -1,10 +1,2 @@
 [install]
 cache = true
-cacheFolder = ".bun-cache"
-
-[build]
-target = "browser"
-minify = true
-
-[run]
-hot = true

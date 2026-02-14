@@ -1,32 +1,9 @@
-# Bun
-node_modules/
-bun.lockb
-
-# Database
-data/*.db
-data/*.db-shm
-data/*.db-wal
-
-# Environment
-.env
-.env.local
-
-# Logs
+.bun/
 *.log
-logs/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# IDE
 .vscode/
 .idea/
-*.swp
-*.swo
-
-# Docker
-.dockerignore
-
-# Backup
+node_modules/
+dist/
+# temp files
+*.tmp
 *.bak

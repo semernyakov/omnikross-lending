@@ -1,57 +1,33 @@
-# ════════════════════════════════════════════════════════════
-# OmniKross Landing — Docker Compose
-# Single lightweight container: Bun API + SQLite
-# ════════════════════════════════════════════════════════════
-
 services:
-  omnikross-api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-
-    container_name: omnikross-landing
-
+  omnikross-app:
+    build: .
+    container_name: omnikross_prod
     restart: unless-stopped
-
-    # Bind only to localhost (nginx will proxy)
     ports:
-      - '127.0.0.1:3000:3000'
-
+      - "127.0.0.1:3000:3000" # Проксируем через Nginx на хосте
     volumes:
-      # Persistent SQLite database
-      - ./data:/app/data
-      # Static files (read-only)
-      - ./public:/app/public:ro
-
+      - ./data:/app/data # Сохраняем SQLite базу
     environment:
       - NODE_ENV=production
       - TZ=Europe/Moscow
-      - MAX_SIGNUPS=500
+      - MAX_SIGNUPS=100
       - PORT=3000
-
-    # Resource limits (Docker Compose v1 compatibility)
     deploy:
       resources:
         limits:
-          cpus: '0.5'
           memory: 128M
-
     healthcheck:
-      test: ['CMD', 'bun', '-e', 'fetch("http://localhost:3000/api/health").then(() => process.exit(0)).catch(() => process.exit(1))']
+      test:
+        [
+          "CMD",
+          "bun",
+          "-e",
+          "fetch('http://localhost:3000/api/health').then(r => r.ok ? process.exit(0) : process.exit(1))",
+        ]
       interval: 30s
       timeout: 5s
       retries: 3
-      start_period: 10s
 
-    # Logging configuration
-    logging:
-      driver: 'json-file'
-      options:
-        max-size: '10m'
-        max-file: '3'
-        compress: 'true'
-
-# Optional: Network isolation
 networks:
   default:
-    driver: bridge
+    name: omnikross_network
