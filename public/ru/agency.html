@@ -200,6 +200,19 @@
                                 </p>
                             </div>
                         </div>
+                        <div class="testimonial-card empty-card">
+                            <div class="testimonial-placeholder">
+                                <div class="placeholder-icon">🏢</div>
+                                <h3>Ваше агентство</h3>
+                                <p>
+                                    Здесь может быть ваш отзыв после первого
+                                    месяца работы
+                                </p>
+                                <a href="#" class="placeholder-link"
+                                    >Рассказать историю →</a
+                                >
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -320,51 +333,96 @@
                 </div>
             </section>
 
-            <section class="calculator section">
+            <!-- ROI CALCULATOR -->
+            <section id="roi-calc" class="calculator">
                 <div class="container">
                     <h2>Прикинем твою утечку:</h2>
-                    <div class="calculator-form">
-                        <div class="input-group">
-                            <label for="clients">Клиентов в работе:</label>
-                            <input
-                                type="number"
-                                id="clients"
-                                placeholder="15"
-                                min="1"
-                                value="15"
-                            />
+                    <p class="roi-section-desc">
+                        Введите параметры вашей работы, чтобы рассчитать
+                        потенциальную экономию времени и денег
+                    </p>
+
+                    <div class="calc-wrapper">
+                        <div class="calc-row">
+                            <div class="calc-field">
+                                <label class="calc-label" for="clients"
+                                    >Клиентов в работе:</label
+                                >
+                                <input
+                                    type="number"
+                                    id="clients"
+                                    class="calc-input"
+                                    value="15"
+                                    min="1"
+                                    max="100"
+                                />
+                            </div>
+
+                            <div class="calc-field">
+                                <label class="calc-label" for="posts"
+                                    >Постов в неделю на клиента:</label
+                                >
+                                <input
+                                    type="number"
+                                    id="posts"
+                                    class="calc-input"
+                                    value="3"
+                                    min="1"
+                                    max="20"
+                                />
+                            </div>
+
+                            <div class="calc-field">
+                                <label class="calc-label" for="plats"
+                                    >Платформ (VK, TG, Дзен, OK):</label
+                                >
+                                <input
+                                    type="number"
+                                    id="plats"
+                                    class="calc-input"
+                                    value="4"
+                                    min="1"
+                                    max="10"
+                                />
+                            </div>
+
+                            <div class="calc-field">
+                                <label class="calc-label" for="mins"
+                                    >Минут на адаптацию поста:</label
+                                >
+                                <input
+                                    type="number"
+                                    id="mins"
+                                    class="calc-input"
+                                    value="20"
+                                    min="1"
+                                    max="120"
+                                />
+                            </div>
                         </div>
-                        <div class="input-group">
-                            <label for="posts"
-                                >Постов в неделю на клиента:</label
-                            >
-                            <input
-                                type="number"
-                                id="posts"
-                                placeholder="3"
-                                min="1"
-                                value="3"
-                            />
+
+                        <div class="calc-result">
+                            <div>
+                                <div class="calc-time" id="timeResult">0 ч</div>
+                                <div class="calc-label-small">в месяц</div>
+                            </div>
+
+                            <div>
+                                <div class="calc-money" id="moneyResult">
+                                    0 ₽
+                                </div>
+                                <div class="calc-label-small">в год</div>
+                            </div>
                         </div>
-                        <button
-                            class="cta-button secondary"
-                            id="calculateButton"
-                        >
-                            Рассчитать →
+
+                        <button class="go-simulator-btn" id="goSimulator">
+                            <i class="fa-solid fa-bolt"></i>
+                            Перейти к симулятору
                         </button>
-                    </div>
-                    <div id="calcResult" class="calculator-result hidden">
-                        <div class="result-value" id="hoursWasted">18</div>
-                        <p class="result-label">часов ручного труда в неделю</p>
-                        <div class="result-equivalents">
-                            <p>
-                                <span class="equiv-symbol">≡</span> +1 клиент
-                                без найма
-                            </p>
-                            <p>
-                                <span class="equiv-symbol">≡</span> команде +25%
-                                запаса сил
-                            </p>
+
+                        <div class="sim-roi-hint">
+                            После расчета нажмите, чтобы протестить адаптацию
+                            текста
                         </div>
                     </div>
                 </div>

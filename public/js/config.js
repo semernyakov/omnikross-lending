@@ -188,4 +188,6 @@ window.OmniKrossConfig = OmniKrossConfig;
 // Export for module systems (if needed)
 if (typeof module !== "undefined" && module.exports) {
   module.exports = OmniKrossConfig;
+} else if (typeof window !== "undefined") {
+  window.OmniKrossConfig = OmniKrossConfig;
 }

@@ -392,3 +392,53 @@ document.addEventListener("DOMContentLoaded", () => {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = OmniRouter;
 }
+
+/**
+ * Placeholder Controller Classes
+ * These are used by the router for route-specific functionality
+ */
+
+/**
+ * Base controller class
+ */
+class BaseController {
+  constructor() {
+    this.name = "BaseController";
+  }
+
+  init() {
+    console.log(`${this.name} initialized`);
+  }
+}
+
+/**
+ * Agency Controller
+ * Handles agency-specific functionality
+ */
+class AgencyController extends BaseController {
+  constructor() {
+    super();
+    this.name = "AgencyController";
+  }
+
+  init() {
+    console.log(`${this.name} initialized for agency routes`);
+    // Add agency-specific functionality here
+  }
+}
+
+/**
+ * Freelancer Controller
+ * Handles freelancer-specific functionality
+ */
+class FreelancerController extends BaseController {
+  constructor() {
+    super();
+    this.name = "FreelancerController";
+  }
+
+  init() {
+    console.log(`${this.name} initialized for freelancer routes`);
+    // Add freelancer-specific functionality here
+  }
+}

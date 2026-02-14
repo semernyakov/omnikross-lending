@@ -782,4 +782,22 @@ if (typeof module !== "undefined" && module.exports) {
     NetworkError,
     APIError,
   };
+} else {
+  window.ValidationService = ValidationService;
+  window.ErrorHandler = ErrorHandler;
+  window.FormValidator = FormValidator;
+  window.ApiService = ApiService;
+}
+
+// Export for module systems (if needed)
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    ValidationService,
+    ErrorHandler,
+    FormValidator,
+    ApiService,
+    ValidationError,
+    NetworkError,
+    APIError,
+  };
 }

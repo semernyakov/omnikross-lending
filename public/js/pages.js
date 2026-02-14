@@ -75,29 +75,135 @@ class PagesController {
    * Initialize calculator functionality
    */
   initCalculator() {
+    // Initialize the basic calculator if it exists
     const calcButton = document.getElementById("calculateButton");
-    if (!calcButton) return;
+    if (calcButton) {
+      calcButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.calculateHours();
+      });
 
-    calcButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      this.calculateHours();
-    });
+      // Also trigger calculation when inputs change
+      const clientsInput = document.getElementById("clients");
+      const postsInput = document.getElementById("posts");
 
-    // Also trigger calculation when inputs change
-    const clientsInput = document.getElementById("clients");
-    const postsInput = document.getElementById("posts");
+      if (clientsInput) {
+        clientsInput.addEventListener("input", () => this.calculateHours());
+      }
 
-    if (clientsInput) {
-      clientsInput.addEventListener("input", () => this.calculateHours());
+      if (postsInput) {
+        postsInput.addEventListener("input", () => this.calculateHours());
+      }
     }
 
-    if (postsInput) {
-      postsInput.addEventListener("input", () => this.calculateHours());
-    }
+    // Initialize the advanced ROI calculator
+    this.initROICalculator();
   }
 
   /**
-   * Perform calculation
+   * Initialize advanced ROI calculator
+   */
+  initROICalculator() {
+    const clients = document.getElementById("clients");
+    const posts = document.getElementById("posts");
+    const plats = document.getElementById("plats");
+    const mins = document.getElementById("mins");
+
+    if (!clients || !posts || !plats || !mins) return;
+
+    const timeEl = document.getElementById("timeResult");
+    const moneyEl = document.getElementById("moneyResult");
+    const goSimulatorBtn = document.getElementById("goSimulator");
+
+    // Determine language and set appropriate rates and currencies
+    const lang =
+      document.documentElement.lang || document.body.dataset.lang || "ru";
+    const HOUR_RATE = lang === "ru" ? 600 : 25; // 600 rubles for RU, $25 for EN
+    const CURRENCY = lang === "ru" ? "₽" : "$";
+    const TIME_UNIT = lang === "ru" ? "ч" : "hrs";
+    const PER_MONTH = lang === "ru" ? "мес" : "mo";
+    const PER_YEAR = lang === "ru" ? "в год" : "per year";
+    const PER_MONTH_LABEL = lang === "ru" ? "в месяц" : "per month";
+    const PER_YEAR_LABEL = lang === "ru" ? "в год" : "per year";
+
+    function formatTime(hours) {
+      const days = Math.floor(hours / 8);
+      const weeks = Math.floor(days / 5);
+      if (weeks >= 1) {
+        if (lang === "ru") {
+          return `${Math.round(hours)} ч (${weeks} нед)`;
+        } else {
+          return `${Math.round(hours)} hrs (${weeks} wks)`;
+        }
+      }
+      if (lang === "ru") {
+        return `${Math.round(hours)} ч`;
+      } else {
+        return `${Math.round(hours)} hrs`;
+      }
+    }
+
+    function formatMoney(amount) {
+      if (lang === "ru") {
+        return `${Math.round(amount).toLocaleString("ru-RU")} ${CURRENCY}`;
+      } else {
+        return `${CURRENCY}${Math.round(amount).toLocaleString("en-US")}`;
+      }
+    }
+
+    function recalc() {
+      const c = +clients.value || 15; // Number of clients
+      const p = +posts.value || 3; // Posts per week per client
+      const pl = +plats.value || 4; // Number of platforms
+      const m = +mins.value || 20; // Minutes per post adaptation
+
+      // Calculate hours per month: clients * posts * 4 weeks * platforms * minutes / 60 to convert to hours
+      const hoursMonth = (c * p * 4 * pl * m) / 60;
+      // Calculate yearly money saved: hours per month * 12 months * hourly rate
+      const moneyYear = hoursMonth * 12 * HOUR_RATE;
+
+      if (timeEl) {
+        timeEl.textContent = formatTime(hoursMonth);
+      }
+
+      if (moneyEl) {
+        moneyEl.textContent = formatMoney(moneyYear);
+      }
+    }
+
+    // Event handlers
+    [clients, posts, plats, mins].forEach((i) => {
+      if (i) {
+        i.addEventListener("input", recalc);
+        i.addEventListener("change", recalc);
+      }
+    });
+
+    // Simulator button handler
+    if (goSimulatorBtn) {
+      goSimulatorBtn.addEventListener("click", () => {
+        const simulator = document.getElementById("demo");
+        if (simulator) {
+          simulator.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+
+          // Button animation
+          goSimulatorBtn.style.transform = "scale(0.98)";
+          setTimeout(() => {
+            goSimulatorBtn.style.transform = "";
+          }, 200);
+        }
+      });
+    }
+
+    // Initialization on load
+    setTimeout(recalc, 100);
+  }
+
+  /**
+   * Perform basic calculation
    */
   calculateHours() {
     const clientsInput = document.getElementById("clients");

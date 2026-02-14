@@ -3,13 +3,57 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>OmniKross — Choose your path</title>
+        <meta
+            name="description"
+            content="AI‑powered content adaptation platform. Choose your language and role to get started with OmniKross."
+        />
         <meta name="robots" content="noindex" />
-        <link rel="icon" href="/assets/kross-node.svg" type="image/svg+xml" />
+        <meta name="theme-color" content="#6366f1" />
 
+        <!-- Canonical URL for SEO -->
+        <link rel="canonical" href="https://omnikross.ru/" />
+
+        <!-- Preload for SVG logo -->
+        <link
+            rel="preload"
+            href="/assets/kross-node.svg"
+            as="image"
+            type="image/svg+xml"
+        />
+
+        <!-- Open Graph / Social Media -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="OmniKross — Choose your path" />
+        <meta
+            property="og:description"
+            content="AI‑powered content adaptation platform. Choose your language and role to get started."
+        />
+        <meta property="og:image" content="/assets/kross-node.svg" />
+        <meta property="og:url" content="https://omnikross.ru/" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="OmniKross — Choose your path" />
+        <meta
+            name="twitter:description"
+            content="AI‑powered content adaptation platform. Choose your language and role to get started."
+        />
+        <meta name="twitter:image" content="/assets/kross-node.svg" />
+
+        <link
+            rel="preconnect"
+            href="https://cdnjs.cloudflare.com"
+            crossorigin
+        />
+        <link rel="icon" href="/assets/kross-node.svg" type="image/svg+xml" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
         <link rel="stylesheet" href="/css/core.css" />
-        <link rel="stylesheet" href="/css/components.css" />
-        <link rel="stylesheet" href="/css/conversions.css" />
         <link rel="stylesheet" href="/css/index.css" />
     </head>
     <body>
@@ -100,17 +144,15 @@
                     data-text-ready="Продолжить / Continue"
                     data-text-wait="Выберите язык и роль"
                     aria-label="Proceed to selected language and role"
+                    type="button"
                 >
                     Выберите язык и роль
                 </button>
             </div>
         </div>
 
-        <script src="/js/config.js"></script>
-        <script src="/js/router.js"></script>
-        <script src="/js/index.js"></script>
-        <script src="/js/validation.js"></script>
-        <script src="/js/performance-a11y.js"></script>
-        <script src="/js/responsive.js"></script>
+        <script src="/js/config.js" defer></script>
+        <script src="/js/index.js" defer></script>
+        <script src="/js/responsive.js" defer></script>
     </body>
 </html>

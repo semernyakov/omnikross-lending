@@ -204,6 +204,19 @@
                                 </p>
                             </div>
                         </div>
+                        <div class="testimonial-card empty-card">
+                            <div class="testimonial-placeholder">
+                                <div class="placeholder-icon">🏢</div>
+                                <h3>Your Agency</h3>
+                                <p>
+                                    Your testimonial could be here after your
+                                    first month
+                                </p>
+                                <a href="#" class="placeholder-link"
+                                    >Share your story →</a
+                                >
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -323,51 +336,98 @@
                 </div>
             </section>
 
-            <section class="calculator section">
+            <!-- ROI CALCULATOR -->
+            <section id="roi-calc" class="calculator">
                 <div class="container">
                     <h2>Calculate your leak:</h2>
-                    <div class="calculator-form">
-                        <div class="input-group">
-                            <label for="clients">Clients:</label>
-                            <input
-                                type="number"
-                                id="clients"
-                                placeholder="15"
-                                min="1"
-                                value="15"
-                            />
+                    <p class="roi-section-desc">
+                        Enter your work parameters to calculate potential time
+                        and money savings
+                    </p>
+
+                    <div class="calc-wrapper">
+                        <div class="calc-row">
+                            <div class="calc-field">
+                                <label class="calc-label" for="clients"
+                                    >Clients in work:</label
+                                >
+                                <input
+                                    type="number"
+                                    id="clients"
+                                    class="calc-input"
+                                    value="15"
+                                    min="1"
+                                    max="100"
+                                />
+                            </div>
+
+                            <div class="calc-field">
+                                <label class="calc-label" for="posts"
+                                    >Posts per week per client:</label
+                                >
+                                <input
+                                    type="number"
+                                    id="posts"
+                                    class="calc-input"
+                                    value="3"
+                                    min="1"
+                                    max="20"
+                                />
+                            </div>
+
+                            <div class="calc-field">
+                                <label class="calc-label" for="plats"
+                                    >Platforms (Twitter, LinkedIn, IG,
+                                    TikTok):</label
+                                >
+                                <input
+                                    type="number"
+                                    id="plats"
+                                    class="calc-input"
+                                    value="4"
+                                    min="1"
+                                    max="10"
+                                />
+                            </div>
+
+                            <div class="calc-field">
+                                <label class="calc-label" for="mins"
+                                    >Minutes to adapt per post:</label
+                                >
+                                <input
+                                    type="number"
+                                    id="mins"
+                                    class="calc-input"
+                                    value="20"
+                                    min="1"
+                                    max="120"
+                                />
+                            </div>
                         </div>
-                        <div class="input-group">
-                            <label for="posts">Posts/week per client:</label>
-                            <input
-                                type="number"
-                                id="posts"
-                                placeholder="3"
-                                min="1"
-                                value="3"
-                            />
+
+                        <div class="calc-result">
+                            <div>
+                                <div class="calc-time" id="timeResult">
+                                    0 hrs
+                                </div>
+                                <div class="calc-label-small">per month</div>
+                            </div>
+
+                            <div>
+                                <div class="calc-money" id="moneyResult">
+                                    $0
+                                </div>
+                                <div class="calc-label-small">per year</div>
+                            </div>
                         </div>
-                        <button
-                            class="cta-button secondary"
-                            id="calculateButton"
-                        >
-                            Calculate →
+
+                        <button class="go-simulator-btn" id="goSimulator">
+                            <i class="fa-solid fa-bolt"></i>
+                            Go to Simulator
                         </button>
-                    </div>
-                    <div id="calcResult" class="calculator-result hidden">
-                        <div class="result-value" id="hoursWasted">18</div>
-                        <p class="result-label">
-                            hours of manual work per week
-                        </p>
-                        <div class="result-equivalents">
-                            <p>
-                                <span class="equiv-symbol">≡</span> +1 client
-                                without hiring
-                            </p>
-                            <p>
-                                <span class="equiv-symbol">≡</span> team gets
-                                +25% capacity
-                            </p>
+
+                        <div class="sim-roi-hint">
+                            After calculation, click to test text adaptation
                         </div>
                     </div>
                 </div>
