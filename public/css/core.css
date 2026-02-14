@@ -1,106 +1,66 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* ═══════════════════════════════════════════════════════════
-   OMNIKROSS v4.0 — Core Design System (Themes & Variables)
-   ═══════════════════════════════════════════════════════════ */
-
 :root {
-  /* Common */
-  --font-main: 'Inter', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  --transition-normal: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-  --radius-lg: 20px;
-  --radius-xl: 28px;
-  --z-navbar: 1000;
-  
-  /* Palette: Brand */
-  --color-primary: #6a0dad;
-  --color-secondary: #00ff88;
-  --color-cta: #ff6b6b;
-  --gradient-main: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  --bg: #0b0d12;
+  --surface: #151925;
+  --text: #f0f4ff;
+  --muted: #b9c0d4;
+  --brand: #7a36ff;
+  --brand-2: #20dca2;
+  --danger: #ff6b6b;
 }
 
-/* 🌙 Dark Theme (Default) */
-[data-theme='dark'], :root {
-  --bg-main: #0a0a0a;
-  --bg-card: #111114;
-  --bg-card-hover: #18181c;
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --text-muted: rgba(255, 255, 255, 0.4);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(106, 13, 173, 0.3);
-  --input-bg: rgba(255, 255, 255, 0.05);
-  --shadow-deep: 0 20px 50px rgba(0, 0, 0, 0.5);
-  --navbar-bg: rgba(10, 10, 10, 0.8);
+html[data-theme='light'] {
+  --bg: #f8f9ff;
+  --surface: #ffffff;
+  --text: #151925;
+  --muted: #5f6882;
 }
 
-/* ☀️ Light Theme */
-[data-theme='light'] {
-  --bg-main: #f8f8fc;
-  --bg-card: #ffffff;
-  --bg-card-hover: #f1f1f5;
-  --text-primary: #1a1a1a;
-  --text-secondary: rgba(26, 26, 26, 0.8);
-  --text-muted: rgba(26, 26, 26, 0.5);
-  --border-subtle: rgba(0, 0, 0, 0.08);
-  --border-glow: rgba(106, 13, 173, 0.2);
-  --input-bg: rgba(0, 0, 0, 0.03);
-  --shadow-deep: 0 20px 50px rgba(0, 0, 0, 0.08);
-  --navbar-bg: rgba(248, 248, 252, 0.8);
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  background: radial-gradient(1200px 500px at 90% -5%, #2b1f5a 0%, var(--bg) 50%);
+  color: var(--text);
 }
 
-@layer base {
-  body {
-    @apply transition-colors duration-500;
-    background-color: var(--bg-main);
-    color: var(--text-primary);
-    font-family: var(--font-main);
-    -webkit-font-smoothing: antialiased;
-  }
-
-  h1, h2, h3 { @apply font-extrabold tracking-tight; }
+.topbar, .hero, .footer { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; justify-content: space-between; align-items: center;
+  height: 76px; backdrop-filter: blur(8px);
 }
+.brand { color: var(--text); text-decoration: none; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+.controls { display: flex; align-items: center; gap: 12px; }
+.role-switcher { background: var(--surface); border: 1px solid #3b4052; border-radius: 999px; padding: 4px; }
+.role-switcher button, #theme-toggle { background: transparent; border: 0; color: var(--text); cursor: pointer; }
+.role-switcher button { padding: 6px 12px; border-radius: 999px; }
+.role-switcher button.is-active { background: var(--brand); color: #fff; }
+#theme-toggle { width: 36px; height: 36px; border-radius: 50%; background: var(--surface); }
 
-@layer components {
-  /* [Маня] Glassmorphism эффект для карточек */
-  .omni-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    @apply backdrop-blur-xl transition-all duration-300;
-  }
+.hero { padding-top: 48px; }
+.eyebrow { color: var(--brand-2); font-weight: 700; letter-spacing: .06em; font-size: .78rem; }
+h1 { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.05; margin: 6px 0 12px; }
+h1 span { color: var(--brand-2); }
+.subtitle { color: var(--muted); max-width: 780px; }
 
-  .omni-card:hover {
-    border-color: var(--border-glow);
-    box-shadow: var(--shadow-deep);
-    transform: translateY(-4px);
-  }
+.cta-row { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top: 28px; }
+.signup-card, .stats-card { background: var(--surface); border: 1px solid #343a4d; border-radius: 18px; padding: 20px; }
+.signup-card label { display: block; font-size: .85rem; margin-bottom: 8px; }
+.signup-card input { width: 100%; height: 44px; border-radius: 10px; border: 1px solid #4c536b; background: transparent; color: var(--text); padding: 0 12px; margin-bottom: 12px; }
+.signup-card button { width: 100%; height: 44px; border: 0; border-radius: 10px; color: #fff; font-weight: 700; background: linear-gradient(90deg, var(--brand), #9f75ff); cursor: pointer; }
+.status { display: block; margin-top: 10px; color: var(--muted); }
+.status.ok { color: var(--brand-2); }
+.status.error { color: var(--danger); }
+.stats-card p { margin: 0; color: var(--muted); }
+.stats-card strong { font-size: 2.4rem; display: block; margin: 10px 0; }
 
-  .gradient-text {
-    @apply bg-clip-text text-transparent;
-    background-image: var(--gradient-main);
-  }
-
-  .btn-primary {
-    @apply relative overflow-hidden px-8 py-4 rounded-xl font-bold text-white transition-all active:scale-95;
-    background: linear-gradient(135deg, var(--color-primary) 0%, #9b30ff 50%, var(--color-secondary) 100%);
-    box-shadow: 0 10px 25px -5px rgba(106, 13, 173, 0.4);
-  }
-
-  .btn-primary:hover {
-    @apply shadow-2xl;
-    box-shadow: 0 15px 35px -5px rgba(106, 13, 173, 0.6);
-    transform: translateY(-2px);
-  }
+.footer { padding: 38px 24px 52px; color: var(--muted); }
+.cookie-banner {
+  position: fixed; right: 16px; bottom: 16px; z-index: 30;
+  width: min(360px, calc(100vw - 32px)); background: var(--surface);
+  border: 1px solid #343a4d; border-radius: 14px; padding: 14px;
+  transform: translateY(12px); opacity: 0; transition: .25s ease;
 }
-
-/* Animations */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.reveal { animation: fadeInUp 0.6s ease-out forwards; }
+.cookie-banner.show { transform: translateY(0); opacity: 1; }
+.cookie-banner.hidden { display: none; }
+.cookie-banner button { border: 0; padding: 8px 12px; border-radius: 8px; background: var(--brand); color: #fff; cursor: pointer; }
