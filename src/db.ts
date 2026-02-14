@@ -8,6 +8,11 @@ if (!existsSync(dataDir)) mkdirSync(dataDir);
 
 const db = new Database(join(dataDir, 'omnikross.db'));
 
+const getInitialSlots = () => {
+  const parsed = Number.parseInt(process.env.MAX_SIGNUPS ?? '', 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 500;
+};
+
 /**
  * Инициализация схемы базы данных
  */
@@ -33,7 +38,7 @@ export const initDb = () => {
   // Устанавливаем начальное кол-во слотов, если их нет
   const row = db.prepare('SELECT value FROM config WHERE key = "remaining_slots"').get();
   if (!row) {
-    db.run('INSERT INTO config (key, value) VALUES ("remaining_slots", "500")');
+    db.prepare('INSERT INTO config (key, value) VALUES (?, ?)').run('remaining_slots', String(getInitialSlots()));
   }
   
   console.log('📦 SQLite Database initialized.');

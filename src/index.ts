@@ -20,10 +20,12 @@ const SignupSchema = z.object({
  * API: Получить текущее кол-во свободных мест
  */
 app.get('/api/slots', (c) => {
-  const row = db.prepare('SELECT value FROM config WHERE key = "remaining_slots"').get() as { value: string };
-  return c.json({ 
-    success: true, 
-    remaining: parseInt(row.value) 
+  const row = db.prepare('SELECT value FROM config WHERE key = "remaining_slots"').get() as { value: string } | undefined;
+  const remaining = row ? Number.parseInt(row.value, 10) : 0;
+
+  return c.json({
+    success: true,
+    remaining: Number.isFinite(remaining) ? Math.max(remaining, 0) : 0
   });
 });
 
@@ -43,15 +45,31 @@ app.post('/api/signup', async (c) => {
 
     // Транзакция: сохраняем юзера и уменьшаем счетчик слотов
     const signupTransaction = db.transaction(() => {
+      const slotRow = db.prepare('SELECT value FROM config WHERE key = ?').get('remaining_slots') as { value: string } | undefined;
+      const remainingSlots = slotRow ? Number.parseInt(slotRow.value, 10) : 0;
+
+      if (!Number.isFinite(remainingSlots) || remainingSlots <= 0) {
+        throw new Error('NO_SLOTS');
+      }
+
       db.prepare('INSERT INTO users (email, role) VALUES (?, ?)').run(email, role);
-      db.run('UPDATE config SET value = CAST(value AS INTEGER) - 1 WHERE key = "remaining_slots"');
+      db.prepare('UPDATE config SET value = ? WHERE key = ?').run(String(remainingSlots - 1), 'remaining_slots');
     });
 
     signupTransaction();
 
     return c.json({ success: true, message: 'Welcome to the future!' });
   } catch (err) {
-    return c.json({ success: false, message: 'Validation failed' }, 400);
+    if (err instanceof z.ZodError) {
+      return c.json({ success: false, message: 'Validation failed', errors: err.flatten() }, 400);
+    }
+
+    if (err instanceof Error && err.message === 'NO_SLOTS') {
+      return c.json({ success: false, message: 'No slots available' }, 409);
+    }
+
+    console.error('Signup error:', err);
+    return c.json({ success: false, message: 'Internal server error' }, 500);
   }
 });
 
