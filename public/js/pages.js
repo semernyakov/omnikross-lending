@@ -10,7 +10,7 @@
  */
 class PagesController {
   constructor() {
-    this.init();
+    this.init()
   }
 
   /**
@@ -18,57 +18,57 @@ class PagesController {
    */
   init() {
     // Initialize countdown timer if present
-    this.initCountdownTimer();
+    this.initCountdownTimer()
 
     // Initialize calculator if present
-    this.initCalculator();
+    this.initCalculator()
 
     // Initialize demo functionality if present
-    this.initDemo();
+    this.initDemo()
 
     // Initialize form submissions with mock API
-    this.initForms();
+    this.initForms()
   }
 
   /**
    * Initialize countdown timer
    */
   initCountdownTimer() {
-    const countdownEl = document.getElementById("countdown");
-    if (!countdownEl) return;
+    const countdownEl = document.getElementById('countdown')
+    if (!countdownEl) return
 
-    const hoursEl = document.getElementById("hours");
-    const minutesEl = document.getElementById("minutes");
-    const secondsEl = document.getElementById("seconds");
+    const hoursEl = document.getElementById('hours')
+    const minutesEl = document.getElementById('minutes')
+    const secondsEl = document.getElementById('seconds')
 
-    if (!hoursEl || !minutesEl || !secondsEl) return;
+    if (!hoursEl || !minutesEl || !secondsEl) return
 
     // Mock countdown - in a real implementation, this would count down
-    let hours = parseInt(hoursEl.textContent) || 14;
-    let minutes = parseInt(minutesEl.textContent) || 23;
-    let seconds = parseInt(secondsEl.textContent) || 47;
+    let hours = parseInt(hoursEl.textContent) || 14
+    let minutes = parseInt(minutesEl.textContent) || 23
+    let seconds = parseInt(secondsEl.textContent) || 47
 
     const countdownInterval = setInterval(() => {
-      seconds--;
+      seconds--
       if (seconds < 0) {
-        seconds = 59;
-        minutes--;
+        seconds = 59
+        minutes--
         if (minutes < 0) {
-          minutes = 59;
-          hours--;
+          minutes = 59
+          hours--
           if (hours < 0) {
-            clearInterval(countdownInterval);
-            hours = 0;
-            minutes = 0;
-            seconds = 0;
+            clearInterval(countdownInterval)
+            hours = 0
+            minutes = 0
+            seconds = 0
           }
         }
       }
 
-      hoursEl.textContent = hours.toString().padStart(2, "0");
-      minutesEl.textContent = minutes.toString().padStart(2, "0");
-      secondsEl.textContent = seconds.toString().padStart(2, "0");
-    }, 1000);
+      hoursEl.textContent = hours.toString().padStart(2, '0')
+      minutesEl.textContent = minutes.toString().padStart(2, '0')
+      secondsEl.textContent = seconds.toString().padStart(2, '0')
+    }, 1000)
   }
 
   /**
@@ -76,252 +76,249 @@ class PagesController {
    */
   initCalculator() {
     // Initialize the basic calculator if it exists
-    const calcButton = document.getElementById("calculateButton");
+    const calcButton = document.getElementById('calculateButton')
     if (calcButton) {
-      calcButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        this.calculateHours();
-      });
+      calcButton.addEventListener('click', e => {
+        e.preventDefault()
+        this.calculateHours()
+      })
 
       // Also trigger calculation when inputs change
-      const clientsInput = document.getElementById("clients");
-      const postsInput = document.getElementById("posts");
+      const clientsInput = document.getElementById('clients')
+      const postsInput = document.getElementById('posts')
 
       if (clientsInput) {
-        clientsInput.addEventListener("input", () => this.calculateHours());
+        clientsInput.addEventListener('input', () => this.calculateHours())
       }
 
       if (postsInput) {
-        postsInput.addEventListener("input", () => this.calculateHours());
+        postsInput.addEventListener('input', () => this.calculateHours())
       }
     }
 
     // Initialize the advanced ROI calculator
-    this.initROICalculator();
+    this.initROICalculator()
   }
 
   /**
    * Initialize advanced ROI calculator
    */
   initROICalculator() {
-    const clients = document.getElementById("clients");
-    const posts = document.getElementById("posts");
-    const plats = document.getElementById("plats");
-    const mins = document.getElementById("mins");
+    const clients = document.getElementById('clients')
+    const posts = document.getElementById('posts')
+    const plats = document.getElementById('plats')
+    const mins = document.getElementById('mins')
 
-    if (!clients || !posts || !plats || !mins) return;
+    if (!clients || !posts || !plats || !mins) return
 
-    const timeEl = document.getElementById("timeResult");
-    const moneyEl = document.getElementById("moneyResult");
-    const goSimulatorBtn = document.getElementById("goSimulator");
+    const timeEl = document.getElementById('timeResult')
+    const moneyEl = document.getElementById('moneyResult')
+    const goSimulatorBtn = document.getElementById('goSimulator')
 
     // Determine language and set appropriate rates and currencies
-    const lang =
-      document.documentElement.lang || document.body.dataset.lang || "ru";
-    const HOUR_RATE = lang === "ru" ? 600 : 25; // 600 rubles for RU, $25 for EN
-    const CURRENCY = lang === "ru" ? "₽" : "$";
-    const TIME_UNIT = lang === "ru" ? "ч" : "hrs";
-    const PER_MONTH = lang === "ru" ? "мес" : "mo";
-    const PER_YEAR = lang === "ru" ? "в год" : "per year";
-    const PER_MONTH_LABEL = lang === "ru" ? "в месяц" : "per month";
-    const PER_YEAR_LABEL = lang === "ru" ? "в год" : "per year";
+    const lang = document.documentElement.lang || document.body.dataset.lang || 'ru'
+    const HOUR_RATE = lang === 'ru' ? 600 : 25 // 600 rubles for RU, $25 for EN
+    const CURRENCY = lang === 'ru' ? '₽' : '$'
+    const TIME_UNIT = lang === 'ru' ? 'ч' : 'hrs'
+    const PER_MONTH = lang === 'ru' ? 'мес' : 'mo'
+    const PER_YEAR = lang === 'ru' ? 'в год' : 'per year'
+    const PER_MONTH_LABEL = lang === 'ru' ? 'в месяц' : 'per month'
+    const PER_YEAR_LABEL = lang === 'ru' ? 'в год' : 'per year'
 
     function formatTime(hours) {
-      const days = Math.floor(hours / 8);
-      const weeks = Math.floor(days / 5);
+      const days = Math.floor(hours / 8)
+      const weeks = Math.floor(days / 5)
       if (weeks >= 1) {
-        if (lang === "ru") {
-          return `${Math.round(hours)} ч (${weeks} нед)`;
+        if (lang === 'ru') {
+          return `${Math.round(hours)} ч (${weeks} нед)`
         } else {
-          return `${Math.round(hours)} hrs (${weeks} wks)`;
+          return `${Math.round(hours)} hrs (${weeks} wks)`
         }
       }
-      if (lang === "ru") {
-        return `${Math.round(hours)} ч`;
+      if (lang === 'ru') {
+        return `${Math.round(hours)} ч`
       } else {
-        return `${Math.round(hours)} hrs`;
+        return `${Math.round(hours)} hrs`
       }
     }
 
     function formatMoney(amount) {
-      if (lang === "ru") {
-        return `${Math.round(amount).toLocaleString("ru-RU")} ${CURRENCY}`;
+      if (lang === 'ru') {
+        return `${Math.round(amount).toLocaleString('ru-RU')} ${CURRENCY}`
       } else {
-        return `${CURRENCY}${Math.round(amount).toLocaleString("en-US")}`;
+        return `${CURRENCY}${Math.round(amount).toLocaleString('en-US')}`
       }
     }
 
     function recalc() {
-      const c = +clients.value || 15; // Number of clients
-      const p = +posts.value || 3; // Posts per week per client
-      const pl = +plats.value || 4; // Number of platforms
-      const m = +mins.value || 20; // Minutes per post adaptation
+      const c = +clients.value || 15 // Number of clients
+      const p = +posts.value || 3 // Posts per week per client
+      const pl = +plats.value || 4 // Number of platforms
+      const m = +mins.value || 20 // Minutes per post adaptation
 
       // Calculate hours per month: clients * posts * 4 weeks * platforms * minutes / 60 to convert to hours
-      const hoursMonth = (c * p * 4 * pl * m) / 60;
+      const hoursMonth = (c * p * 4 * pl * m) / 60
       // Calculate yearly money saved: hours per month * 12 months * hourly rate
-      const moneyYear = hoursMonth * 12 * HOUR_RATE;
+      const moneyYear = hoursMonth * 12 * HOUR_RATE
 
       if (timeEl) {
-        timeEl.textContent = formatTime(hoursMonth);
+        timeEl.textContent = formatTime(hoursMonth)
       }
 
       if (moneyEl) {
-        moneyEl.textContent = formatMoney(moneyYear);
+        moneyEl.textContent = formatMoney(moneyYear)
       }
     }
 
     // Event handlers
-    [clients, posts, plats, mins].forEach((i) => {
+    ;[clients, posts, plats, mins].forEach(i => {
       if (i) {
-        i.addEventListener("input", recalc);
-        i.addEventListener("change", recalc);
+        i.addEventListener('input', recalc)
+        i.addEventListener('change', recalc)
       }
-    });
+    })
 
     // Simulator button handler
     if (goSimulatorBtn) {
-      goSimulatorBtn.addEventListener("click", () => {
-        const simulator = document.getElementById("demo");
+      goSimulatorBtn.addEventListener('click', () => {
+        const simulator = document.getElementById('demo')
         if (simulator) {
           simulator.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
+            behavior: 'smooth',
+            block: 'start',
+          })
 
           // Button animation
-          goSimulatorBtn.style.transform = "scale(0.98)";
+          goSimulatorBtn.style.transform = 'scale(0.98)'
           setTimeout(() => {
-            goSimulatorBtn.style.transform = "";
-          }, 200);
+            goSimulatorBtn.style.transform = ''
+          }, 200)
         }
-      });
+      })
     }
 
     // Initialization on load
-    setTimeout(recalc, 100);
+    setTimeout(recalc, 100)
   }
 
   /**
    * Perform basic calculation
    */
   calculateHours() {
-    const clientsInput = document.getElementById("clients");
-    const postsInput = document.getElementById("posts");
-    const resultEl = document.getElementById("calcResult");
-    const hoursWastedEl = document.getElementById("hoursWasted");
+    const clientsInput = document.getElementById('clients')
+    const postsInput = document.getElementById('posts')
+    const resultEl = document.getElementById('calcResult')
+    const hoursWastedEl = document.getElementById('hoursWasted')
 
-    if (!clientsInput || !postsInput || !resultEl || !hoursWastedEl) return;
+    if (!clientsInput || !postsInput || !resultEl || !hoursWastedEl) return
 
-    const clients = parseInt(clientsInput.value) || 15;
-    const posts = parseInt(postsInput.value) || 3;
+    const clients = parseInt(clientsInput.value) || 15
+    const posts = parseInt(postsInput.value) || 3
 
     // Calculate approximate hours wasted per week
     // Assuming ~0.5 hours per post adaptation across 4 platforms
-    const hoursWasted = Math.round(clients * posts * 0.5 * 4 * 100) / 100;
+    const hoursWasted = Math.round(clients * posts * 0.5 * 4 * 100) / 100
 
-    hoursWastedEl.textContent = hoursWasted;
-    resultEl.classList.remove("hidden");
+    hoursWastedEl.textContent = hoursWasted
+    resultEl.classList.remove('hidden')
 
     // Scroll to results
-    resultEl.scrollIntoView({ behavior: "smooth" });
+    resultEl.scrollIntoView({ behavior: 'smooth' })
   }
 
   /**
    * Initialize demo functionality
    */
   initDemo() {
-    const demoButton = document.getElementById("demoButton");
-    if (!demoButton) return;
+    const demoButton = document.getElementById('demoButton')
+    if (!demoButton) return
 
-    demoButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      this.runDemo();
-    });
+    demoButton.addEventListener('click', e => {
+      e.preventDefault()
+      this.runDemo()
+    })
   }
 
   /**
    * Run demo simulation
    */
   runDemo() {
-    const demoText = document.getElementById("demoText");
-    const demoResult = document.getElementById("demoResult");
-    const demoOriginal = document.getElementById("demoOriginal");
+    const demoText = document.getElementById('demoText')
+    const demoResult = document.getElementById('demoResult')
+    const demoOriginal = document.getElementById('demoOriginal')
 
-    if (!demoText || !demoResult || !demoOriginal) return;
+    if (!demoText || !demoResult || !demoOriginal) return
 
-    const text = demoText.value.trim();
+    const text = demoText.value.trim()
     if (!text) {
-      alert("Please enter some text to adapt");
-      return;
+      alert('Please enter some text to adapt')
+      return
     }
 
     // Show the demo result
-    demoOriginal.textContent = text;
-    demoResult.classList.remove("hidden");
+    demoOriginal.textContent = text
+    demoResult.classList.remove('hidden')
 
     // Get the language from the HTML tag or body
-    const lang =
-      document.documentElement.lang || document.body.dataset.lang || "ru";
+    const lang = document.documentElement.lang || document.body.dataset.lang || 'ru'
 
     // Define platform mappings for different languages and page layouts
     const platformMappings = {
       ru: {
-        vk: ["demo-vk", "demoVK"],
-        telegram: ["demo-telegram", "demoTG"],
-        dzen: ["demo-dzen", "demoDzen"],
-        ok: ["demo-ok", "demoOK"],
+        vk: ['demo-vk', 'demoVK'],
+        telegram: ['demo-telegram', 'demoTG'],
+        dzen: ['demo-dzen', 'demoDzen'],
+        ok: ['demo-ok', 'demoOK'],
       },
       en: {
-        twitter: ["demo-twitter", "demoTwitter"],
-        linkedin: ["demo-linkedin", "demoLinkedin"],
-        instagram: ["demo-instagram", "demoInstagram"],
-        tiktok: ["demo-tiktok", "demoTikTok"],
+        twitter: ['demo-twitter', 'demoTwitter'],
+        linkedin: ['demo-linkedin', 'demoLinkedin'],
+        instagram: ['demo-instagram', 'demoInstagram'],
+        tiktok: ['demo-tiktok', 'demoTikTok'],
       },
-    };
+    }
 
-    const platforms = platformMappings[lang] || platformMappings.ru;
+    const platforms = platformMappings[lang] || platformMappings.ru
 
     // Fill demo content for each platform
-    Object.keys(platforms).forEach((platform) => {
-      const ids = platforms[platform];
-      let element = null;
+    Object.keys(platforms).forEach(platform => {
+      const ids = platforms[platform]
+      let element = null
 
       // Try each possible ID for the platform
       for (const id of ids) {
-        element = document.getElementById(id);
-        if (element) break;
+        element = document.getElementById(id)
+        if (element) break
       }
 
       // If no element found with getElementById, try querySelector
       if (!element) {
-        element = document.querySelector(`#${ids[0]}`);
+        element = document.querySelector(`#${ids[0]}`)
       }
 
       // Set content if element exists
       if (element) {
         const demoTexts = {
           ru: {
-            vk: "Пример адаптации для VK",
-            telegram: "Пример адаптации для Telegram",
-            dzen: "Пример адаптации для Дзен",
-            ok: "Пример адаптации для OK",
+            vk: 'Пример адаптации для VK',
+            telegram: 'Пример адаптации для Telegram',
+            dzen: 'Пример адаптации для Дзен',
+            ok: 'Пример адаптации для OK',
           },
           en: {
-            twitter: "Example adaptation for Twitter",
-            linkedin: "Example adaptation for LinkedIn",
-            instagram: "Example adaptation for Instagram",
-            tiktok: "Example adaptation for TikTok",
+            twitter: 'Example adaptation for Twitter',
+            linkedin: 'Example adaptation for LinkedIn',
+            instagram: 'Example adaptation for Instagram',
+            tiktok: 'Example adaptation for TikTok',
           },
-        };
+        }
 
-        element.textContent =
-          demoTexts[lang][platform] || `Example for ${platform}`;
+        element.textContent = demoTexts[lang][platform] || `Example for ${platform}`
       }
-    });
+    })
 
     // Scroll to results
-    demoResult.scrollIntoView({ behavior: "smooth" });
+    demoResult.scrollIntoView({ behavior: 'smooth' })
   }
 
   /**
@@ -329,12 +326,12 @@ class PagesController {
    */
   initForms() {
     // Handle form submissions with mock API
-    document.querySelectorAll("form").forEach((form) => {
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        this.handleFormSubmit(form);
-      });
-    });
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', e => {
+        e.preventDefault()
+        this.handleFormSubmit(form)
+      })
+    })
   }
 
   /**
@@ -342,35 +339,34 @@ class PagesController {
    */
   async handleFormSubmit(form) {
     const submitBtn =
-      form.querySelector('button[type="submit"]') ||
-      form.querySelector(".cta-button");
+      form.querySelector('button[type="submit"]') || form.querySelector('.cta-button')
     if (submitBtn) {
-      const originalText = submitBtn.textContent;
-      submitBtn.textContent = "Processing...";
-      submitBtn.disabled = true;
+      const originalText = submitBtn.textContent
+      submitBtn.textContent = 'Processing...'
+      submitBtn.disabled = true
     }
 
     // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    await new Promise(resolve => setTimeout(resolve, 800))
 
     // Mock successful response
     if (submitBtn) {
-      submitBtn.textContent = "Success!";
-      submitBtn.disabled = false;
+      submitBtn.textContent = 'Success!'
+      submitBtn.disabled = false
 
       // Reset button text after delay
       setTimeout(() => {
-        submitBtn.textContent = originalText;
-      }, 2000);
+        submitBtn.textContent = originalText
+      }, 2000)
     }
 
-    console.log("Form submitted (mock)", new FormData(form));
+    console.log('Form submitted (mock)', new FormData(form))
   }
 }
 
 /**
  * Initialize pages controller when DOM is ready
  */
-document.addEventListener("DOMContentLoaded", () => {
-  window.PagesController = new PagesController();
-});
+document.addEventListener('DOMContentLoaded', () => {
+  window.PagesController = new PagesController()
+})

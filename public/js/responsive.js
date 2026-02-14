@@ -12,27 +12,27 @@ class ResponsiveDesignManager {
   constructor() {
     // Define breakpoints
     this.breakpoints = {
-      xs: 0,      // Extra small devices (portrait phones)
-      sm: 576,    // Small devices (landscape phones)
-      md: 768,    // Medium devices (tablets)
-      lg: 992,    // Large devices (desktops)
-      xl: 1200,   // Extra large devices (large desktops)
-      xxl: 1400   // Extra extra large devices
-    };
+      xs: 0, // Extra small devices (portrait phones)
+      sm: 576, // Small devices (landscape phones)
+      md: 768, // Medium devices (tablets)
+      lg: 992, // Large devices (desktops)
+      xl: 1200, // Extra large devices (large desktops)
+      xxl: 1400, // Extra extra large devices
+    }
 
     // Define device types
     this.deviceTypes = {
       MOBILE: 'mobile',
       TABLET: 'tablet',
       DESKTOP: 'desktop',
-      LARGE_DESKTOP: 'large-desktop'
-    };
+      LARGE_DESKTOP: 'large-desktop',
+    }
 
     // Current device type
-    this.currentDevice = this.getDeviceType();
+    this.currentDevice = this.getDeviceType()
 
     // Initialize
-    this.init();
+    this.init()
   }
 
   /**
@@ -40,15 +40,15 @@ class ResponsiveDesignManager {
    */
   init() {
     // Add responsive classes to body
-    this.updateResponsiveClasses();
+    this.updateResponsiveClasses()
 
     // Set up resize listener
-    this.setupResizeListener();
+    this.setupResizeListener()
 
     // Initialize responsive components
-    this.initResponsiveComponents();
+    this.initResponsiveComponents()
 
-    console.log(`Responsive design manager initialized for ${this.currentDevice} device`);
+    console.log(`Responsive design manager initialized for ${this.currentDevice} device`)
   }
 
   /**
@@ -56,16 +56,16 @@ class ResponsiveDesignManager {
    * @returns {string} Device type
    */
   getDeviceType() {
-    const width = window.innerWidth;
+    const width = window.innerWidth
 
     if (width < this.breakpoints.sm) {
-      return this.deviceTypes.MOBILE;
+      return this.deviceTypes.MOBILE
     } else if (width < this.breakpoints.md) {
-      return this.deviceTypes.TABLET;
+      return this.deviceTypes.TABLET
     } else if (width < this.breakpoints.lg) {
-      return this.deviceTypes.DESKTOP;
+      return this.deviceTypes.DESKTOP
     } else {
-      return this.deviceTypes.LARGE_DESKTOP;
+      return this.deviceTypes.LARGE_DESKTOP
     }
   }
 
@@ -79,36 +79,36 @@ class ResponsiveDesignManager {
       'device-tablet',
       'device-desktop',
       'device-large-desktop'
-    );
+    )
 
     // Add current device class
-    document.body.classList.add(`device-${this.currentDevice}`);
+    document.body.classList.add(`device-${this.currentDevice}`)
   }
 
   /**
    * Set up resize listener to detect device changes
    */
   setupResizeListener() {
-    let resizeTimeout;
+    let resizeTimeout
 
     window.addEventListener('resize', () => {
       // Debounce resize events
-      clearTimeout(resizeTimeout);
+      clearTimeout(resizeTimeout)
       resizeTimeout = setTimeout(() => {
-        const newDeviceType = this.getDeviceType();
+        const newDeviceType = this.getDeviceType()
 
         if (newDeviceType !== this.currentDevice) {
-          this.currentDevice = newDeviceType;
-          this.updateResponsiveClasses();
+          this.currentDevice = newDeviceType
+          this.updateResponsiveClasses()
 
           // Dispatch device change event
-          this.dispatchDeviceChangeEvent(newDeviceType);
+          this.dispatchDeviceChangeEvent(newDeviceType)
 
           // Reinitialize responsive components
-          this.initResponsiveComponents();
+          this.initResponsiveComponents()
         }
-      }, 250);
-    });
+      }, 250)
+    })
   }
 
   /**
@@ -117,57 +117,57 @@ class ResponsiveDesignManager {
    */
   dispatchDeviceChangeEvent(deviceType) {
     const event = new CustomEvent('omni:device:changed', {
-      detail: { deviceType, width: window.innerWidth }
-    });
-    document.dispatchEvent(event);
+      detail: { deviceType, width: window.innerWidth },
+    })
+    document.dispatchEvent(event)
   }
 
   /**
    * Initialize responsive components
    */
   initResponsiveComponents() {
-    this.initResponsiveNavigation();
-    this.initResponsiveGrids();
-    this.initResponsiveModals();
-    this.initResponsiveImages();
+    this.initResponsiveNavigation()
+    this.initResponsiveGrids()
+    this.initResponsiveModals()
+    this.initResponsiveImages()
   }
 
   /**
    * Initialize responsive navigation
    */
   initResponsiveNavigation() {
-    const navbar = document.querySelector('.navbar');
-    const hamburger = document.querySelector('.hamburger');
-    const mobileMenu = document.querySelector('.mobile-menu');
+    const navbar = document.querySelector('.navbar')
+    const hamburger = document.querySelector('.hamburger')
+    const mobileMenu = document.querySelector('.mobile-menu')
 
-    if (!navbar || !hamburger || !mobileMenu) return;
+    if (!navbar || !hamburger || !mobileMenu) return
 
     // Set up hamburger menu toggle
     hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
-      mobileMenu.classList.toggle('open');
+      hamburger.classList.toggle('active')
+      mobileMenu.classList.toggle('open')
 
       // Toggle body scroll lock
-      document.body.classList.toggle('mobile-menu-open', mobileMenu.classList.contains('open'));
-    });
+      document.body.classList.toggle('mobile-menu-open', mobileMenu.classList.contains('open'))
+    })
 
     // Close mobile menu when clicking on links
     mobileMenu.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        mobileMenu.classList.remove('open');
-        document.body.classList.remove('mobile-menu-open');
-      });
-    });
+        hamburger.classList.remove('active')
+        mobileMenu.classList.remove('open')
+        document.body.classList.remove('mobile-menu-open')
+      })
+    })
 
     // Close mobile menu when clicking outside
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', e => {
       if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
-        hamburger.classList.remove('active');
-        mobileMenu.classList.remove('open');
-        document.body.classList.remove('mobile-menu-open');
+        hamburger.classList.remove('active')
+        mobileMenu.classList.remove('open')
+        document.body.classList.remove('mobile-menu-open')
       }
-    });
+    })
   }
 
   /**
@@ -175,21 +175,21 @@ class ResponsiveDesignManager {
    */
   initResponsiveGrids() {
     // Initialize masonry grids if they exist
-    this.initMasonryGrids();
+    this.initMasonryGrids()
 
     // Initialize responsive card layouts
-    this.initResponsiveCards();
+    this.initResponsiveCards()
   }
 
   /**
    * Initialize masonry-style grids
    */
   initMasonryGrids() {
-    const masonryGrids = document.querySelectorAll('.grid-masonry');
+    const masonryGrids = document.querySelectorAll('.grid-masonry')
 
     masonryGrids.forEach(grid => {
-      this.createMasonryLayout(grid);
-    });
+      this.createMasonryLayout(grid)
+    })
   }
 
   /**
@@ -197,28 +197,28 @@ class ResponsiveDesignManager {
    * @param {HTMLElement} grid - Grid element
    */
   createMasonryLayout(grid) {
-    const columns = this.getMasonryColumns(grid);
-    const items = Array.from(grid.children);
+    const columns = this.getMasonryColumns(grid)
+    const items = Array.from(grid.children)
 
     // Initialize column heights
-    const columnHeights = new Array(columns).fill(0);
+    const columnHeights = new Array(columns).fill(0)
 
     // Position items in columns
     items.forEach(item => {
       // Find shortest column
-      const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights));
+      const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights))
 
       // Position item
-      item.style.gridColumn = shortestColumnIndex + 1;
-      item.style.gridRow = `${Math.floor(columnHeights[shortestColumnIndex] / 100) + 1} / span 1`;
+      item.style.gridColumn = shortestColumnIndex + 1
+      item.style.gridRow = `${Math.floor(columnHeights[shortestColumnIndex] / 100) + 1} / span 1`
 
       // Update column height
-      columnHeights[shortestColumnIndex] += item.offsetHeight;
-    });
+      columnHeights[shortestColumnIndex] += item.offsetHeight
+    })
 
     // Set grid template rows
-    const maxHeight = Math.max(...columnHeights);
-    grid.style.gridTemplateRows = `repeat(${Math.ceil(maxHeight / 100)}, 1fr)`;
+    const maxHeight = Math.max(...columnHeights)
+    grid.style.gridTemplateRows = `repeat(${Math.ceil(maxHeight / 100)}, 1fr)`
   }
 
   /**
@@ -227,24 +227,24 @@ class ResponsiveDesignManager {
    * @returns {number} Number of columns
    */
   getMasonryColumns(grid) {
-    const width = grid.offsetWidth;
+    const width = grid.offsetWidth
 
-    if (width < 600) return 1;
-    if (width < 900) return 2;
-    if (width < 1200) return 3;
-    return 4;
+    if (width < 600) return 1
+    if (width < 900) return 2
+    if (width < 1200) return 3
+    return 4
   }
 
   /**
    * Initialize responsive card layouts
    */
   initResponsiveCards() {
-    const cardContainers = document.querySelectorAll('.card-container');
+    const cardContainers = document.querySelectorAll('.card-container')
 
     cardContainers.forEach(container => {
       // Add responsive classes based on device
-      this.updateCardLayout(container);
-    });
+      this.updateCardLayout(container)
+    })
   }
 
   /**
@@ -252,23 +252,18 @@ class ResponsiveDesignManager {
    * @param {HTMLElement} container - Card container
    */
   updateCardLayout(container) {
-    const device = this.currentDevice;
-    const cards = container.querySelectorAll('.card');
+    const device = this.currentDevice
+    const cards = container.querySelectorAll('.card')
 
     // Remove all responsive card classes
     cards.forEach(card => {
-      card.classList.remove(
-        'card-mobile',
-        'card-tablet',
-        'card-desktop',
-        'card-large-desktop'
-      );
-    });
+      card.classList.remove('card-mobile', 'card-tablet', 'card-desktop', 'card-large-desktop')
+    })
 
     // Add device-specific classes
     cards.forEach(card => {
-      card.classList.add(`card-${device}`);
-    });
+      card.classList.add(`card-${device}`)
+    })
   }
 
   /**
@@ -278,12 +273,12 @@ class ResponsiveDesignManager {
     // Add responsive behavior to modals
     document.querySelectorAll('.modal').forEach(modal => {
       // Close modal on escape key
-      modal.addEventListener('keydown', (e) => {
+      modal.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
-          this.closeModal(modal);
+          this.closeModal(modal)
         }
-      });
-    });
+      })
+    })
   }
 
   /**
@@ -291,8 +286,8 @@ class ResponsiveDesignManager {
    * @param {HTMLElement} modal - Modal element
    */
   closeModal(modal) {
-    modal.classList.remove('open');
-    document.body.classList.remove('modal-open');
+    modal.classList.remove('open')
+    document.body.classList.remove('modal-open')
   }
 
   /**
@@ -300,10 +295,10 @@ class ResponsiveDesignManager {
    */
   initResponsiveImages() {
     // Set up lazy loading for images
-    this.setupLazyLoading();
+    this.setupLazyLoading()
 
     // Set up responsive image sources
-    this.setupResponsiveImages();
+    this.setupResponsiveImages()
   }
 
   /**
@@ -314,32 +309,32 @@ class ResponsiveDesignManager {
       const imageObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            const img = entry.target;
+            const img = entry.target
 
             if (img.dataset.src) {
-              img.src = img.dataset.src;
-              img.removeAttribute('data-src');
+              img.src = img.dataset.src
+              img.removeAttribute('data-src')
 
               // Add loaded class for smooth transition
-              img.classList.add('loaded');
+              img.classList.add('loaded')
 
               // Stop observing this image
-              observer.unobserve(img);
+              observer.unobserve(img)
             }
           }
-        });
-      });
+        })
+      })
 
       // Observe all images with data-src attribute
       document.querySelectorAll('img[data-src]').forEach(img => {
-        imageObserver.observe(img);
-      });
+        imageObserver.observe(img)
+      })
     } else {
       // Fallback for browsers that don't support IntersectionObserver
       document.querySelectorAll('img[data-src]').forEach(img => {
-        img.src = img.dataset.src;
-        img.removeAttribute('data-src');
-      });
+        img.src = img.dataset.src
+        img.removeAttribute('data-src')
+      })
     }
   }
 
@@ -347,22 +342,22 @@ class ResponsiveDesignManager {
    * Set up responsive image sources
    */
   setupResponsiveImages() {
-    const responsiveImages = document.querySelectorAll('img[data-srcset]');
+    const responsiveImages = document.querySelectorAll('img[data-srcset]')
 
     const updateImageSrcSet = () => {
       responsiveImages.forEach(img => {
         if (img.dataset.srcset) {
-          img.srcset = img.dataset.srcset;
-          img.removeAttribute('data-srcset');
+          img.srcset = img.dataset.srcset
+          img.removeAttribute('data-srcset')
         }
-      });
-    };
+      })
+    }
 
     // Update on resize
-    window.addEventListener('resize', updateImageSrcSet);
+    window.addEventListener('resize', updateImageSrcSet)
 
     // Update initially
-    updateImageSrcSet();
+    updateImageSrcSet()
   }
 
   /**
@@ -370,14 +365,14 @@ class ResponsiveDesignManager {
    * @returns {string} Current breakpoint name
    */
   getCurrentBreakpoint() {
-    const width = window.innerWidth;
+    const width = window.innerWidth
 
-    if (width >= this.breakpoints.xxl) return 'xxl';
-    if (width >= this.breakpoints.xl) return 'xl';
-    if (width >= this.breakpoints.lg) return 'lg';
-    if (width >= this.breakpoints.md) return 'md';
-    if (width >= this.breakpoints.sm) return 'sm';
-    return 'xs';
+    if (width >= this.breakpoints.xxl) return 'xxl'
+    if (width >= this.breakpoints.xl) return 'xl'
+    if (width >= this.breakpoints.lg) return 'lg'
+    if (width >= this.breakpoints.md) return 'md'
+    if (width >= this.breakpoints.sm) return 'sm'
+    return 'xs'
   }
 
   /**
@@ -386,23 +381,23 @@ class ResponsiveDesignManager {
    * @returns {boolean} True if matches
    */
   matchesBreakpoint(breakpoint) {
-    const current = this.getCurrentBreakpoint();
+    const current = this.getCurrentBreakpoint()
 
     switch (breakpoint) {
       case 'xs':
-        return current === 'xs';
+        return current === 'xs'
       case 'sm':
-        return ['xs', 'sm'].includes(current);
+        return ['xs', 'sm'].includes(current)
       case 'md':
-        return ['xs', 'sm', 'md'].includes(current);
+        return ['xs', 'sm', 'md'].includes(current)
       case 'lg':
-        return ['xs', 'sm', 'md', 'lg'].includes(current);
+        return ['xs', 'sm', 'md', 'lg'].includes(current)
       case 'xl':
-        return ['xs', 'sm', 'md', 'lg', 'xl'].includes(current);
+        return ['xs', 'sm', 'md', 'lg', 'xl'].includes(current)
       case 'xxl':
-        return current === 'xxl';
+        return current === 'xxl'
       default:
-        return false;
+        return false
     }
   }
 
@@ -411,7 +406,7 @@ class ResponsiveDesignManager {
    * @returns {boolean} True if mobile
    */
   isMobile() {
-    return this.currentDevice === this.deviceTypes.MOBILE;
+    return this.currentDevice === this.deviceTypes.MOBILE
   }
 
   /**
@@ -419,7 +414,7 @@ class ResponsiveDesignManager {
    * @returns {boolean} True if tablet
    */
   isTablet() {
-    return this.currentDevice === this.deviceTypes.TABLET;
+    return this.currentDevice === this.deviceTypes.TABLET
   }
 
   /**
@@ -427,8 +422,10 @@ class ResponsiveDesignManager {
    * @returns {boolean} True if desktop
    */
   isDesktop() {
-    return this.currentDevice === this.deviceTypes.DESKTOP ||
-           this.currentDevice === this.deviceTypes.LARGE_DESKTOP;
+    return (
+      this.currentDevice === this.deviceTypes.DESKTOP ||
+      this.currentDevice === this.deviceTypes.LARGE_DESKTOP
+    )
   }
 
   /**
@@ -438,11 +435,11 @@ class ResponsiveDesignManager {
    */
   getResponsiveValue(values) {
     if (this.isMobile()) {
-      return values.mobile || values.tablet || values.desktop || values.default;
+      return values.mobile || values.tablet || values.desktop || values.default
     } else if (this.isTablet()) {
-      return values.tablet || values.desktop || values.mobile || values.default;
+      return values.tablet || values.desktop || values.mobile || values.default
     } else {
-      return values.desktop || values.tablet || values.mobile || values.default;
+      return values.desktop || values.tablet || values.mobile || values.default
     }
   }
 
@@ -450,8 +447,8 @@ class ResponsiveDesignManager {
    * Create responsive utility classes
    */
   createResponsiveUtilities() {
-    const style = document.createElement('style');
-    style.id = 'responsive-utilities';
+    const style = document.createElement('style')
+    style.id = 'responsive-utilities'
 
     style.textContent = `
       /* Display utilities */
@@ -569,9 +566,9 @@ class ResponsiveDesignManager {
       @media (min-width: ${this.breakpoints.md}px) {
         .md\:max-w-screen-lg { max-width: 1024px !important; }
       }
-    `;
+    `
 
-    document.head.appendChild(style);
+    document.head.appendChild(style)
   }
 }
 
@@ -580,8 +577,8 @@ class ResponsiveDesignManager {
  */
 class TouchGestureManager {
   constructor() {
-    this.swipeThreshold = 50;
-    this.init();
+    this.swipeThreshold = 50
+    this.init()
   }
 
   /**
@@ -589,10 +586,10 @@ class TouchGestureManager {
    */
   init() {
     // Set up touch event listeners
-    this.setupTouchListeners();
+    this.setupTouchListeners()
 
     // Create responsive utilities
-    window.ResponsiveDesignManager.createResponsiveUtilities();
+    window.ResponsiveDesignManager.createResponsiveUtilities()
   }
 
   /**
@@ -601,9 +598,9 @@ class TouchGestureManager {
   setupTouchListeners() {
     // For touch-enabled devices, add swipe detection
     if ('ontouchstart' in window) {
-      document.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: true });
-      document.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
-      document.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: true });
+      document.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: true })
+      document.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false })
+      document.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: true })
     }
   }
 
@@ -612,8 +609,8 @@ class TouchGestureManager {
    * @param {TouchEvent} e - Touch event
    */
   handleTouchStart(e) {
-    this.touchStartX = e.touches[0].clientX;
-    this.touchStartY = e.touches[0].clientY;
+    this.touchStartX = e.touches[0].clientX
+    this.touchStartY = e.touches[0].clientY
   }
 
   /**
@@ -621,17 +618,17 @@ class TouchGestureManager {
    * @param {TouchEvent} e - Touch event
    */
   handleTouchMove(e) {
-    if (!this.touchStartX || !this.touchStartY) return;
+    if (!this.touchStartX || !this.touchStartY) return
 
-    const touchCurrentX = e.touches[0].clientX;
-    const touchCurrentY = e.touches[0].clientY;
+    const touchCurrentX = e.touches[0].clientX
+    const touchCurrentY = e.touches[0].clientY
 
-    const diffX = this.touchStartX - touchCurrentX;
-    const diffY = this.touchStartY - touchCurrentY;
+    const diffX = this.touchStartX - touchCurrentX
+    const diffY = this.touchStartY - touchCurrentY
 
     // Prevent scrolling when swiping horizontally
     if (Math.abs(diffX) > Math.abs(diffY)) {
-      e.preventDefault();
+      e.preventDefault()
     }
   }
 
@@ -640,23 +637,23 @@ class TouchGestureManager {
    * @param {TouchEvent} e - Touch event
    */
   handleTouchEnd(e) {
-    if (!this.touchStartX || !this.touchStartY) return;
+    if (!this.touchStartX || !this.touchStartY) return
 
-    const touchEndX = e.changedTouches[0].clientX;
-    const touchEndY = e.changedTouches[0].clientY;
+    const touchEndX = e.changedTouches[0].clientX
+    const touchEndY = e.changedTouches[0].clientY
 
-    const diffX = this.touchStartX - touchEndX;
-    const diffY = this.touchStartY - touchEndY;
+    const diffX = this.touchStartX - touchEndX
+    const diffY = this.touchStartY - touchEndY
 
     // Check if it's a significant horizontal swipe
     if (Math.abs(diffX) > this.swipeThreshold && Math.abs(diffX) > Math.abs(diffY)) {
-      const direction = diffX > 0 ? 'left' : 'right';
-      this.handleSwipe(direction, Math.abs(diffX));
+      const direction = diffX > 0 ? 'left' : 'right'
+      this.handleSwipe(direction, Math.abs(diffX))
     }
 
     // Reset touch coordinates
-    this.touchStartX = null;
-    this.touchStartY = null;
+    this.touchStartX = null
+    this.touchStartY = null
   }
 
   /**
@@ -667,20 +664,20 @@ class TouchGestureManager {
   handleSwipe(direction, distance) {
     // Dispatch swipe event
     const event = new CustomEvent('omni:swipe', {
-      detail: { direction, distance }
-    });
-    document.dispatchEvent(event);
+      detail: { direction, distance },
+    })
+    document.dispatchEvent(event)
 
     // Handle specific swipe actions
     switch (direction) {
       case 'left':
         // Swipe left could mean navigating to next item
-        this.handleSwipeLeft(distance);
-        break;
+        this.handleSwipeLeft(distance)
+        break
       case 'right':
         // Swipe right could mean navigating to previous item
-        this.handleSwipeRight(distance);
-        break;
+        this.handleSwipeRight(distance)
+        break
     }
   }
 
@@ -690,7 +687,7 @@ class TouchGestureManager {
    */
   handleSwipeLeft(distance) {
     // Could trigger next carousel slide, etc.
-    console.log(`Swiped left: ${distance}px`);
+    console.log(`Swiped left: ${distance}px`)
   }
 
   /**
@@ -699,7 +696,7 @@ class TouchGestureManager {
    */
   handleSwipeRight(distance) {
     // Could trigger previous carousel slide, etc.
-    console.log(`Swiped right: ${distance}px`);
+    console.log(`Swiped right: ${distance}px`)
   }
 }
 
@@ -708,10 +705,10 @@ class TouchGestureManager {
  */
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize responsive design manager
-  window.ResponsiveDesignManager = new ResponsiveDesignManager();
+  window.ResponsiveDesignManager = new ResponsiveDesignManager()
 
   // Initialize touch gesture manager
-  window.TouchGestureManager = new TouchGestureManager();
+  window.TouchGestureManager = new TouchGestureManager()
 
   // Add responsive design info to global scope
   window.ResponsiveInfo = {
@@ -720,16 +717,16 @@ document.addEventListener('DOMContentLoaded', () => {
     isTablet: () => window.ResponsiveDesignManager.isTablet(),
     isDesktop: () => window.ResponsiveDesignManager.isDesktop(),
     getCurrentBreakpoint: () => window.ResponsiveDesignManager.getCurrentBreakpoint(),
-    matchesBreakpoint: (bp) => window.ResponsiveDesignManager.matchesBreakpoint(bp)
-  };
+    matchesBreakpoint: bp => window.ResponsiveDesignManager.matchesBreakpoint(bp),
+  }
 
-  console.log('Responsive design managers initialized');
-});
+  console.log('Responsive design managers initialized')
+})
 
 // Export for module systems (if needed)
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     ResponsiveDesignManager,
-    TouchGestureManager
-  };
+    TouchGestureManager,
+  }
 }

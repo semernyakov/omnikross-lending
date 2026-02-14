@@ -9,6 +9,9 @@ FROM oven/bun:1-alpine
 
 WORKDIR /app
 
+# Install curl for health checks and debugging
+RUN apk add --no-cache curl
+
 # Copy application files
 COPY package.json ./
 COPY src ./src
@@ -25,12 +28,16 @@ RUN mkdir -p /app/data && \
 # Switch to non-root user
 USER bun
 
-# Health check using Bun's fetch
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD bun -e "fetch('http://localhost:3000/api/health').then(() => process.exit(0)).catch(() => process.exit(1))"
+# Health check using curl (more reliable than fetch)
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:3000/api/health || exit 1
 
 # Expose port
 EXPOSE 3000
 
-# Start application
+# Set environment variables
+ENV NODE_ENV=production
+ENV TZ=Europe/Moscow
+
+# Start application with graceful shutdown support
 CMD ["bun", "run", "src/index.ts"]

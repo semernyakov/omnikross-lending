@@ -1,158 +1,161 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta
-            name="description"
-            content="AI‑powered content adaptation platform. Choose your language and role to get started with OmniKross."
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="AI‑powered content adaptation platform. Choose your language and role to get started with OmniKross."
+    />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#6366f1" />
+
+    <!-- Enhanced Security Headers -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; 
+                       style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+                       script-src 'self' 'unsafe-inline';
+                       img-src 'self' data:;
+                       connect-src 'self' https://api.omnikross.ru;
+                       font-src 'self' https://cdnjs.cloudflare.com;
+                       object-src 'none';
+                       base-uri 'self';
+                       frame-ancestors 'none';
+                       upgrade-insecure-requests;"
+    />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta
+      name="permissions-policy"
+      content="camera=(), microphone=(), geolocation=(), payment=()"
+    />
+
+    <!-- Canonical URL for SEO -->
+    <link rel="canonical" href="https://omnikross.ru/" />
+
+    <!-- Preload for SVG logo -->
+    <link rel="preload" href="/assets/kross-node.svg" as="image" type="image/svg+xml" />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="OmniKross — Choose your path" />
+    <meta
+      property="og:description"
+      content="AI‑powered content adaptation platform. Choose your language and role to get started."
+    />
+    <meta property="og:image" content="/assets/kross-node.svg" />
+    <meta property="og:url" content="https://omnikross.ru/" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="OmniKross — Choose your path" />
+    <meta
+      name="twitter:description"
+      content="AI‑powered content adaptation platform. Choose your language and role to get started."
+    />
+    <meta name="twitter:image" content="/assets/kross-node.svg" />
+
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="icon" href="/assets/kross-node.svg" type="image/svg+xml" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="/css/core.css" />
+    <link rel="stylesheet" href="/css/index.css" />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div class="index-container" id="main-content">
+      <div>
+        <img
+          src="/assets/kross-node.svg"
+          alt="OmniKross"
+          width="96"
+          height="96"
+          class="index-logo"
         />
-        <meta name="robots" content="noindex" />
-        <meta name="theme-color" content="#6366f1" />
+        <h1><span class="gradient-text">OmniKross</span></h1>
+        <p class="subhead">AI‑powered content adaptation<br />Выберите язык и формат работы</p>
 
-        <!-- Canonical URL for SEO -->
-        <link rel="canonical" href="https://omnikross.ru/" />
-
-        <!-- Preload for SVG logo -->
-        <link
-            rel="preload"
-            href="/assets/kross-node.svg"
-            as="image"
-            type="image/svg+xml"
-        />
-
-        <!-- Open Graph / Social Media -->
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="OmniKross — Choose your path" />
-        <meta
-            property="og:description"
-            content="AI‑powered content adaptation platform. Choose your language and role to get started."
-        />
-        <meta property="og:image" content="/assets/kross-node.svg" />
-        <meta property="og:url" content="https://omnikross.ru/" />
-
-        <!-- Twitter Card -->
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="OmniKross — Choose your path" />
-        <meta
-            name="twitter:description"
-            content="AI‑powered content adaptation platform. Choose your language and role to get started."
-        />
-        <meta name="twitter:image" content="/assets/kross-node.svg" />
-
-        <link
-            rel="preconnect"
-            href="https://cdnjs.cloudflare.com"
-            crossorigin
-        />
-        <link rel="icon" href="/assets/kross-node.svg" type="image/svg+xml" />
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-        />
-        <link rel="stylesheet" href="/css/core.css" />
-        <link rel="stylesheet" href="/css/index.css" />
-    </head>
-    <body>
-        <a href="#main-content" class="skip-link">Skip to main content</a>
-        <div class="index-container" id="main-content">
-            <div>
-                <img
-                    src="/assets/kross-node.svg"
-                    alt="OmniKross"
-                    width="96"
-                    height="96"
-                    class="index-logo"
-                />
-                <h1><span class="gradient-text">OmniKross</span></h1>
-                <p class="subhead">
-                    AI‑powered content adaptation<br />Выберите язык и формат
-                    работы
-                </p>
-
-                <h2 class="section-title-mb">1. Язык / Language</h2>
-                <div class="selector-grid">
-                    <div
-                        class="selector-card"
-                        data-lang="ru"
-                        role="button"
-                        tabindex="0"
-                        aria-label="Русский язык"
-                    >
-                        <div class="selector-icon">🇷🇺</div>
-                        <h4>Русский</h4>
-                        <p class="platform-hint">VK, Telegram, Дзен, OK</p>
-                    </div>
-                    <div
-                        class="selector-card"
-                        data-lang="en"
-                        role="button"
-                        tabindex="0"
-                        aria-label="English language"
-                    >
-                        <div class="selector-icon">🇬🇧</div>
-                        <h4>English</h4>
-                        <p class="platform-hint">
-                            Twitter, LinkedIn, Instagram, TikTok
-                        </p>
-                    </div>
-                </div>
-
-                <h2 class="section-title-mb section-title-mt-48">
-                    2. Роль / Role
-                </h2>
-                <div class="selector-grid">
-                    <div
-                        class="selector-card"
-                        data-role="agency"
-                        role="button"
-                        tabindex="0"
-                        aria-label="Agency role"
-                    >
-                        <div class="selector-icon">
-                            <i class="fa-solid fa-building"></i>
-                        </div>
-                        <h4>Агентство / Agency</h4>
-                        <p class="platform-hint">
-                            10–50 клиентов, масштабирование
-                        </p>
-                    </div>
-                    <div
-                        class="selector-card"
-                        data-role="solo"
-                        role="button"
-                        tabindex="0"
-                        aria-label="Solo/Freelancer role"
-                    >
-                        <div class="selector-icon">
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                        <h4>Соло / Freelancer</h4>
-                        <p class="platform-hint">
-                            Один автор, экономия времени
-                        </p>
-                    </div>
-                </div>
-
-                <button
-                    id="proceedBtn"
-                    class="cta-button primary proceed-btn"
-                    disabled
-                    data-text-ready="Продолжить / Continue"
-                    data-text-wait="Выберите язык и роль"
-                    aria-label="Proceed to selected language and role"
-                    type="button"
-                >
-                    Выберите язык и роль
-                </button>
-            </div>
+        <h2 class="section-title-mb">1. Язык / Language</h2>
+        <div class="selector-grid">
+          <div
+            class="selector-card"
+            data-lang="ru"
+            role="button"
+            tabindex="0"
+            aria-label="Русский язык"
+          >
+            <div class="selector-icon">🇷🇺</div>
+            <h4>Русский</h4>
+            <p class="platform-hint">VK, Telegram, Дзен, OK</p>
+          </div>
+          <div
+            class="selector-card"
+            data-lang="en"
+            role="button"
+            tabindex="0"
+            aria-label="English language"
+          >
+            <div class="selector-icon">🇬🇧</div>
+            <h4>English</h4>
+            <p class="platform-hint">Twitter, LinkedIn, Instagram, TikTok</p>
+          </div>
         </div>
 
-        <script src="/js/config.js" defer></script>
-        <script src="/js/index.js" defer></script>
-        <script src="/js/responsive.js" defer></script>
-    </body>
+        <h2 class="section-title-mb section-title-mt-48">2. Роль / Role</h2>
+        <div class="selector-grid">
+          <div
+            class="selector-card"
+            data-role="agency"
+            role="button"
+            tabindex="0"
+            aria-label="Agency role"
+          >
+            <div class="selector-icon">
+              <i class="fa-solid fa-building"></i>
+            </div>
+            <h4>Агентство / Agency</h4>
+            <p class="platform-hint">10–50 клиентов, масштабирование</p>
+          </div>
+          <div
+            class="selector-card"
+            data-role="solo"
+            role="button"
+            tabindex="0"
+            aria-label="Solo/Freelancer role"
+          >
+            <div class="selector-icon">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <h4>Соло / Freelancer</h4>
+            <p class="platform-hint">Один автор, экономия времени</p>
+          </div>
+        </div>
+
+        <button
+          id="proceedBtn"
+          class="cta-button primary proceed-btn"
+          disabled
+          data-text-ready="Продолжить / Continue"
+          data-text-wait="Выберите язык и роль"
+          aria-label="Proceed to selected language and role"
+          type="button"
+        >
+          Выберите язык и роль
+        </button>
+      </div>
+    </div>
+
+    <script src="/js/config.js" defer></script>
+    <script src="/js/index.js" defer></script>
+    <script src="/js/responsive.js" defer></script>
+  </body>
 </html>

@@ -1,20 +1,20 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>OmniKross — AI Content Adaptation for Freelancers</title>
-        <meta
-            name="description"
-            content="One text → Twitter, LinkedIn, Instagram, TikTok in 12 seconds. Save hours every day."
-        />
-        <link rel="icon" href="/assets/kross-node.svg" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OmniKross — AI Content Adaptation for Freelancers</title>
+    <meta
+      name="description"
+      content="One text → Twitter, LinkedIn, Instagram, TikTok in 12 seconds. Save hours every day."
+    />
+    <link rel="icon" href="/assets/kross-node.svg" />
 
-        <link rel="stylesheet" href="/css/core.css" />
-        <link rel="stylesheet" href="/css/components.css" />
-        <link rel="stylesheet" href="/css/conversions.css" />
+    <link rel="stylesheet" href="/css/core.css" />
+    <link rel="stylesheet" href="/css/components.css" />
+    <link rel="stylesheet" href="/css/conversions.css" />
 
-        <!--<link
+    <!--<link
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap"
             rel="stylesheet"
         />
@@ -22,301 +22,243 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         />-->
-    </head>
-    <body data-role="solo">
-        <nav class="navbar">
-            <div class="nav-container">
-                <a href="/" class="nav-logo"
-                    ><img
-                        src="/assets/kross-node.svg"
-                        alt="OmniKross"
-                        width="32"
-                        height="32"
-                        style="margin-right: 8px"
-                    /><span class="gradient-text">OmniKross</span></a
-                >
-                <div class="nav-links">
-                    <a href="#pain" class="nav-link">Pain</a>
-                    <a href="#solution" class="nav-link">Solution</a>
-                    <a href="#demo" class="nav-link">Demo</a>
-                    <a href="#" class="theme-toggle"
-                        ><i class="fa-solid fa-circle-half-stroke"></i
-                    ></a>
-                </div>
-                <div class="hamburger">
-                    <span></span><span></span><span></span>
-                </div>
+  </head>
+  <body data-role="solo">
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="/" class="nav-logo"
+          ><img
+            src="/assets/kross-node.svg"
+            alt="OmniKross"
+            width="32"
+            height="32"
+            style="margin-right: 8px"
+          /><span class="gradient-text">OmniKross</span></a
+        >
+        <div class="nav-links">
+          <a href="#pain" class="nav-link">Pain</a>
+          <a href="#solution" class="nav-link">Solution</a>
+          <a href="#demo" class="nav-link">Demo</a>
+          <a href="#" class="theme-toggle"><i class="fa-solid fa-circle-half-stroke"></i></a>
+        </div>
+        <div class="hamburger"><span></span><span></span><span></span></div>
+      </div>
+    </nav>
+
+    <main>
+      <section class="hero section">
+        <div class="container">
+          <h1>
+            Content drains you, not mentally.<br /><span class="highlight"
+              >But this... rewriting.</span
+            >
+          </h1>
+          <p class="hero-pain">
+            Twitter. LinkedIn. Instagram. TikTok. One message — four versions.
+          </p>
+          <div class="price-anchor">
+            <span class="old-price">$29/month</span>
+            <span class="new-price">Free for first 500 pioneers</span>
+          </div>
+          <button class="cta-button primary" id="ctaButton">Try it with YOUR text →</button>
+          <div class="micro-trust">
+            <p>⚡ No credit card · 30-day guarantee · Cancel anytime</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="pain" class="pain section">
+        <div class="container">
+          <h2>Evening. You should be resting.</h2>
+          <p class="subtitle">But you're sitting here:</p>
+          <div class="pain-list-casual">
+            <p>Shortening for Twitter…</p>
+            <p>Professionalizing for LinkedIn…</p>
+            <p>Storytelling for Instagram…</p>
+            <p>Trendifying for TikTok…</p>
+          </div>
+          <p class="pain-finale">Focus flies away. Energy — at zero.</p>
+          <p class="pain-conclusion">
+            <strong>Not growth. Burnout.</strong>
+          </p>
+        </div>
+      </section>
+
+      <section id="solution" class="comparison">
+        <div class="container">
+          <h2>One draft — four ready‑to‑post versions</h2>
+          <div class="comparison-grid">
+            <div class="comparison-col">
+              <div class="comparison-label">Before</div>
+              <div class="comparison-before">
+                <p>“Today I want to share a productivity hack that saves me 2 hours daily...”</p>
+                <span class="badge">85 characters</span>
+              </div>
             </div>
-        </nav>
-
-        <main>
-            <section class="hero section">
-                <div class="container">
-                    <h1>
-                        Content drains you, not mentally.<br /><span
-                            class="highlight"
-                            >But this... rewriting.</span
-                        >
-                    </h1>
-                    <p class="hero-pain">
-                        Twitter. LinkedIn. Instagram. TikTok. One message — four
-                        versions.
-                    </p>
-                    <div class="price-anchor">
-                        <span class="old-price">$29/month</span>
-                        <span class="new-price"
-                            >Free for first 500 pioneers</span
-                        >
-                    </div>
-                    <button class="cta-button primary" id="ctaButton">
-                        Try it with YOUR text →
-                    </button>
-                    <div class="micro-trust">
-                        <p>
-                            ⚡ No credit card · 30-day guarantee · Cancel
-                            anytime
-                        </p>
-                    </div>
+            <div class="comparison-arrow">→</div>
+            <div class="comparison-col">
+              <div class="comparison-label">After (12 seconds)</div>
+              <div class="comparison-after">
+                <div class="platform-version">
+                  🐦 Twitter: Productivity hack: how I save 2h every day 👇
                 </div>
-            </section>
-
-            <section id="pain" class="pain section">
-                <div class="container">
-                    <h2>Evening. You should be resting.</h2>
-                    <p class="subtitle">But you're sitting here:</p>
-                    <div class="pain-list-casual">
-                        <p>Shortening for Twitter…</p>
-                        <p>Professionalizing for LinkedIn…</p>
-                        <p>Storytelling for Instagram…</p>
-                        <p>Trendifying for TikTok…</p>
-                    </div>
-                    <p class="pain-finale">
-                        Focus flies away. Energy — at zero.
-                    </p>
-                    <p class="pain-conclusion">
-                        <strong>Not growth. Burnout.</strong>
-                    </p>
+                <div class="platform-version">
+                  💼 LinkedIn: A simple workflow that gave me back 10 hours a week.
                 </div>
-            </section>
-
-            <section id="solution" class="comparison">
-                <div class="container">
-                    <h2>One draft — four ready‑to‑post versions</h2>
-                    <div class="comparison-grid">
-                        <div class="comparison-col">
-                            <div class="comparison-label">Before</div>
-                            <div class="comparison-before">
-                                <p>
-                                    “Today I want to share a productivity hack
-                                    that saves me 2 hours daily...”
-                                </p>
-                                <span class="badge">85 characters</span>
-                            </div>
-                        </div>
-                        <div class="comparison-arrow">→</div>
-                        <div class="comparison-col">
-                            <div class="comparison-label">
-                                After (12 seconds)
-                            </div>
-                            <div class="comparison-after">
-                                <div class="platform-version">
-                                    🐦 Twitter: Productivity hack: how I save 2h
-                                    every day 👇
-                                </div>
-                                <div class="platform-version">
-                                    💼 LinkedIn: A simple workflow that gave me
-                                    back 10 hours a week.
-                                </div>
-                                <div class="platform-version">
-                                    📸 Instagram: This one trick changed how I
-                                    work 🔥 save for later!
-                                </div>
-                                <div class="platform-version">
-                                    🎵 TikTok: POV: you stop wasting 2h a day 😱
-                                    #productivity
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="platform-version">
+                  📸 Instagram: This one trick changed how I work 🔥 save for later!
                 </div>
-            </section>
-
-            <section class="social-proof section">
-                <div class="container">
-                    <h2>Real stories</h2>
-                    <div class="testimonials-grid">
-                        <div class="testimonial-card">
-                            <div class="testimonial-avatar">
-                                <img
-                                    src="/assets/avatar-emily.webp"
-                                    alt="Emily R."
-                                />
-                            </div>
-                            <div class="testimonial-content">
-                                <p class="testimonial-text">
-                                    “Adaptation used to take an hour. Now it's 2
-                                    minutes. I actually have evenings again.”
-                                </p>
-                                <p class="testimonial-author">
-                                    <strong>Emily R.</strong>, Freelance SMM,
-                                    London
-                                </p>
-                            </div>
-                        </div>
-                        <div class="testimonial-card">
-                            <div class="testimonial-avatar">
-                                <img
-                                    src="/assets/avatar-david.webp"
-                                    alt="David K."
-                                />
-                            </div>
-                            <div class="testimonial-content">
-                                <p class="testimonial-text">
-                                    “I can finally keep up with 5 clients
-                                    without burning out. Worth every penny.”
-                                </p>
-                                <p class="testimonial-author">
-                                    <strong>David K.</strong>, Content Creator,
-                                    NYC
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="platform-version">
+                  🎵 TikTok: POV: you stop wasting 2h a day 😱 #productivity
                 </div>
-            </section>
-
-            <section id="demo" class="demo section">
-                <div class="container">
-                    <h2>Try it. Right now.</h2>
-                    <div class="demo-interface">
-                        <label for="demoText">Paste your draft:</label>
-                        <textarea
-                            id="demoText"
-                            rows="6"
-                            placeholder="Today I want to share a productivity hack that saves me 2 hours daily..."
-                        ></textarea>
-                        <button class="cta-button primary" id="demoButton">
-                            Start →
-                        </button>
-                    </div>
-                    <div class="demo-result hidden" id="demoResult">
-                        <div class="demo-notice">
-                            <i class="fa-solid fa-flask"></i>
-                            <strong>Demo mode</strong> — simulated adaptation.
-                            <span class="demo-badge">Preview</span>
-                        </div>
-                        <div class="demo-split">
-                            <div class="demo-column">
-                                <h3>Your text</h3>
-                                <div
-                                    class="demo-original"
-                                    id="demoOriginal"
-                                ></div>
-                            </div>
-                            <div class="demo-column">
-                                <h3>4 versions</h3>
-                                <div class="demo-versions-grid">
-                                    <div class="demo-version-block">
-                                        <div class="platform-header">
-                                            <div class="platform-icon">🐦</div>
-                                            <h4>Twitter</h4>
-                                            <span class="char-count"
-                                                >(280)</span
-                                            >
-                                        </div>
-                                        <p id="demo-twitter"></p>
-                                    </div>
-                                    <div class="demo-version-block">
-                                        <div class="platform-header">
-                                            <div class="platform-icon">💼</div>
-                                            <h4>LinkedIn</h4>
-                                            <span class="char-count"
-                                                >(3000)</span
-                                            >
-                                        </div>
-                                        <p id="demo-linkedin"></p>
-                                    </div>
-                                    <div class="demo-version-block">
-                                        <div class="platform-header">
-                                            <div class="platform-icon">📸</div>
-                                            <h4>Instagram</h4>
-                                            <span class="char-count"
-                                                >(2200)</span
-                                            >
-                                        </div>
-                                        <p id="demo-instagram"></p>
-                                    </div>
-                                    <div class="demo-version-block">
-                                        <div class="platform-header">
-                                            <div class="platform-icon">🎵</div>
-                                            <h4>TikTok</h4>
-                                            <span class="char-count"
-                                                >(150)</span
-                                            >
-                                        </div>
-                                        <p id="demo-tiktok"></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="future-pacing section">
-                <div class="container">
-                    <h2>Picture your evening…</h2>
-                    <div class="future-scene">
-                        <div class="future-before">
-                            <p>❌ 6 PM — start rewriting for Instagram</p>
-                            <p>❌ 7:30 PM — still stuck on LinkedIn tone</p>
-                            <p>❌ 9 PM — post done, but no energy left</p>
-                        </div>
-                        <div class="future-arrow">↓</div>
-                        <div class="future-after">
-                            <p>✅ 6 PM — paste draft → 4 versions ready</p>
-                            <p>✅ 6:10 PM — tweak one headline</p>
-                            <p>✅ 6:30 PM — scheduled, free evening</p>
-                            <p>
-                                <strong
-                                    >✅ 8 PM — your hobby, your friends, your
-                                    life.</strong
-                                >
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="final-cta section">
-                <div class="container">
-                    <h2>Start free. No risk.</h2>
-                    <button class="cta-button primary xlarge">
-                        Try OmniKross →
-                    </button>
-                    <div class="cta-guarantees">
-                        <p>
-                            ⚡ No credit card · 30-day guarantee · Cancel
-                            anytime
-                        </p>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <footer class="footer">
-            <div class="footer-container">
-                <div class="footer-bottom">
-                    <p>© 2026 OmniKross. Adaptive Publishing.</p>
-                </div>
+              </div>
             </div>
-        </footer>
+          </div>
+        </div>
+      </section>
 
-        <script src="/js/config.js"></script>
-        <script src="/js/app.js"></script>
-        <script src="/js/pages.js"></script>
-        <script src="/js/validation.js"></script>
-        <script src="/js/performance-a11y.js"></script>
-        <script src="/js/responsive.js"></script>
-    </body>
+      <section class="social-proof section">
+        <div class="container">
+          <h2>Real stories</h2>
+          <div class="testimonials-grid">
+            <div class="testimonial-card">
+              <div class="testimonial-avatar">
+                <img src="/assets/avatar-emily.webp" alt="Emily R." />
+              </div>
+              <div class="testimonial-content">
+                <p class="testimonial-text">
+                  “Adaptation used to take an hour. Now it's 2 minutes. I actually have evenings
+                  again.”
+                </p>
+                <p class="testimonial-author"><strong>Emily R.</strong>, Freelance SMM, London</p>
+              </div>
+            </div>
+            <div class="testimonial-card">
+              <div class="testimonial-avatar">
+                <img src="/assets/avatar-david.webp" alt="David K." />
+              </div>
+              <div class="testimonial-content">
+                <p class="testimonial-text">
+                  “I can finally keep up with 5 clients without burning out. Worth every penny.”
+                </p>
+                <p class="testimonial-author"><strong>David K.</strong>, Content Creator, NYC</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="demo" class="demo section">
+        <div class="container">
+          <h2>Try it. Right now.</h2>
+          <div class="demo-interface">
+            <label for="demoText">Paste your draft:</label>
+            <textarea
+              id="demoText"
+              rows="6"
+              placeholder="Today I want to share a productivity hack that saves me 2 hours daily..."
+            ></textarea>
+            <button class="cta-button primary" id="demoButton">Start →</button>
+          </div>
+          <div class="demo-result hidden" id="demoResult">
+            <div class="demo-notice">
+              <i class="fa-solid fa-flask"></i>
+              <strong>Demo mode</strong> — simulated adaptation.
+              <span class="demo-badge">Preview</span>
+            </div>
+            <div class="demo-split">
+              <div class="demo-column">
+                <h3>Your text</h3>
+                <div class="demo-original" id="demoOriginal"></div>
+              </div>
+              <div class="demo-column">
+                <h3>4 versions</h3>
+                <div class="demo-versions-grid">
+                  <div class="demo-version-block">
+                    <div class="platform-header">
+                      <div class="platform-icon">🐦</div>
+                      <h4>Twitter</h4>
+                      <span class="char-count">(280)</span>
+                    </div>
+                    <p id="demo-twitter"></p>
+                  </div>
+                  <div class="demo-version-block">
+                    <div class="platform-header">
+                      <div class="platform-icon">💼</div>
+                      <h4>LinkedIn</h4>
+                      <span class="char-count">(3000)</span>
+                    </div>
+                    <p id="demo-linkedin"></p>
+                  </div>
+                  <div class="demo-version-block">
+                    <div class="platform-header">
+                      <div class="platform-icon">📸</div>
+                      <h4>Instagram</h4>
+                      <span class="char-count">(2200)</span>
+                    </div>
+                    <p id="demo-instagram"></p>
+                  </div>
+                  <div class="demo-version-block">
+                    <div class="platform-header">
+                      <div class="platform-icon">🎵</div>
+                      <h4>TikTok</h4>
+                      <span class="char-count">(150)</span>
+                    </div>
+                    <p id="demo-tiktok"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="future-pacing section">
+        <div class="container">
+          <h2>Picture your evening…</h2>
+          <div class="future-scene">
+            <div class="future-before">
+              <p>❌ 6 PM — start rewriting for Instagram</p>
+              <p>❌ 7:30 PM — still stuck on LinkedIn tone</p>
+              <p>❌ 9 PM — post done, but no energy left</p>
+            </div>
+            <div class="future-arrow">↓</div>
+            <div class="future-after">
+              <p>✅ 6 PM — paste draft → 4 versions ready</p>
+              <p>✅ 6:10 PM — tweak one headline</p>
+              <p>✅ 6:30 PM — scheduled, free evening</p>
+              <p>
+                <strong>✅ 8 PM — your hobby, your friends, your life.</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="final-cta section">
+        <div class="container">
+          <h2>Start free. No risk.</h2>
+          <button class="cta-button primary xlarge">Try OmniKross →</button>
+          <div class="cta-guarantees">
+            <p>⚡ No credit card · 30-day guarantee · Cancel anytime</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-bottom">
+          <p>© 2026 OmniKross. Adaptive Publishing.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/pages.js"></script>
+    <script src="/js/validation.js"></script>
+    <script src="/js/performance-a11y.js"></script>
+    <script src="/js/responsive.js"></script>
+  </body>
 </html>
