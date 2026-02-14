@@ -1,18 +1,21 @@
 import { Database } from 'bun:sqlite';
-import { join } from 'path';
 import { mkdirSync, existsSync } from 'fs';
+import { join } from 'path';
 
-// Создаем папку для БД если её нет
 const dataDir = join(process.cwd(), 'data');
-if (!existsSync(dataDir)) mkdirSync(dataDir);
+if (!existsSync(dataDir)) mkdirSync(dataDir, { recursive: true });
 
 const db = new Database(join(dataDir, 'omnikross.db'));
 
-/**
- * Инициализация схемы базы данных
- */
+db.exec('PRAGMA journal_mode = WAL;');
+db.exec('PRAGMA synchronous = NORMAL;');
+
+const getInitialSlots = () => {
+  const parsed = Number.parseInt(process.env.MAX_SIGNUPS ?? '', 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 500;
+};
+
 export const initDb = () => {
-  // Таблица лидов
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -22,7 +25,6 @@ export const initDb = () => {
     )
   `);
 
-  // Таблица конфига для хранения счетчика слотов
   db.run(`
     CREATE TABLE IF NOT EXISTS config (
       key TEXT PRIMARY KEY,
@@ -30,12 +32,28 @@ export const initDb = () => {
     )
   `);
 
-  // Устанавливаем начальное кол-во слотов, если их нет
-  const row = db.prepare('SELECT value FROM config WHERE key = "remaining_slots"').get();
+  db.run(`
+    CREATE TABLE IF NOT EXISTS registrations (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      type TEXT NOT NULL,
+      role TEXT NOT NULL,
+      lang TEXT NOT NULL,
+      email TEXT NOT NULL,
+      telegram TEXT,
+      company TEXT,
+      clients_count INTEGER,
+      confirm_token TEXT NOT NULL UNIQUE,
+      is_confirmed INTEGER NOT NULL DEFAULT 0,
+      confirmed_at DATETIME,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  const row = db.prepare('SELECT value FROM config WHERE key = ?').get('remaining_slots');
   if (!row) {
-    db.run('INSERT INTO config (key, value) VALUES ("remaining_slots", "500")');
+    db.prepare('INSERT INTO config (key, value) VALUES (?, ?)').run('remaining_slots', String(getInitialSlots()));
   }
-  
+
   console.log('📦 SQLite Database initialized.');
 };
 
