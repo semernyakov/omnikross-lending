@@ -9,16 +9,13 @@ FROM oven/bun:1-alpine
 
 WORKDIR /app
 
-# Install curl for health checks and debugging
-RUN apk add --no-cache curl
-
 # Copy application files
-COPY package.json ./
+COPY package.json bun.lock ./
 COPY src ./src
 COPY public ./public
 
-# Copy local node_modules (optional - will fail gracefully if not present)
-COPY --chown=bun:bun node_modules/ ./node_modules/
+# Install dependencies in container
+RUN bun install --frozen-lockfile
 
 # Create and set ownership of data directory
 RUN mkdir -p /app/data && \
@@ -28,9 +25,9 @@ RUN mkdir -p /app/data && \
 # Switch to non-root user
 USER bun
 
-# Health check using curl (more reliable than fetch)
+# Health check using Bun's built-in fetch
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-    CMD curl -f http://localhost:3000/api/health || exit 1
+    CMD bun -e "fetch('http://localhost:3000/api/health').then(() => process.exit(0)).catch(() => process.exit(1))"
 
 # Expose port
 EXPOSE 3000

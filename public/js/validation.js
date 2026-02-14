@@ -445,33 +445,55 @@ class ErrorHandler {
    * @param {string} lang - Language code
    */
   static showGlobalError(message, lang) {
+    // Sanitize message to prevent XSS
+    const sanitizedMessage = message
+      .replace(/[<>]/g, '')
+      .replace(/javascript:/gi, '')
+      .replace(/on\w+=/gi, '')
+      .substring(0, 500)
+
     // Create error notification element
     const errorDiv = document.createElement('div')
     errorDiv.className = 'notification notification-error'
     errorDiv.setAttribute('role', 'alert')
     errorDiv.setAttribute('aria-live', 'assertive')
 
-    errorDiv.innerHTML = `
-      <div class="notification-content">
-        <span class="notification-icon">⚠️</span>
-        <span class="notification-message">${message}</span>
-        <button class="notification-close" aria-label="Close notification">&times;</button>
-      </div>
-    `
+    // Use safe DOM manipulation instead of innerHTML
+    const contentDiv = document.createElement('div')
+    contentDiv.className = 'notification-content'
+    
+    const iconSpan = document.createElement('span')
+    iconSpan.className = 'notification-icon'
+    iconSpan.textContent = '⚠️'
+    
+    const messageSpan = document.createElement('span')
+    messageSpan.className = 'notification-message'
+    messageSpan.textContent = sanitizedMessage
+    
+    const closeButton = document.createElement('button')
+    closeButton.className = 'notification-close'
+    closeButton.setAttribute('aria-label', 'Close notification')
+    closeButton.textContent = '×'
+    
+    contentDiv.appendChild(iconSpan)
+    contentDiv.appendChild(messageSpan)
+    contentDiv.appendChild(closeButton)
+    errorDiv.appendChild(contentDiv)
 
     // Add to document body
     document.body.appendChild(errorDiv)
 
-    // Auto-remove after 5 seconds
-    setTimeout(() => {
-      errorDiv.remove()
-    }, 5000)
-
     // Add close functionality
-    const closeButton = errorDiv.querySelector('.notification-close')
     closeButton.addEventListener('click', () => {
       errorDiv.remove()
     })
+
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+      if (errorDiv.parentNode) {
+        errorDiv.remove()
+      }
+    }, 5000)
   }
 
   /**
@@ -650,18 +672,13 @@ class ApiService {
       })
 
       if (!response.ok) {
-        throw new APIError(`HTTP ${response.status}: ${response.statusText}`, response.status)
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
 
       return await response.json()
     } catch (error) {
-      if (error instanceof APIError) {
-        throw error
-      } else if (error instanceof TypeError) {
-        throw new NetworkError('Network error. Please check your connection.', null)
-      } else {
-        throw new APIError('Unexpected error occurred', null, error)
-      }
+      console.error('API request failed:', error)
+      throw new Error('Network error. Please check your connection.')
     }
   }
 

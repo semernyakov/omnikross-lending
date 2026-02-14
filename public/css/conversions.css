@@ -1,31 +1,29 @@
 /*
-
 ═══════════════════════════════════════════════════════════
 
-OMNIKROSS v3.1 — Conversion Elements
+OMNIKROSS v3.1 — Conversion Elements (TailwindCSS Compatible)
 
 Hero, Calculator, Demo, Pricing Tables
 
 ═══════════════════════════════════════════════════════════
 */
 
-/* ─── Hero Section ─── */
+/* ─── Hero Section (TailwindCSS Compatible) ─── */
 .hero {
+  @apply min-h-screen flex items-center justify-center text-center pt-20 relative;
   min-height: 90vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
   padding-top: 80px;
   position: relative;
 }
 .hero-pain {
+  @apply text-xl max-w-xl mx-auto mb-8 leading-relaxed;
   font-size: 1.25rem;
   max-width: 600px;
   margin: 0 auto 2rem;
   line-height: 1.6;
 }
 .price-anchor {
+  @apply flex gap-4 justify-center items-center mb-8 font-semibold;
   display: flex;
   gap: 1rem;
   justify-content: center;
@@ -34,16 +32,19 @@ Hero, Calculator, Demo, Pricing Tables
   font-weight: 600;
 }
 .old-price {
+  @apply line-through text-text-muted;
   text-decoration: line-through;
   color: var(--text-muted);
 }
 .new-price {
+  @apply text-secondary bg-secondary/10 px-3 py-1 rounded-full;
   color: var(--color-secondary);
   background: rgba(0, 255, 136, 0.1);
   padding: 4px 12px;
   border-radius: var(--radius-full);
 }
 .micro-trust {
+  @apply mt-4 text-xs text-text-muted;
   margin-top: 1rem;
   font-size: 0.85rem;
   color: var(--text-muted);

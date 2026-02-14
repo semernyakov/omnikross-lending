@@ -5,34 +5,19 @@
   "type": "module",
   "scripts": {
     "dev": "bun --hot src/index.ts",
-    "dev:watch": "bun run --watch src/index.ts",
     "start": "bun src/index.ts",
     "db:init": "bun src/db.ts",
-    "build": "bun run build.js",
-    "build:frontend": "bun build public/js/index.js --outdir dist/js --minify --target browser",
-    "build:css": "bunx tailwindcss -i public/css/core.css -o dist/css/core.css --minify",
-    "build:custom": "bun run build.js",
-    "preview": "bunx serve -l 4173 dist",
-    "test": "bun test",
-    "lint": "bunx eslint .",
-    "lint:fix": "bunx eslint . --fix",
-    "format": "bunx prettier --write .",
-    "typecheck": "bunx tsc --noEmit"
+    "build": "bun run build-bun-native.js",
+    "build:css": "bun tailwindcss -i public/css/core.css -o dist/css/core.css --minify",
+    "preview": "bun serve -l 4173 dist"
   },
   "dependencies": {
-    "@hono/zod-openapi": "^1.2.1",
+    "bun-plugin-html": "^2.2.8",
     "hono": "^4.11.9",
     "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "tailwindcss": "^3.4.19",
-    "autoprefixer": "^10.4.24",
-    "postcss": "^8.5.6",
-    "bun-types": "latest",
-    "eslint": "^8.57.1",
-    "@eslint/js": "^9.39.2",
-    "prettier": "^3.8.1",
-    "typescript": "^5.9.3"
+    "tailwindcss": "^3.4.19"
   }
 }

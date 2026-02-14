@@ -14,6 +14,13 @@ type SignupData = z.infer<typeof SignupSchema>
 
 const app = new Hono()
 
+// Security headers middleware
+app.use('*', async (c, next) => {
+  c.header('X-Frame-Options', 'DENY')
+  c.header('Content-Security-Policy', "frame-ancestors 'none'")
+  await next()
+})
+
 // Global error handler
 app.onError((err, c) => {
   console.error('Unhandled error:', err)

@@ -15,17 +15,15 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; 
                        style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
-                       script-src 'self' 'unsafe-inline';
+                       script-src 'self';
                        img-src 'self' data:;
                        connect-src 'self' https://api.omnikross.ru;
                        font-src 'self' https://cdnjs.cloudflare.com;
                        object-src 'none';
                        base-uri 'self';
-                       frame-ancestors 'none';
                        upgrade-insecure-requests;"
     />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="X-Frame-Options" content="DENY" />
     <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     <meta
@@ -69,6 +67,7 @@
     />
     <link rel="stylesheet" href="/css/core.css" />
     <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/css/tailwind.css" />
   </head>
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -82,21 +81,22 @@
           class="index-logo"
         />
         <h1><span class="gradient-text">OmniKross</span></h1>
-        <p class="subhead">AI‑powered content adaptation<br />Выберите язык и формат работы</p>
-
-        <h2 class="section-title-mb">1. Язык / Language</h2>
-        <div class="selector-grid">
+        <p class="subhead" aria-label="Выберите язык и формат работы">
+          AI‑powered content adaptation<br />Выберите язык и формат работы</p>
+          
           <div
             class="selector-card"
-            data-lang="ru"
-            role="button"
-            tabindex="0"
-            aria-label="Русский язык"
-          >
-            <div class="selector-icon">🇷🇺</div>
-            <h4>Русский</h4>
-            <p class="platform-hint">VK, Telegram, Дзен, OK</p>
+              data-lang="ru"
+              role="button"
+              tabindex="0"
+              aria-label="Русский язык"
+            >
+              <div class="selector-icon">🇷🇺</div>
+              <h4>Русский</h4>
+              <p class="platform-hint">Twitter, LinkedIn, Instagram, TikTok</p>
+            </div>
           </div>
+          
           <div
             class="selector-card"
             data-lang="en"

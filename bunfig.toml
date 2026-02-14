@@ -1,21 +1,10 @@
 [install]
-# Cache configuration
 cache = true
 cacheFolder = ".bun-cache"
 
 [build]
-# Build configuration
 target = "browser"
 minify = true
-sourcemap = true
-
-[test]
-# Test configuration
-coverage = true
-coverageDir = "coverage"
-coverageReporter = ["text"]
 
 [run]
-# Runtime configuration
 hot = true
-watch = true

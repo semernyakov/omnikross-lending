@@ -1,5 +1,4 @@
 /*
-
 ═══════════════════════════════════════════════════════════
 
 OMNIKROSS v3.1 — Core Design System
@@ -8,6 +7,9 @@ Foundation: Variables, Typography, Reset, Utilities
 
 ═══════════════════════════════════════════════════════════
 */
+
+/* ─── TailwindCSS Preflight Override ─── */
+/* Используем TailwindCSS для нормализации вместо кастомного reset */
 
 :root {
   /* ─── Palette (Brand) ─── */
@@ -99,17 +101,31 @@ Foundation: Variables, Typography, Reset, Utilities
   --mobile-menu-bg: #ffffff;
 }
 
-/* ─── Reset & Base ─── */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+/* ─── Dark Theme (Default) ─── */
+[data-theme='dark'],
+:root {
+  --bg-main: #0a0a0a;
+  --bg-card: #111114;
+  --bg-card-hover: #18181c;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.75);
+  --text-muted: rgba(255, 255, 255, 0.45);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(106, 13, 173, 0.3);
+  --input-bg: rgba(255, 255, 255, 0.04);
+  --navbar-bg: rgba(10, 10, 10, 0.8);
+  --navbar-bg-scroll: rgba(10, 10, 10, 0.95);
+  --mobile-menu-bg: #111114;
 }
+
+/* ─── Base Styles (TailwindCSS Compatible) ─── */
+/* TailwindCSS обрабатывает нормализацию через @tailwind base */
+
 html {
   scroll-behavior: smooth;
 }
+
 body {
-  margin: 0;
   font-family: var(--font-main);
   background: var(--bg-main);
   color: var(--text-primary);
@@ -119,7 +135,7 @@ body {
   background-attachment: fixed;
 }
 
-/* ─── Typography ─── */
+/* ─── Typography (TailwindCSS Override) ─── */
 h1,
 h2,
 h3,
@@ -130,19 +146,23 @@ h5 {
   margin-top: 0;
   margin-bottom: 1rem;
 }
+
 h1 {
   font-size: clamp(2.5rem, 5vw, 4rem);
   letter-spacing: -0.02em;
   text-align: center;
 }
+
 h2 {
   font-size: clamp(2rem, 4vw, 3rem);
   letter-spacing: -0.01em;
   text-align: center;
 }
+
 h3 {
   font-size: clamp(1.5rem, 3vw, 2.25rem);
 }
+
 p {
   margin-bottom: 1.5rem;
   color: var(--text-secondary);
