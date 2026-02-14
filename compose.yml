@@ -4,26 +4,16 @@ services:
     container_name: omnikross_prod
     restart: unless-stopped
     ports:
-      - "127.0.0.1:3000:3000" # Проксируем через Nginx на хосте
+      - "127.0.0.1:3000:3000"
     volumes:
-      - ./data:/app/data # Сохраняем SQLite базу
+      - ./data:/app/data
     environment:
-      - NODE_ENV=production
-      - TZ=Europe/Moscow
-      - MAX_SIGNUPS=100
-      - PORT=3000
-    deploy:
-      resources:
-        limits:
-          memory: 128M
+      NODE_ENV: production
+      TZ: Europe/Moscow
+      MAX_SIGNUPS: 100
+      PORT: 3000
     healthcheck:
-      test:
-        [
-          "CMD",
-          "bun",
-          "-e",
-          "fetch('http://localhost:3000/api/health').then(r => r.ok ? process.exit(0) : process.exit(1))",
-        ]
+      test: ["CMD", "bun", "-e", "fetch('http://localhost:3000/api/health').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))"]
       interval: 30s
       timeout: 5s
       retries: 3
