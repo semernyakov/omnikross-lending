@@ -1,94 +1,39 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<!doctype html>
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OmniKross — AI Content Adaptation</title>
-    
-    <!-- SEO & Meta -->
-    <meta name="description" content="One draft → Twitter, LinkedIn, IG, TikTok in 12 seconds. Stop manual rewriting.">
-    <link rel="icon" type="image/svg+xml" href="/assets/kross-node.svg">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#6a0dad">
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-
-    <!-- Стили (после билда будут в одном файле) -->
-    <link rel="stylesheet" href="/css/core.css">
-    
-    <!-- Inline Critical CSS [Маня] для LCP < 1s -->
-    <style>
-        .loading-screen { position: fixed; inset: 0; background: #0a0a0a; z-index: 9999; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s; }
-        .loading-screen.fade { opacity: 0; pointer-events: none; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmniKross — Выбор роли</title>
+  <meta name="description" content="Выберите сценарий OmniKross: SMM Агентство или Соло SMM." />
+  <link rel="stylesheet" href="/css/core.css" />
 </head>
-<body class="bg-bg-main text-text-primary">
+<body>
+  <main class="entry-wrap">
+    <section class="entry-hero">
+      <p class="eyebrow">OMNIKROSS • MIRROR COPY</p>
+      <h1>Выберите вашу вселенную роста</h1>
+      <p class="sub">Технически одна платформа. Психологически — два точных сценария: маржинальность агентства или баланс жизни solo-специалиста.</p>
+    </section>
 
-    <!-- [Блок 0] Индикатор загрузки -->
-    <div id="loader" class="loading-screen">
-        <img src="/assets/kross-node.svg" class="w-16 h-16 animate-pulse" alt="Loading...">
-    </div>
-
-    <!-- [Блок 0] Навигация -->
-    <nav class="fixed top-0 w-full z-[1000] backdrop-blur-lg border-b border-border-subtle bg-navbar-bg">
-        <div class="container mx-auto flex justify-between items-center px-6 py-4">
-            <a href="/" class="flex items-center gap-2 group">
-                <img src="/assets/kross-node.svg" class="w-8 h-8 group-hover:rotate-12 transition-transform" alt="Logo">
-                <span class="text-2xl font-black gradient-text">OmniKross</span>
-            </a>
-            <div class="flex items-center gap-4 md:gap-8">
-                <!-- Переключатель Ролей [Ник Коленда: Choice Architecture] -->
-                <div class="hidden sm:flex bg-input-bg p-1 rounded-full border border-border-subtle">
-                    <button id="btn-role-agency" class="px-4 py-1 rounded-full text-xs font-bold transition-all" onclick="App.setRole('agency')">Agency</button>
-                    <button id="btn-role-solo" class="px-4 py-1 rounded-full text-xs font-bold transition-all" onclick="App.setRole('solo')">Solo</button>
-                </div>
-                <button id="theme-toggle" class="p-2 hover:bg-white/10 rounded-full transition-colors" onclick="App.toggleTheme()">🌓</button>
-            </div>
+    <section class="entry-grid">
+      <article class="entry-card">
+        <h2>SMM Агентство</h2>
+        <p>Сценарий для масштабирования продакшна без расширения штата.</p>
+        <div class="entry-links">
+          <a href="/ru/agency.html">RU версия</a>
+          <a href="/en/agency.html">EN version</a>
         </div>
-    </nav>
+      </article>
 
-    <!-- [Блоки 1-9] Динамический контент -->
-    <main id="main-content" class="pt-24">
-        <!-- Контент инжектится через AppCore.js -->
-    </main>
-
-    <!-- [Блок 10] Футер -->
-    <footer class="bg-bg-card/30 border-t border-border-subtle py-12 mt-20">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="text-text-muted text-sm">
-                © 2026 OmniKross. Adaptive Publishing. <br class="md:hidden">
-                <span class="hidden md:inline">|</span> 
-                <a href="#" class="hover:text-secondary underline decoration-dotted">Privacy Policy</a>
-            </div>
-            <div class="flex gap-4">
-                <span class="text-[10px] px-2 py-1 rounded border border-secondary/30 text-secondary">GDPR Compliant</span>
-                <span class="text-[10px] px-2 py-1 rounded border border-primary/30 text-primary">AES-256 Encryption</span>
-            </div>
+      <article class="entry-card">
+        <h2>Соло SMM</h2>
+        <p>Сценарий для снижения выгорания и возврата времени на жизнь.</p>
+        <div class="entry-links">
+          <a href="/ru/solo.html">RU версия</a>
+          <a href="/en/solo.html">EN version</a>
         </div>
-    </footer>
-
-    <!-- [Кирилл] Cookie Consent -->
-    <div id="cookie-banner" class="fixed bottom-6 left-6 right-6 md:w-96 bg-bg-card border border-border-glow p-6 rounded-2xl z-[2000] shadow-deep hidden translate-y-10 opacity-0 transition-all duration-500">
-        <p class="text-xs text-text-secondary mb-4 leading-relaxed">
-            We use cookies to personalize content and analyze our traffic. By clicking "Accept", you agree to our data processing.
-        </p>
-        <button onclick="App.acceptCookies()" class="w-full btn-primary py-3 text-sm">Accept All</button>
-    </div>
-
-    <!-- Скрипты -->
-    <script src="/js/config.js"></script>
-    <script src="/js/AppCore.js" type="module"></script>
-    
-    <!-- Регистрация SW -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js');
-            });
-        }
-    </script>
+      </article>
+    </section>
+  </main>
 </body>
 </html>

@@ -7,3 +7,6 @@ dist/
 # temp files
 *.tmp
 *.bak
+.env
+.env.*
+!.env.example
