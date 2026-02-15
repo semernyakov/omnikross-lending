@@ -1,18 +1,13 @@
 {
-  "name": "omnikross-landing-api",
-  "version": "1.0.0",
-  "description": "Lightweight API for OmniKross landing page (Bun + Hono + SQLite)",
+  "name": "omnikross-landing",
   "type": "module",
   "scripts": {
-    "dev": "bun --hot src/index.ts",
-    "dev:watch": "bun run --watch src/index.ts",
-    "start": "bun src/index.ts",
-    "db:init": "bun src/db.ts"
+    "dev": "bun run build:css && bun --hot src/index.ts",
+    "build": "bun run build:css",
+    "build:css": "mkdir -p dist/css && cp public/css/core.css dist/css/core.css",
+    "start": "bun src/index.ts"
   },
   "dependencies": {
-    "hono": "^4.0.0"
-  },
-  "devDependencies": {
-    "@types/bun": "latest"
+    "hono": "^4.11.9"
   }
 }

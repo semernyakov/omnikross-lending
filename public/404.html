@@ -1,96 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>404 — Omnikross</title>
-  <meta name="robots" content="noindex" />
-  <link rel="icon" href="assets/kross-node.webp" type="image/webp" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #0A0A0A;
-      --accent: #6A0DAD;
-      --green: #00FF88;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg);
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      text-align: center;
-      padding: 24px;
-      background-image:
-        radial-gradient(ellipse at 30% 50%, rgba(106, 13, 173, 0.12) 0%, transparent 50%),
-        radial-gradient(ellipse at 70% 30%, rgba(0, 255, 136, 0.06) 0%, transparent 50%);
-    }
-    .container { max-width: 500px; }
-    .code {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(5rem, 15vw, 10rem);
-      font-weight: 700;
-      background: linear-gradient(135deg, #6A0DAD, #00FF88);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1;
-      margin-bottom: 16px;
-    }
-    h1 {
-      font-size: 1.5rem;
-      font-weight: 800;
-      margin-bottom: 12px;
-    }
-    p {
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 32px;
-      line-height: 1.6;
-    }
-    .links {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .links a {
-      padding: 12px 28px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: 0.3s ease;
-    }
-    .links a.primary {
-      background: linear-gradient(135deg, #6A0DAD, #00FF88);
-      color: #fff;
-    }
-    .links a.primary:hover {
-      box-shadow: 0 8px 30px rgba(106, 13, 173, 0.4);
-      transform: translateY(-2px);
-    }
-    .links a.secondary {
-      border: 1px solid rgba(255,255,255,0.15);
-      color: rgba(255,255,255,0.7);
-    }
-    .links a.secondary:hover {
-      border-color: var(--green);
-      color: var(--green);
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="code">404</div>
-    <h1>Страница не найдена / Page Not Found</h1>
-    <p>Эта нейро-связь оборвалась. Но вы можете вернуться к эволюции.<br/>This neural link is broken. But you can return to evolution.</p>
-    <div class="links">
-      <a href="index_ru.html" class="primary">🇷🇺 Русская версия</a>
-      <a href="index_en.html" class="secondary">🇬🇧 English Version</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 — Omnikross</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="assets/kross-node.webp" type="image/webp" />
+    <link rel="stylesheet" href="/css/core.css" />
+    <link rel="stylesheet" href="/css/tailwind.css" />
+    <style>
+      :root {
+        --bg: #0a0a0a;
+        --accent: #6a0dad;
+        --green: #00ff88;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg);
+        color: #fff;
+        font-family: 'Inter', sans-serif;
+        text-align: center;
+        padding: 24px;
+        background-image:
+          radial-gradient(ellipse at 30% 50%, rgba(106, 13, 173, 0.12) 0%, transparent 50%),
+          radial-gradient(ellipse at 70% 30%, rgba(0, 255, 136, 0.06) 0%, transparent 50%);
+      }
+      .container {
+        max-width: 500px;
+      }
+      .code {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: clamp(5rem, 15vw, 10rem);
+        font-weight: 700;
+        background: linear-gradient(135deg, #6a0dad, #00ff88);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1;
+        margin-bottom: 16px;
+      }
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-bottom: 12px;
+      }
+      p {
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 32px;
+        line-height: 1.6;
+      }
+      .links {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .links a {
+        padding: 12px 28px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: 0.3s ease;
+      }
+      .links a.primary {
+        background: linear-gradient(135deg, #6a0dad, #00ff88);
+        color: #fff;
+      }
+      .links a.primary:hover {
+        box-shadow: 0 8px 30px rgba(106, 13, 173, 0.4);
+        transform: translateY(-2px);
+      }
+      .links a.secondary {
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .links a.secondary:hover {
+        border-color: var(--green);
+        color: var(--green);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="code">404</div>
+      <h1>Страница не найдена / Page Not Found</h1>
+      <p>
+        Эта нейро-связь оборвалась. Но вы можете вернуться к эволюции.<br />This neural link is
+        broken. But you can return to evolution.
+      </p>
+      <div class="links">
+        <a href="index_ru.html" class="primary">🇷🇺 Русская версия</a>
+        <a href="index_en.html" class="secondary">🇬🇧 English Version</a>
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>
