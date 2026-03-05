@@ -12,9 +12,6 @@ services:
       TZ: Europe/Moscow
       MAX_SIGNUPS: 100
       PORT: 3000
-      ZAI_API_KEY: ${ZAI_API_KEY:-}
-      SUPABASE_URL: ${SUPABASE_URL:-}
-      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY:-}
     healthcheck:
       test: ["CMD", "bun", "-e", "fetch('http://localhost:3000/api/health').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))"]
       interval: 30s
