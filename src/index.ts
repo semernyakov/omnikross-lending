@@ -198,9 +198,8 @@ app.get('/api/health', (c) => c.json({
   }
 }));
 
-app.use('/css/*', serveStatic({ root: './dist' }));
-app.use('*', serveStatic({ root: './public' }));
-app.get('*', serveStatic({ path: './public/index.html' }));
+app.use('*', serveStatic({ root: './dist' }));
+app.get('*', serveStatic({ path: './dist/index.html' }));
 
 const port = Number.parseInt(process.env.PORT ?? '3000', 10) || 3000;
 console.log(`🚀 OmniKross Server running on port ${port}`);
