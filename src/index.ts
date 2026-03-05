@@ -4,6 +4,7 @@ import { serveStatic } from 'hono/bun';
 import { secureHeaders } from 'hono/secure-headers';
 import { randomUUID } from 'crypto';
 import db, { initDb } from './db';
+import { markRegistrationConfirmedInSupabase, syncRegistrationToSupabase } from './supabase';
 
 const app = new Hono();
 
@@ -179,6 +180,11 @@ app.post('/api/register-interest', async (c) => {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `).run(data.type, data.role, data.lang, data.email, data.telegram ?? null, data.company ?? null, data.clientsCount ?? null, token);
 
+    await syncRegistrationToSupabase({
+      ...data,
+      confirmToken: token
+    });
+
     const origin = new URL(c.req.url).origin;
     const link = `${origin}/confirm.html?token=${token}`;
     await sendConfirmationEmail(data.email, link);
@@ -202,6 +208,8 @@ app.post('/api/confirm-registration', async (c) => {
     if (existing.is_confirmed === 1) return c.json({ success: true, message: 'Already confirmed' });
 
     db.prepare('UPDATE registrations SET is_confirmed = 1, confirmed_at = CURRENT_TIMESTAMP WHERE id = ?').run(existing.id);
+    await markRegistrationConfirmedInSupabase(token);
+
     return c.json({ success: true, message: 'Registration confirmed' });
   } catch (err) {
     console.error('Confirm error:', err);

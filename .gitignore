@@ -9,3 +9,6 @@ dist/
 *.bak
 *.data
 
+.env
+.env.*
+!.env.example
