@@ -4,13 +4,15 @@ const isAgency = role === 'agency';
 
 const CHANNELS = {
   ru: ['VK', 'OK', 'Telegram', 'MAX', 'Habr'],
-  en: ['LinkedIn', 'X/Twitter', 'Instagram', 'TikTok', 'Reddit']
+  en: ['LinkedIn', 'X/Twitter', 'Instagram', 'Reddit']
 };
 
 const PLATFORM_LIMITS = {
   ru: { VK: 2200, OK: 1200, Telegram: 1024, MAX: 600, Habr: 3000 },
-  en: { LinkedIn: 3000, 'X/Twitter': 280, Instagram: 2200, TikTok: 2200, Reddit: 4000 }
+  en: { LinkedIn: 3000, 'X/Twitter': 280, Instagram: 2200, Reddit: 4000 }
 };
+
+const DEMO_INPUT_LIMIT = 1800;
 
 const COPY = {
   ru: {
@@ -25,8 +27,15 @@ const COPY = {
     roiBtn: 'Рассчитать экономию',
     annual: 'Экономия в год',
     demoBtn: 'Адаптировать текст',
+    demoClear: 'Очистить',
+    demoAll: 'Все',
+    demoSelect: 'Выберите каналы для генерации',
     demoLabel: 'Исходный текст',
     demoPlaceholder: 'Вставьте ваш пост, бриф или заметку…',
+    demoHint: `Максимум ${DEMO_INPUT_LIMIT} символов.`,
+    demoShow: 'Показать весь текст',
+    demoHide: 'Скрыть',
+    symbols: 'симв.',
     social: {
       agency: '«Мы взяли новых клиентов без найма и без потери качества контента».',
       solo: '«Я снова закрываю ноутбук вовремя: адаптация на завтра готова за один проход». '
@@ -55,8 +64,15 @@ const COPY = {
     roiBtn: 'Calculate savings',
     annual: 'Annual savings',
     demoBtn: 'Adapt content',
+    demoClear: 'Clear',
+    demoAll: 'All',
+    demoSelect: 'Select channels to generate',
     demoLabel: 'Source text',
     demoPlaceholder: 'Paste your draft, brief, or notes…',
+    demoHint: `Up to ${DEMO_INPUT_LIMIT} characters.`,
+    demoShow: 'Show full text',
+    demoHide: 'Hide',
+    symbols: 'chars',
     social: {
       agency: '“We onboarded more clients without adding headcount, while keeping delivery quality high.”',
       solo: '“I close my laptop on time now — tomorrow’s cross-platform content is ready in one flow.”'
@@ -136,11 +152,20 @@ function render() {
 
       <section class="blk" id="b5">
         <h2>5. Magic Demo</h2>
+        <p class="demo-subtitle">${t.demoSelect}</p>
+        <div class="channel-picker" id="demo-channel-picker">
+          <button class="channel-btn active" type="button" data-select-all="1">${t.demoAll}</button>
+          ${CHANNELS[lang].map((channel) => `<button class="channel-btn active" type="button" data-channel="${channel}">${channel}</button>`).join('')}
+        </div>
         <label>${t.demoLabel}
-          <textarea id="demo-text" rows="5" placeholder="${t.demoPlaceholder}"></textarea>
+          <textarea id="demo-text" rows="5" maxlength="${DEMO_INPUT_LIMIT}" placeholder="${t.demoPlaceholder}"></textarea>
         </label>
-        <button class="btn" id="demo-btn" type="button">${t.demoBtn}</button>
-        <div class="cards" id="demo-output"></div>
+        <div class="demo-meta"><span id="demo-input-count">0 / ${DEMO_INPUT_LIMIT}</span><span>${t.demoHint}</span></div>
+        <div class="demo-actions">
+          <button class="btn" id="demo-btn" type="button">${t.demoBtn}</button>
+          <button class="ghost-btn" id="demo-clear-btn" type="button">${t.demoClear}</button>
+        </div>
+        <div class="cards demo-grid" id="demo-output"></div>
       </section>
 
       <section class="blk" id="b6"><h2>6. Social Proof</h2><p>${isAgency ? t.social.agency : t.social.solo}</p></section>
@@ -206,42 +231,112 @@ async function setupSlots() {
   }
 }
 
-async function typeIn(el, text) {
+async function typeInFast(el, text) {
   el.textContent = '';
-  for (let i = 0; i < text.length; i += 1) {
-    el.textContent += text[i];
-    await new Promise((resolve) => setTimeout(resolve, 6));
+  const chunk = Math.max(3, Math.ceil(text.length / 60));
+  for (let i = 0; i < text.length; i += chunk) {
+    el.textContent = text.slice(0, i + chunk);
+    await new Promise((resolve) => setTimeout(resolve, 1));
   }
 }
 
 function setupDemo() {
   const btn = document.querySelector('#demo-btn');
+  const clearBtn = document.querySelector('#demo-clear-btn');
   const input = document.querySelector('#demo-text');
+  const inputCount = document.querySelector('#demo-input-count');
   const out = document.querySelector('#demo-output');
+  const picker = document.querySelector('#demo-channel-picker');
+
+  const updateCounter = () => {
+    inputCount.textContent = `${input.value.length} / ${DEMO_INPUT_LIMIT}`;
+  };
+
+  const renderCards = (selected) => {
+    out.innerHTML = selected.map((p) => `
+      <article class="demo-card reveal-item" data-card="${p}">
+        <h3>${p}</h3>
+        <p data-platform="${p}">...</p>
+        <div class="demo-card-foot">
+          <span class="char-count" data-count="${p}">0 ${t.symbols}</span>
+          <button class="ghost-btn mini" type="button" data-toggle="${p}">${t.demoShow}</button>
+        </div>
+      </article>
+    `).join('');
+  };
+
+  const getSelectedChannels = () => [...picker.querySelectorAll('[data-channel].active')].map((n) => n.dataset.channel);
+
+  picker.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+
+    if (target.dataset.selectAll) {
+      const shouldSelectAll = !target.classList.contains('active');
+      picker.querySelectorAll('[data-channel], [data-select-all]').forEach((btnEl) => {
+        btnEl.classList.toggle('active', shouldSelectAll);
+      });
+      return;
+    }
+
+    if (target.dataset.channel) {
+      target.classList.toggle('active');
+      const channelButtons = picker.querySelectorAll('[data-channel]');
+      const allActive = [...channelButtons].every((btnEl) => btnEl.classList.contains('active'));
+      picker.querySelector('[data-select-all]')?.classList.toggle('active', allActive);
+    }
+  });
+
+  out.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const platform = target.dataset.toggle;
+    if (!platform) return;
+    const card = out.querySelector(`[data-card="${platform}"]`);
+    const paragraph = card?.querySelector('p');
+    if (!paragraph) return;
+    const expanded = paragraph.classList.toggle('expanded');
+    target.textContent = expanded ? t.demoHide : t.demoShow;
+  });
+
+  input.addEventListener('input', updateCounter);
+  updateCounter();
+
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    updateCounter();
+    out.innerHTML = '';
+  });
 
   btn.addEventListener('click', async () => {
     const text = input.value.trim();
     if (!text) return;
 
-    out.innerHTML = CHANNELS[lang].map((p, index) => `<article class="reveal-item" style="animation-delay:${index * 120}ms"><h3>${p}</h3><p data-platform=\"${p}\">...</p></article>`).join('');
+    const selected = getSelectedChannels();
+    if (selected.length === 0) {
+      out.innerHTML = '';
+      return;
+    }
+
+    renderCards(selected);
 
     const response = await fetch('/api/demo-adapt', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text, lang })
+      body: JSON.stringify({ text, lang, channels: selected })
     });
 
     const payload = await response.json();
     const adaptations = payload.adaptations ?? {};
 
-    for (const [platform, limit] of Object.entries(PLATFORM_LIMITS[lang])) {
-      const renderedName = Object.keys(PLATFORM_LIMITS[lang]).find((k) => k.toLowerCase() === platform.toLowerCase()) || platform;
-      const target = out.querySelector(`[data-platform="${renderedName}"]`);
-      if (target) {
-        const prepared = String(adaptations[platform] ?? text).slice(0, limit);
-        await typeIn(target, prepared);
-      }
-    }
+    await Promise.all(selected.map(async (platform) => {
+      const key = Object.keys(adaptations).find((name) => name.toLowerCase() === platform.toLowerCase());
+      const rendered = String((key && adaptations[key]) || text);
+      const target = out.querySelector(`[data-platform="${platform}"]`);
+      const counter = out.querySelector(`[data-count="${platform}"]`);
+      if (target) await typeInFast(target, rendered);
+      if (counter) counter.textContent = `${rendered.length} ${t.symbols}`;
+    }));
   });
 }
 
