@@ -395,6 +395,47 @@ function setupDemo() {
   });
 }
 
+
+function applyPhoneMask(rawValue) {
+  const digits = rawValue.replace(/\D/g, '').slice(0, 11);
+  if (!digits) return '';
+
+  const normalized = digits[0] === '8' ? `7${digits.slice(1)}` : digits;
+  const country = normalized[0] || '7';
+  const p1 = normalized.slice(1, 4);
+  const p2 = normalized.slice(4, 7);
+  const p3 = normalized.slice(7, 9);
+  const p4 = normalized.slice(9, 11);
+
+  let out = `+${country}`;
+  if (p1) out += ` (${p1}`;
+  if (p1.length === 3) out += ')';
+  if (p2) out += ` ${p2}`;
+  if (p3) out += `-${p3}`;
+  if (p4) out += `-${p4}`;
+  return out;
+}
+
+function setupPhoneMask() {
+  const input = document.querySelector('input[name="phone"]');
+  if (!input) return;
+
+  input.addEventListener('input', () => {
+    const start = input.selectionStart ?? input.value.length;
+    const beforeLen = input.value.length;
+    input.value = applyPhoneMask(input.value);
+    const diff = input.value.length - beforeLen;
+    const nextPos = Math.max(0, start + diff);
+    input.setSelectionRange(nextPos, nextPos);
+  });
+
+  input.addEventListener('blur', () => {
+    if (input.value.replace(/\D/g, '').length < 7) {
+      input.value = '';
+    }
+  });
+}
+
 function setupLeadForm() {
   const form = document.querySelector('#lead-form');
   const resEl = document.querySelector('#lead-result');
@@ -471,4 +512,5 @@ setupTheme();
 setupROI();
 setupSlots();
 setupDemo();
+setupPhoneMask();
 setupLeadForm();
