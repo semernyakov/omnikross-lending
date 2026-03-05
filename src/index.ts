@@ -12,6 +12,7 @@ const ALLOWED_ROLES = new Set(['agency', 'solo']);
 const ALLOWED_LANGS = new Set(['ru', 'en']);
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TELEGRAM_RE = /^@[a-zA-Z0-9_]{5,32}$/;
+const PHONE_RE = /^\+?[0-9\s()\-]{7,20}$/;
 
 const PLATFORM_LIMITS = {
   ru: { vk: 2200, ok: 1200, telegram: 1024, max: 600, habr: 3000 },
@@ -25,6 +26,7 @@ type RegistrationPayload = {
   lang: 'ru' | 'en';
   email: string;
   telegram?: string;
+  phone?: string;
   company?: string;
   clientsCount?: number;
 };
@@ -39,11 +41,13 @@ const parseRegistrationPayload = (body: unknown): RegistrationPayload => {
   const lang = normalizeText(raw.lang).toLowerCase();
   const email = normalizeText(raw.email).toLowerCase();
   const telegram = normalizeText(raw.telegram);
+  const phone = normalizeText(raw.phone);
   const company = normalizeText(raw.company);
   const clientsCount = Number.parseInt(String(raw.clientsCount ?? ''), 10);
 
   if (!ALLOWED_ROLES.has(role) || !ALLOWED_LANGS.has(lang) || !EMAIL_RE.test(email)) throw new Error('VALIDATION');
   if (telegram && !TELEGRAM_RE.test(telegram)) throw new Error('VALIDATION');
+  if (phone && !PHONE_RE.test(phone)) throw new Error('VALIDATION');
   if (role === 'agency' && !company) throw new Error('VALIDATION');
 
   return {
@@ -51,6 +55,7 @@ const parseRegistrationPayload = (body: unknown): RegistrationPayload => {
     lang: lang as 'ru' | 'en',
     email,
     telegram: telegram || undefined,
+    phone: phone || undefined,
     company: company || undefined,
     clientsCount: Number.isFinite(clientsCount) && clientsCount > 0 ? clientsCount : undefined
   };
@@ -134,9 +139,9 @@ app.post('/api/register-interest', async (c) => {
 
     const token = randomUUID();
     db.prepare(`
-      INSERT INTO registration (role, lang, email, telegram, company, clients_count, confirm_token)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `).run(data.role, data.lang, data.email, data.telegram ?? null, data.company ?? null, data.clientsCount ?? null, token);
+      INSERT INTO registration (role, lang, email, telegram, phone, company, clients_count, confirm_token)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(data.role, data.lang, data.email, data.telegram ?? null, data.phone ?? null, data.company ?? null, data.clientsCount ?? null, token);
 
     await syncRegistrationToSupabase({ ...data, confirmToken: token });
 

@@ -3,6 +3,7 @@ type RegistrationSyncPayload = {
   lang: 'ru' | 'en';
   email: string;
   telegram?: string;
+  phone?: string;
   company?: string;
   clientsCount?: number;
   confirmToken: string;
@@ -31,6 +32,7 @@ export const syncRegistrationToSupabase = async (payload: RegistrationSyncPayloa
       lang: payload.lang,
       email: payload.email,
       telegram: payload.telegram ?? null,
+      phone: payload.phone ?? null,
       company: payload.company ?? null,
       clients_count: payload.clientsCount ?? null,
       confirm_token: payload.confirmToken,

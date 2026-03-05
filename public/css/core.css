@@ -226,6 +226,17 @@ input:focus, textarea:focus {
 .result { margin-top: 10px; font-weight: 600; }
 .result.ok { color: var(--accent-2); }
 .result.err { color: #ff6d7a; }
+.input-invalid {
+  border-color: #ff6d7a !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #ff6d7a 30%, transparent);
+}
+
+.field-error {
+  color: #ff8b97;
+  font-size: 12px;
+  margin-top: -2px;
+}
+
 
 .cta {
   border-color: color-mix(in srgb, var(--accent) 65%, var(--border));

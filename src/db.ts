@@ -18,6 +18,7 @@ export const initDb = () => {
       lang TEXT NOT NULL,
       email TEXT NOT NULL UNIQUE,
       telegram TEXT,
+      phone TEXT,
       company TEXT,
       clients_count INTEGER,
       confirm_token TEXT NOT NULL UNIQUE,
@@ -30,12 +31,16 @@ export const initDb = () => {
   const hasLegacy = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='registrations'").get();
   if (hasLegacy) {
     db.run(`
-      INSERT OR IGNORE INTO registration (role, lang, email, telegram, company, clients_count, confirm_token, is_confirmed, confirmed_at, created_at)
-      SELECT role, lang, email, telegram, company, clients_count, confirm_token, is_confirmed, confirmed_at, created_at
+      INSERT OR IGNORE INTO registration (role, lang, email, telegram, phone, company, clients_count, confirm_token, is_confirmed, confirmed_at, created_at)
+      SELECT role, lang, email, telegram, NULL as phone, company, clients_count, confirm_token, is_confirmed, confirmed_at, created_at
       FROM registrations
     `);
     db.run('DROP TABLE registrations');
   }
+
+  const columns = db.prepare("PRAGMA table_info(registration)").all() as Array<{ name: string }>;
+  const hasPhone = columns.some((column) => column.name === 'phone');
+  if (!hasPhone) db.run('ALTER TABLE registration ADD COLUMN phone TEXT');
 
   db.run('DROP TABLE IF EXISTS users');
   db.run('DROP TABLE IF EXISTS config');

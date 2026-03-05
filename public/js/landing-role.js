@@ -39,6 +39,7 @@ const COPY = {
     company: 'Название агентства*',
     email: 'Email*',
     tg: 'Telegram (опционально, формат @name)',
+    phone: 'Телефон (опционально)',
     clients: 'Клиентов в работе',
     footer: '© 2026 OmniKross · GDPR Compliant · AES-256 Encryption · Privacy Policy'
   },
@@ -68,6 +69,7 @@ const COPY = {
     company: 'Agency name*',
     email: 'Email*',
     tg: 'Telegram (optional, @name)',
+    phone: 'Phone (optional)',
     clients: 'Active clients',
     footer: '© 2026 OmniKross · GDPR Compliant · AES-256 Encryption · Privacy Policy'
   }
@@ -75,6 +77,21 @@ const COPY = {
 
 const t = COPY[lang];
 const logo = '<span class="logo-grad">OmniKross</span>';
+
+const PHONE_RE = /^\+?[0-9\s()\-]{7,20}$/;
+
+const ERROR_MESSAGES = {
+  ru: {
+    email: 'Укажите корректный email.',
+    telegram: 'Telegram должен быть в формате @name (5–32 символа).',
+    phone: 'Телефон должен содержать 7–20 символов: цифры, пробелы, +, (), -.'
+  },
+  en: {
+    email: 'Enter a valid email address.',
+    telegram: 'Telegram must be in @name format (5–32 chars).',
+    phone: 'Phone must contain 7–20 characters: digits, spaces, +, (), -.'
+  }
+};
 
 function render() {
   const switchLangHref = `/${lang === 'ru' ? 'en' : 'ru'}/${role}.html`;
@@ -137,6 +154,7 @@ function render() {
           ${isAgency ? `<label>${t.company} <input name="company" required></label>` : ''}
           <label>${t.email} <input name="email" type="email" required></label>
           <label>${t.tg} <input name="telegram" placeholder="@name"></label>
+          <label>${t.phone} <input name="phone" type="tel" placeholder="+7 (999) 000-00-00"></label>
           ${isAgency ? `<label>${t.clients} <input name="clientsCount" type="number" min="1" value="10"></label>` : ''}
           <button class="btn" type="submit">${t.formBtn}</button>
         </form>
@@ -231,15 +249,57 @@ function setupLeadForm() {
   const form = document.querySelector('#lead-form');
   const resEl = document.querySelector('#lead-result');
 
+  const clearFieldErrors = () => {
+    form.querySelectorAll('.field-error').forEach((el) => el.remove());
+    form.querySelectorAll('input').forEach((input) => input.classList.remove('input-invalid'));
+  };
+
+  const showFieldError = (name, message) => {
+    const input = form.querySelector(`[name="${name}"]`);
+    if (!input) return;
+    input.classList.add('input-invalid');
+    const err = document.createElement('small');
+    err.className = 'field-error';
+    err.textContent = message;
+    input.insertAdjacentElement('afterend', err);
+  };
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    clearFieldErrors();
+    resEl.textContent = '';
+
     const fd = new FormData(form);
+    const email = String(fd.get('email') ?? '').trim();
+    const telegram = String(fd.get('telegram') ?? '').trim();
+    const phone = String(fd.get('phone') ?? '').trim();
+
+    const errors = [];
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.push('email');
+      showFieldError('email', ERROR_MESSAGES[lang].email);
+    }
+    if (telegram && !/^@[a-zA-Z0-9_]{5,32}$/.test(telegram)) {
+      errors.push('telegram');
+      showFieldError('telegram', ERROR_MESSAGES[lang].telegram);
+    }
+    if (phone && !PHONE_RE.test(phone)) {
+      errors.push('phone');
+      showFieldError('phone', ERROR_MESSAGES[lang].phone);
+    }
+
+    if (errors.length > 0) {
+      resEl.textContent = lang === 'ru' ? 'Проверьте поля формы и повторите отправку.' : 'Please fix the highlighted fields and try again.';
+      resEl.className = 'result err';
+      return;
+    }
 
     const payload = {
       role,
       lang,
-      email: String(fd.get('email') ?? ''),
-      telegram: String(fd.get('telegram') ?? '').trim(),
+      email,
+      telegram,
+      phone,
       company: String(fd.get('company') ?? '').trim(),
       clientsCount: String(fd.get('clientsCount') ?? '').trim()
     };
