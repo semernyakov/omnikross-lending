@@ -12,37 +12,86 @@ const PLATFORM_LIMITS = {
   en: { LinkedIn: 3000, 'X/Twitter': 280, Instagram: 2200, TikTok: 2200, Reddit: 4000 }
 };
 
-const TEXT = {
+const COPY = {
   ru: {
-    nav: ['Hero', 'Pain', 'Proof', 'ROI', 'Demo', 'Proof+', 'Roadmap', 'FAQ', 'CTA', 'Form'],
+    nav: ['Hero', 'Pain', 'Proof', 'ROI', 'Demo', 'Отзывы', 'Roadmap', 'FAQ', 'CTA', 'Форма'],
     heroAgency: 'Ваше агентство теряет оплачиваемые часы.',
     heroSolo: 'Контент не должен воровать ваши вечера.',
-    subAgency: 'Масштабируйтесь до 50+ клиентов без расширения штата. Один черновик → 4 платформы за 12 секунд.',
-    subSolo: 'Twitter. LinkedIn. IG. TikTok. Пишите один раз, постите везде. Верните себе право на личную жизнь.',
-    calcBtn: 'Рассчитать',
-    annualSaving: 'Экономия в год',
-    demoBtn: 'Адаптировать',
-    regBtn: 'Отправить заявку',
-    regDone: 'Проверьте email, ссылка подтверждения отправлена.',
-    confirmTitle: 'Подтверждение заявки'
+    subAgency: 'Масштабируйтесь до 50+ клиентов без расширения штата: один черновик превращается в контент для всех каналов за секунды.',
+    subSolo: 'Пишите один раз, публикуйте везде и сохраняйте энергию для роста, а не для бесконечного рерайта.',
+    painTitleAgency: 'Ловушка теневого труда',
+    painTitleSolo: 'Синдром бесконечного рерайта',
+    proof: 'Один смысл — несколько нативных форматов. OmniKross сохраняет вашу идею и адаптирует упаковку под канал.',
+    roiBtn: 'Рассчитать экономию',
+    annual: 'Экономия в год',
+    demoBtn: 'Адаптировать текст',
+    demoLabel: 'Исходный текст',
+    demoPlaceholder: 'Вставьте ваш пост, бриф или заметку…',
+    social: {
+      agency: '«Мы взяли новых клиентов без найма и без потери качества контента».',
+      solo: '«Я снова закрываю ноутбук вовремя: адаптация на завтра готова за один проход». '
+    },
+    faq: 'Это не автопостинг и не “слепой AI”. Вы контролируете финальный текст и публикуете безопасно.',
+    cta: 'Осталось мест в текущем наборе: ',
+    formTitle: 'Пионерская заявка',
+    formBtn: 'Отправить заявку',
+    formDone: 'Готово. Проверьте email — мы отправили ссылку подтверждения.',
+    company: 'Название агентства*',
+    email: 'Email*',
+    tg: 'Telegram (опционально, формат @name)',
+    phone: 'Телефон (опционально)',
+    clients: 'Клиентов в работе',
+    footer: '© 2026 OmniKross · GDPR Compliant · AES-256 Encryption · Privacy Policy'
   },
   en: {
     nav: ['Hero', 'Pain', 'Proof', 'ROI', 'Demo', 'Proof+', 'Roadmap', 'FAQ', 'CTA', 'Form'],
     heroAgency: 'Your agency is losing billable hours.',
     heroSolo: 'Content should not steal your evenings.',
-    subAgency: 'Scale to 50+ clients without hiring. One draft → 4 platforms in 12 seconds.',
-    subSolo: 'Write once, publish everywhere, and reclaim your life-energy.',
-    calcBtn: 'Calculate',
-    annualSaving: 'Annual savings',
-    demoBtn: 'Adapt',
-    regBtn: 'Submit request',
-    regDone: 'Check your email, confirmation link was sent.',
-    confirmTitle: 'Registration confirmation'
+    subAgency: 'Scale to 50+ clients without hiring: one source draft becomes native assets for every channel in seconds.',
+    subSolo: 'Write once, publish everywhere, and keep your energy for strategic work — not repetitive rewrites.',
+    painTitleAgency: 'Hidden Labor Trap',
+    painTitleSolo: 'Infinite Rewrite Syndrome',
+    proof: 'One idea — multiple native voices. OmniKross preserves intent and adapts the packaging for each channel.',
+    roiBtn: 'Calculate savings',
+    annual: 'Annual savings',
+    demoBtn: 'Adapt content',
+    demoLabel: 'Source text',
+    demoPlaceholder: 'Paste your draft, brief, or notes…',
+    social: {
+      agency: '“We onboarded more clients without adding headcount, while keeping delivery quality high.”',
+      solo: '“I close my laptop on time now — tomorrow’s cross-platform content is ready in one flow.”'
+    },
+    faq: 'This is not blind autoposting. You keep editorial control and publish safely with platform-aware formatting.',
+    cta: 'Remaining spots in current cohort: ',
+    formTitle: 'Pioneer registration',
+    formBtn: 'Submit application',
+    formDone: 'Done. Check your email — confirmation link has been sent.',
+    company: 'Agency name*',
+    email: 'Email*',
+    tg: 'Telegram (optional, @name)',
+    phone: 'Phone (optional)',
+    clients: 'Active clients',
+    footer: '© 2026 OmniKross · GDPR Compliant · AES-256 Encryption · Privacy Policy'
   }
 };
 
-const t = TEXT[lang];
+const t = COPY[lang];
 const logo = '<span class="logo-grad">OmniKross</span>';
+
+const PHONE_RE = /^\+?[0-9\s()\-]{7,20}$/;
+
+const ERROR_MESSAGES = {
+  ru: {
+    email: 'Укажите корректный email.',
+    telegram: 'Telegram должен быть в формате @name (5–32 символа).',
+    phone: 'Телефон должен содержать 7–20 символов: цифры, пробелы, +, (), -.'
+  },
+  en: {
+    email: 'Enter a valid email address.',
+    telegram: 'Telegram must be in @name format (5–32 chars).',
+    phone: 'Phone must contain 7–20 characters: digits, spaces, +, (), -.'
+  }
+};
 
 function render() {
   const switchLangHref = `/${lang === 'ru' ? 'en' : 'ru'}/${role}.html`;
@@ -68,50 +117,51 @@ function render() {
 
       <section class="blk" id="b2">
         <h2>2. Pain Grid</h2>
-        <div class="cards">${Array.from({ length: 4 }).map((_, i) => `<article><h3>${isAgency ? 'Ловушка теневого труда' : 'Синдром бесконечного рерайта'} #${i + 1}</h3><p>${CHANNELS[lang][i % CHANNELS[lang].length]}: ручная адаптация съедает фокус и маржу.</p></article>`).join('')}</div>
+        <div class="cards">${Array.from({ length: 4 }).map((_, i) => `<article><h3>${isAgency ? t.painTitleAgency : t.painTitleSolo} #${i + 1}</h3><p>${CHANNELS[lang][i % CHANNELS[lang].length]}: ${lang === 'ru' ? 'ручная адаптация снижает скорость команды и маржу.' : 'manual adaptation slows delivery and dilutes margin.'}</p></article>`).join('')}</div>
       </section>
 
-      <section class="blk" id="b3"><h2>3. Before / After</h2><p>Один смысл — четыре голоса. OmniKross сохраняет посыл, меняет упаковку.</p></section>
+      <section class="blk" id="b3"><h2>3. Before / After</h2><p>${t.proof}</p></section>
 
       <section class="blk" id="b4">
         <h2>4. ROI Calculator</h2>
         <div class="form-grid">
-          <label>Клиентов <input id="roi-clients" type="number" min="1" value="15"></label>
-          <label>Постов в неделю <input id="roi-posts" type="number" min="1" value="3"></label>
-          <label>Площадок <input id="roi-platforms" type="number" min="1" value="4"></label>
-          <label>Минут на адаптацию <input id="roi-minutes" type="number" min="1" value="20"></label>
+          <label>${lang === 'ru' ? 'Клиентов' : 'Clients'} <input id="roi-clients" type="number" min="1" value="15"></label>
+          <label>${lang === 'ru' ? 'Постов в неделю' : 'Posts per week'} <input id="roi-posts" type="number" min="1" value="3"></label>
+          <label>${lang === 'ru' ? 'Площадок' : 'Platforms'} <input id="roi-platforms" type="number" min="1" value="4"></label>
+          <label>${lang === 'ru' ? 'Минут на адаптацию' : 'Minutes per adaptation'} <input id="roi-minutes" type="number" min="1" value="20"></label>
         </div>
-        <button class="btn" id="roi-calc-btn" type="button">${t.calcBtn}</button>
-        <p class="result" id="roi-result">${t.annualSaving}: —</p>
+        <button class="btn" id="roi-calc-btn" type="button">${t.roiBtn}</button>
+        <p class="result" id="roi-result">${t.annual}: —</p>
       </section>
 
       <section class="blk" id="b5">
         <h2>5. Magic Demo</h2>
-        <label>Ваш текст
-          <textarea id="demo-text" rows="5" placeholder="Введите исходный текст..."></textarea>
+        <label>${t.demoLabel}
+          <textarea id="demo-text" rows="5" placeholder="${t.demoPlaceholder}"></textarea>
         </label>
         <button class="btn" id="demo-btn" type="button">${t.demoBtn}</button>
         <div class="cards" id="demo-output"></div>
       </section>
 
-      <section class="blk" id="b6"><h2>6. Social Proof</h2><p>${isAgency ? 'Мы взяли 2-х новых клиентов без найма.' : 'Я закрываю ноутбук в 18:00, тексты готовы заранее.'}</p></section>
+      <section class="blk" id="b6"><h2>6. Social Proof</h2><p>${isAgency ? t.social.agency : t.social.solo}</p></section>
       <section class="blk" id="b7"><h2>7. Roadmap</h2><p>Core AI → Pioneer Access → Video-to-Post → Direct Publishing.</p></section>
-      <section class="blk" id="b8"><h2>8. FAQ</h2><p>Это не автопостинг, а безопасная адаптация текста под ограничения каналов.</p></section>
-      <section class="blk cta" id="b9"><h2>9. Scarcity CTA</h2><p>Осталось мест: <b id="slots-count">...</b> из 500</p></section>
+      <section class="blk" id="b8"><h2>8. FAQ</h2><p>${t.faq}</p></section>
+      <section class="blk cta" id="b9"><h2>9. Scarcity CTA</h2><p>${t.cta}<b id="slots-count">...</b> / 500</p></section>
 
       <section class="blk" id="b10">
-        <h2>10. ${t.confirmTitle}</h2>
+        <h2>10. ${t.formTitle}</h2>
         <form id="lead-form" class="form-grid">
-          ${isAgency ? '<label>Название агентства* <input name="company" required></label>' : ''}
-          <label>Email* <input name="email" type="email" required></label>
-          <label>Telegram ${isAgency ? '(опционально)' : '(опционально, формат @name)'} <input name="telegram" placeholder="@name"></label>
-          ${isAgency ? '<label>Клиентов в работе <input name="clientsCount" type="number" min="1" value="10"></label>' : ''}
-          <button class="btn" type="submit">${t.regBtn}</button>
+          ${isAgency ? `<label>${t.company} <input name="company" required></label>` : ''}
+          <label>${t.email} <input name="email" type="email" required></label>
+          <label>${t.tg} <input name="telegram" placeholder="@name"></label>
+          <label>${t.phone} <input name="phone" type="tel" placeholder="+7 (999) 000-00-00"></label>
+          ${isAgency ? `<label>${t.clients} <input name="clientsCount" type="number" min="1" value="10"></label>` : ''}
+          <button class="btn" type="submit">${t.formBtn}</button>
         </form>
         <p class="result" id="lead-result"></p>
       </section>
 
-      <footer class="blk footer">© 2026 ${logo} · GDPR Compliant · AES-256 Encryption · Privacy Policy</footer>
+      <footer class="blk footer">${t.footer}</footer>
     </div>
   `;
 }
@@ -141,7 +191,7 @@ function setupROI() {
     const minutes = get('roi-minutes');
     const hoursMonth = (clients * posts * 4 * platforms * minutes) / 60;
     const yearly = hoursMonth * 12 * (lang === 'ru' ? 600 : 25);
-    document.querySelector('#roi-result').textContent = `${t.annualSaving}: ${moneyFormat(yearly)}`;
+    document.querySelector('#roi-result').textContent = `${t.annual}: ${moneyFormat(yearly)}`;
   });
 }
 
@@ -172,13 +222,15 @@ function setupDemo() {
   btn.addEventListener('click', async () => {
     const text = input.value.trim();
     if (!text) return;
-    out.innerHTML = CHANNELS[lang].map((p) => `<article><h3>${p}</h3><p data-platform="${p}">...</p></article>`).join('');
+
+    out.innerHTML = CHANNELS[lang].map((p, index) => `<article class="reveal-item" style="animation-delay:${index * 120}ms"><h3>${p}</h3><p data-platform=\"${p}\">...</p></article>`).join('');
 
     const response = await fetch('/api/demo-adapt', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text, lang })
     });
+
     const payload = await response.json();
     const adaptations = payload.adaptations ?? {};
 
@@ -197,15 +249,57 @@ function setupLeadForm() {
   const form = document.querySelector('#lead-form');
   const resEl = document.querySelector('#lead-result');
 
+  const clearFieldErrors = () => {
+    form.querySelectorAll('.field-error').forEach((el) => el.remove());
+    form.querySelectorAll('input').forEach((input) => input.classList.remove('input-invalid'));
+  };
+
+  const showFieldError = (name, message) => {
+    const input = form.querySelector(`[name="${name}"]`);
+    if (!input) return;
+    input.classList.add('input-invalid');
+    const err = document.createElement('small');
+    err.className = 'field-error';
+    err.textContent = message;
+    input.insertAdjacentElement('afterend', err);
+  };
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    clearFieldErrors();
+    resEl.textContent = '';
+
     const fd = new FormData(form);
+    const email = String(fd.get('email') ?? '').trim();
+    const telegram = String(fd.get('telegram') ?? '').trim();
+    const phone = String(fd.get('phone') ?? '').trim();
+
+    const errors = [];
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.push('email');
+      showFieldError('email', ERROR_MESSAGES[lang].email);
+    }
+    if (telegram && !/^@[a-zA-Z0-9_]{5,32}$/.test(telegram)) {
+      errors.push('telegram');
+      showFieldError('telegram', ERROR_MESSAGES[lang].telegram);
+    }
+    if (phone && !PHONE_RE.test(phone)) {
+      errors.push('phone');
+      showFieldError('phone', ERROR_MESSAGES[lang].phone);
+    }
+
+    if (errors.length > 0) {
+      resEl.textContent = lang === 'ru' ? 'Проверьте поля формы и повторите отправку.' : 'Please fix the highlighted fields and try again.';
+      resEl.className = 'result err';
+      return;
+    }
+
     const payload = {
-      type: role,
       role,
       lang,
-      email: String(fd.get('email') ?? ''),
-      telegram: String(fd.get('telegram') ?? '').trim(),
+      email,
+      telegram,
+      phone,
       company: String(fd.get('company') ?? '').trim(),
       clientsCount: String(fd.get('clientsCount') ?? '').trim()
     };
@@ -217,7 +311,7 @@ function setupLeadForm() {
     });
 
     const data = await response.json();
-    resEl.textContent = response.ok ? t.regDone : (data.message ?? 'Request failed');
+    resEl.textContent = response.ok ? t.formDone : (data.message ?? 'Request failed');
     resEl.className = `result ${response.ok ? 'ok' : 'err'}`;
   });
 }

@@ -10,36 +10,15 @@ const db = new Database(join(dataDir, 'omnikross.db'));
 db.exec('PRAGMA journal_mode = WAL;');
 db.exec('PRAGMA synchronous = NORMAL;');
 
-const getInitialSlots = () => {
-  const parsed = Number.parseInt(process.env.MAX_SIGNUPS ?? '', 10);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : 500;
-};
-
 export const initDb = () => {
   db.run(`
-    CREATE TABLE IF NOT EXISTS users (
+    CREATE TABLE IF NOT EXISTS registration (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      email TEXT NOT NULL UNIQUE,
-      role TEXT NOT NULL,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
-
-  db.run(`
-    CREATE TABLE IF NOT EXISTS config (
-      key TEXT PRIMARY KEY,
-      value TEXT NOT NULL
-    )
-  `);
-
-  db.run(`
-    CREATE TABLE IF NOT EXISTS registrations (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      type TEXT NOT NULL,
       role TEXT NOT NULL,
       lang TEXT NOT NULL,
-      email TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE,
       telegram TEXT,
+      phone TEXT,
       company TEXT,
       clients_count INTEGER,
       confirm_token TEXT NOT NULL UNIQUE,
@@ -49,12 +28,24 @@ export const initDb = () => {
     )
   `);
 
-  const row = db.prepare('SELECT value FROM config WHERE key = ?').get('remaining_slots');
-  if (!row) {
-    db.prepare('INSERT INTO config (key, value) VALUES (?, ?)').run('remaining_slots', String(getInitialSlots()));
+  const hasLegacy = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='registrations'").get();
+  if (hasLegacy) {
+    db.run(`
+      INSERT OR IGNORE INTO registration (role, lang, email, telegram, phone, company, clients_count, confirm_token, is_confirmed, confirmed_at, created_at)
+      SELECT role, lang, email, telegram, NULL as phone, company, clients_count, confirm_token, is_confirmed, confirmed_at, created_at
+      FROM registrations
+    `);
+    db.run('DROP TABLE registrations');
   }
 
-  console.log('📦 SQLite Database initialized.');
+  const columns = db.prepare("PRAGMA table_info(registration)").all() as Array<{ name: string }>;
+  const hasPhone = columns.some((column) => column.name === 'phone');
+  if (!hasPhone) db.run('ALTER TABLE registration ADD COLUMN phone TEXT');
+
+  db.run('DROP TABLE IF EXISTS users');
+  db.run('DROP TABLE IF EXISTS config');
+
+  console.log('📦 SQLite Database initialized (single table: registration).');
 };
 
 export default db;

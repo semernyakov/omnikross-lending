@@ -2,12 +2,16 @@
   "name": "omnikross-landing",
   "type": "module",
   "scripts": {
-    "dev": "bun run build:css && bun --hot src/index.ts",
-    "build": "bun run build:css",
-    "build:css": "mkdir -p dist/css && cp public/css/core.css dist/css/core.css",
+    "dev": "bun run build && bun --hot src/index.ts",
+    "build": "bun run build:static && bun run build:css",
+    "build:static": "node scripts/build-static.mjs",
+    "build:css": "mkdir -p dist/css && (tailwindcss -i public/css/core.css -o dist/css/core.css --minify || cp public/css/core.css dist/css/core.css)",
     "start": "bun src/index.ts"
   },
   "dependencies": {
     "hono": "^4.11.9"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
   }
 }

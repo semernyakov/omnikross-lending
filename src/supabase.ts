@@ -1,9 +1,9 @@
 type RegistrationSyncPayload = {
-  type: 'agency' | 'solo';
   role: 'agency' | 'solo';
   lang: 'ru' | 'en';
   email: string;
   telegram?: string;
+  phone?: string;
   company?: string;
   clientsCount?: number;
   confirmToken: string;
@@ -18,21 +18,21 @@ const headers = () => ({
   apikey: supabaseServiceRoleKey ?? '',
   Authorization: `Bearer ${supabaseServiceRoleKey ?? ''}`,
   'Content-Type': 'application/json',
-  Prefer: 'return=minimal'
+  Prefer: 'return=minimal,resolution=merge-duplicates'
 });
 
 export const syncRegistrationToSupabase = async (payload: RegistrationSyncPayload) => {
   if (!hasSupabase()) return;
 
-  const response = await fetch(`${supabaseUrl}/rest/v1/registrations`, {
+  const response = await fetch(`${supabaseUrl}/rest/v1/registration?on_conflict=email`, {
     method: 'POST',
     headers: headers(),
     body: JSON.stringify({
-      type: payload.type,
       role: payload.role,
       lang: payload.lang,
       email: payload.email,
       telegram: payload.telegram ?? null,
+      phone: payload.phone ?? null,
       company: payload.company ?? null,
       clients_count: payload.clientsCount ?? null,
       confirm_token: payload.confirmToken,
@@ -49,7 +49,7 @@ export const syncRegistrationToSupabase = async (payload: RegistrationSyncPayloa
 export const markRegistrationConfirmedInSupabase = async (token: string) => {
   if (!hasSupabase()) return;
 
-  const response = await fetch(`${supabaseUrl}/rest/v1/registrations?confirm_token=eq.${encodeURIComponent(token)}`, {
+  const response = await fetch(`${supabaseUrl}/rest/v1/registration?confirm_token=eq.${encodeURIComponent(token)}`, {
     method: 'PATCH',
     headers: headers(),
     body: JSON.stringify({
