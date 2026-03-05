@@ -9,5 +9,8 @@
   },
   "dependencies": {
     "hono": "^4.11.9"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.3"
   }
 }

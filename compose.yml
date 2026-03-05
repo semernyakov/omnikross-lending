@@ -1,6 +1,6 @@
 services:
   omnikross-app:
-    build: .
+    image: omnikross-landing
     container_name: omnikross_prod
     restart: unless-stopped
     ports:
