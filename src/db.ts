@@ -32,6 +32,23 @@ export const initDb = () => {
     )
   `);
 
+  db.run(`
+    CREATE TABLE IF NOT EXISTS registrations (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      type TEXT NOT NULL,
+      role TEXT NOT NULL,
+      lang TEXT NOT NULL,
+      email TEXT NOT NULL,
+      telegram TEXT,
+      company TEXT,
+      clients_count INTEGER,
+      confirm_token TEXT NOT NULL UNIQUE,
+      is_confirmed INTEGER NOT NULL DEFAULT 0,
+      confirmed_at DATETIME,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
   const row = db.prepare('SELECT value FROM config WHERE key = ?').get('remaining_slots');
   if (!row) {
     db.prepare('INSERT INTO config (key, value) VALUES (?, ?)').run('remaining_slots', String(getInitialSlots()));

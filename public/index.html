@@ -1,62 +1,39 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<!doctype html>
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OmniKross — Adaptive Publishing Engine</title>
-  <meta name="description" content="One draft → Twitter, LinkedIn, IG, TikTok in 12 seconds.">
-  <link rel="icon" type="image/svg+xml" href="/assets/kross-node.svg">
-  <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#6a0dad">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="/css/core.css">
-
-  <style>
-    .loading-screen { position: fixed; inset: 0; background: #0a0a0a; z-index: 9999; display: grid; place-items: center; transition: opacity .3s ease; }
-    .loading-screen.fade { opacity: 0; pointer-events: none; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmniKross — Выбор роли</title>
+  <meta name="description" content="Выберите сценарий OmniKross: SMM Агентство или Соло SMM." />
+  <link rel="stylesheet" href="/css/core.css" />
 </head>
 <body>
-  <div id="loader" class="loading-screen">
-    <img src="/assets/kross-node.svg" width="64" height="64" alt="Loading">
-  </div>
+  <main class="entry-wrap">
+    <section class="entry-hero">
+      <p class="eyebrow">OMNIKROSS • MIRROR COPY</p>
+      <h1>Выберите вашу вселенную роста</h1>
+      <p class="sub">Технически одна платформа. Психологически — два точных сценария: маржинальность агентства или баланс жизни solo-специалиста.</p>
+    </section>
 
-  <nav class="topbar">
-    <a href="/" class="brand">
-      <img src="/assets/kross-node.svg" width="32" height="32" alt="OmniKross">
-      <span>OmniKross</span>
-    </a>
+    <section class="entry-grid">
+      <article class="entry-card">
+        <h2>SMM Агентство</h2>
+        <p>Сценарий для масштабирования продакшна без расширения штата.</p>
+        <div class="entry-links">
+          <a href="/ru/agency.html">RU версия</a>
+          <a href="/en/agency.html">EN version</a>
+        </div>
+      </article>
 
-    <div class="controls">
-      <div class="role-switcher">
-        <button type="button" data-role-btn="agency">Agency</button>
-        <button type="button" data-role-btn="solo">Solo</button>
-      </div>
-      <button id="theme-toggle" type="button" aria-label="Toggle color theme">🌓</button>
-    </div>
-  </nav>
-
-  <main id="main-content"></main>
-
-  <footer class="footer">
-    <p>© 2026 OmniKross · enterprise-ready adaptive publishing.</p>
-  </footer>
-
-  <div id="cookie-banner" class="cookie-banner hidden">
-    <p>We use cookies for analytics and UX optimization.</p>
-    <button id="cookie-accept" type="button">Accept</button>
-  </div>
-
-  <script src="/js/config.js"></script>
-  <script src="/js/AppCore.js" type="module"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
-    }
-  </script>
+      <article class="entry-card">
+        <h2>Соло SMM</h2>
+        <p>Сценарий для снижения выгорания и возврата времени на жизнь.</p>
+        <div class="entry-links">
+          <a href="/ru/solo.html">RU версия</a>
+          <a href="/en/solo.html">EN version</a>
+        </div>
+      </article>
+    </section>
+  </main>
 </body>
 </html>

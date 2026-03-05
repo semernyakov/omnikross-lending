@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmniKross — Confirm registration</title>
+  <link rel="stylesheet" href="/css/core.css" />
+</head>
+<body>
+  <main class="entry-wrap">
+    <section class="blk">
+      <h1>Confirm registration</h1>
+      <p id="confirm-status">Processing...</p>
+      <a class="ghost-btn" href="/">Back to home</a>
+    </section>
+  </main>
+  <script>
+    const token = new URLSearchParams(location.search).get('token') || '';
+    const el = document.getElementById('confirm-status');
+    if (!token) {
+      el.textContent = 'Token is missing.';
+    } else {
+      fetch('/api/confirm-registration', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ token })
+      }).then(async (r) => {
+        const data = await r.json();
+        el.textContent = data.message || (r.ok ? 'Confirmed' : 'Failed');
+      }).catch(() => {
+        el.textContent = 'Request failed.';
+      });
+    }
+  </script>
+</body>
+</html>
