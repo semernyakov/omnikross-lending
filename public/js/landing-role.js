@@ -248,21 +248,32 @@ function setupDemo() {
   const out = document.querySelector('#demo-output');
   const picker = document.querySelector('#demo-channel-picker');
 
+  const THINK_DELAY_MS = 1200;
+  let requestId = 0;
+
   const updateCounter = () => {
     inputCount.textContent = `${input.value.length} / ${DEMO_INPUT_LIMIT}`;
   };
 
   const renderCards = (selected) => {
-    out.innerHTML = selected.map((p) => `
-      <article class="demo-card reveal-item" data-card="${p}">
+    out.innerHTML = selected.map((p, index) => `
+      <article class="demo-card" data-card="${p}" style="--card-delay:${index * 120}ms">
         <h3>${p}</h3>
-        <p data-platform="${p}">...</p>
+        <p data-platform="${p}" class="demo-text">...</p>
         <div class="demo-card-foot">
           <span class="char-count" data-count="${p}">0 ${t.symbols}</span>
           <button class="ghost-btn mini" type="button" data-toggle="${p}">${t.demoShow}</button>
         </div>
       </article>
     `).join('');
+  };
+
+  const setCardStatus = (platform, message, cssClass = '') => {
+    const target = out.querySelector(`[data-platform="${platform}"]`);
+    if (!target) return;
+    target.textContent = message;
+    target.classList.remove('is-thinking', 'is-error');
+    if (cssClass) target.classList.add(cssClass);
   };
 
   const getSelectedChannels = () => [...picker.querySelectorAll('[data-channel].active')].map((n) => n.dataset.channel);
@@ -303,6 +314,7 @@ function setupDemo() {
   updateCounter();
 
   clearBtn.addEventListener('click', () => {
+    requestId += 1;
     input.value = '';
     updateCounter();
     out.innerHTML = '';
@@ -318,25 +330,68 @@ function setupDemo() {
       return;
     }
 
+    const currentRequest = ++requestId;
     renderCards(selected);
+    selected.forEach((platform) => setCardStatus(platform, lang === 'ru' ? 'Модель думает…' : 'Model is thinking…', 'is-thinking'));
 
-    const response = await fetch('/api/demo-adapt', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text, lang, channels: selected })
-    });
+    const slowTimer = setTimeout(() => {
+      if (currentRequest !== requestId) return;
+      selected.forEach((platform) => {
+        const target = out.querySelector(`[data-platform="${platform}"]`);
+        if (target?.classList.contains('is-thinking')) {
+          setCardStatus(platform, lang === 'ru' ? 'Модель думает…' : 'Model is thinking…', 'is-thinking');
+        }
+      });
+    }, THINK_DELAY_MS);
 
-    const payload = await response.json();
-    const adaptations = payload.adaptations ?? {};
+    try {
+      const response = await fetch('/api/demo-adapt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, lang, channels: selected })
+      });
 
-    await Promise.all(selected.map(async (platform) => {
-      const key = Object.keys(adaptations).find((name) => name.toLowerCase() === platform.toLowerCase());
-      const rendered = String((key && adaptations[key]) || text);
-      const target = out.querySelector(`[data-platform="${platform}"]`);
-      const counter = out.querySelector(`[data-count="${platform}"]`);
-      if (target) await typeInFast(target, rendered);
-      if (counter) counter.textContent = `${rendered.length} ${t.symbols}`;
-    }));
+      const payload = await response.json();
+      if (!response.ok) {
+        throw new Error(payload.message || 'LLM request failed');
+      }
+
+      if (currentRequest !== requestId) return;
+      const adaptations = payload.adaptations ?? {};
+
+      for (const platform of selected) {
+        const key = Object.keys(adaptations).find((name) => name.toLowerCase() === platform.toLowerCase());
+        const rendered = String((key && adaptations[key]) || '');
+        const counter = out.querySelector(`[data-count="${platform}"]`);
+
+        if (!rendered) {
+          setCardStatus(platform, lang === 'ru' ? 'Ошибка: модель не вернула текст.' : 'Error: model returned empty text.', 'is-error');
+          if (counter) counter.textContent = `0 ${t.symbols}`;
+          continue;
+        }
+
+        const target = out.querySelector(`[data-platform="${platform}"]`);
+        if (target) {
+          target.classList.remove('is-thinking', 'is-error');
+          await typeInFast(target, rendered);
+        }
+        if (counter) counter.textContent = `${rendered.length} ${t.symbols}`;
+      }
+    } catch (error) {
+      if (currentRequest !== requestId) return;
+      const msg = error instanceof Error ? error.message : 'Unknown error';
+      selected.forEach((platform) => {
+        setCardStatus(
+          platform,
+          lang === 'ru' ? `Ошибка генерации: ${msg}` : `Generation error: ${msg}`,
+          'is-error'
+        );
+        const counter = out.querySelector(`[data-count="${platform}"]`);
+        if (counter) counter.textContent = `0 ${t.symbols}`;
+      });
+    } finally {
+      clearTimeout(slowTimer);
+    }
   });
 }
 

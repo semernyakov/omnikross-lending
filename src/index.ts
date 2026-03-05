@@ -83,52 +83,50 @@ const trimToLimit = (text: string, limit: number) => {
   return `${text.slice(0, Math.max(limit - 1, 1)).trimEnd()}…`;
 };
 
-const fallbackAdapt = (text: string, lang: Lang, selectedPlatforms?: string[]) => {
-  const limits = PLATFORM_LIMITS[lang];
-  const allowed = selectedPlatforms && selectedPlatforms.length > 0 ? selectedPlatforms : Object.keys(limits);
-  return Object.fromEntries(
-    Object.entries(limits)
-      .filter(([platform]) => allowed.includes(platform))
-      .map(([platform, limit]) => [platform, trimToLimit(`[${platform.toUpperCase()}] ${text}`, limit)])
-  );
-};
-
 const adaptWithZAI = async (text: string, lang: Lang, selectedPlatforms?: string[]) => {
   const apiKey = process.env.ZAI_API_KEY;
-  if (!apiKey) return fallbackAdapt(text, lang, selectedPlatforms);
+  if (!apiKey) throw new Error('ZAI_API_KEY is not configured');
 
   const limits = PLATFORM_LIMITS[lang];
   const activePlatforms = selectedPlatforms && selectedPlatforms.length > 0 ? selectedPlatforms : Object.keys(limits);
   const selectedLimits = Object.fromEntries(activePlatforms.map((platform) => [platform, limits[platform as keyof typeof limits]]));
-  const prompt = `Return only strict JSON. Keys: ${activePlatforms.join(', ')}. Keep each output within limits: ${JSON.stringify(selectedLimits)}. Source: ${text}`;
+  const prompt = `You are a social media adaptation engine. Return strict JSON only with keys ${activePlatforms.join(', ')}. Keep each value within char limits ${JSON.stringify(selectedLimits)}. Preserve meaning, adapt style per channel. Source text: ${text}`;
 
   const response = await fetch('https://api.z.ai/api/paas/v4/chat/completions', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${apiKey}`,
-      'Accept-Language': lang === 'ru' ? 'ru-RU' : 'en-US,en',
+      'Accept-Language': lang === 'ru' ? 'ru-RU,ru' : 'en-US,en',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ model: 'glm-4.7-flash', messages: [{ role: 'user', content: prompt }] })
+    body: JSON.stringify({ model: 'glm-4.7-flash', messages: [{ role: 'user', content: prompt }] }),
+    signal: AbortSignal.timeout(25000)
   });
 
-  if (!response.ok) return fallbackAdapt(text, lang, activePlatforms);
+  if (!response.ok) {
+    throw new Error(`LLM request failed with status ${response.status}`);
+  }
 
   const payload = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
   const content = payload?.choices?.[0]?.message?.content;
-  if (!content) return fallbackAdapt(text, lang, activePlatforms);
+  if (!content) throw new Error('LLM returned empty content');
 
+  let parsed: Record<string, string>;
   try {
-    const parsed = JSON.parse(content) as Record<string, string>;
-    const result: Record<string, string> = {};
-    for (const [platform, limit] of Object.entries(limits)) {
-      if (!activePlatforms.includes(platform)) continue;
-      result[platform] = trimToLimit(normalizeText(parsed[platform]) || text, limit);
-    }
-    return result;
+    parsed = JSON.parse(content) as Record<string, string>;
   } catch {
-    return fallbackAdapt(text, lang, activePlatforms);
+    throw new Error('LLM returned non-JSON response');
   }
+
+  const result: Record<string, string> = {};
+  for (const [platform, limit] of Object.entries(limits)) {
+    if (!activePlatforms.includes(platform)) continue;
+    const generated = normalizeText(parsed[platform]);
+    if (!generated) throw new Error(`LLM missed platform: ${platform}`);
+    result[platform] = trimToLimit(generated, limit);
+  }
+
+  return result;
 };
 
 const sendConfirmationEmail = async (email: string, link: string) => {
@@ -218,7 +216,8 @@ app.post('/api/demo-adapt', async (c) => {
     return c.json({ success: true, adaptations });
   } catch (err) {
     console.error('Demo adapt error:', err);
-    return c.json({ success: false, message: 'Internal server error' }, 500);
+    const message = err instanceof Error ? err.message : 'Internal server error';
+    return c.json({ success: false, message: `LLM unavailable: ${message}` }, 502);
   }
 });
 
