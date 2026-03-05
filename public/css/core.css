@@ -10,6 +10,7 @@
   --border: #2a375c;
   --ring: rgba(125, 92, 255, 0.35);
   --shadow: 0 12px 40px rgba(9, 13, 24, 0.35);
+  --control-height: 44px;
 }
 
 html[data-theme='light'] {
@@ -108,11 +109,15 @@ a { color: inherit; }
   transition: .2s ease;
 }
 
-.entry-links a:hover,
+ .entry-links a:hover,
 .ghost-btn:hover {
   transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
 }
+
+.ghost-btn { width: auto; }
+.form-grid .btn { width: 100%; }
+textarea { min-height: 140px; }
 
 .sticky-nav {
   position: sticky;
@@ -194,7 +199,7 @@ a { color: inherit; }
 
 label { display: grid; gap: 6px; font-size: 14px; }
 
-input, textarea {
+input, textarea, .btn, .ghost-btn, .channel-btn {
   width: 100%;
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -202,6 +207,7 @@ input, textarea {
   color: var(--text);
   padding: 10px 12px;
   outline: none;
+  min-height: var(--control-height);
 }
 
 input:focus, textarea:focus {
@@ -212,8 +218,6 @@ input:focus, textarea:focus {
 .btn {
   margin-top: 12px;
   border: 0;
-  border-radius: 10px;
-  padding: 11px 14px;
   background: linear-gradient(90deg, var(--accent), #8d72ff);
   color: white;
   cursor: pointer;
@@ -254,7 +258,8 @@ input:focus, textarea:focus {
 }
 
 .channel-btn {
-  border: 1px solid var(--border);
+  width: auto;
+  min-height: var(--control-height);
   border-radius: 999px;
   padding: 7px 12px;
   background: var(--surface-2);
@@ -285,14 +290,21 @@ input:focus, textarea:focus {
 }
 
 .demo-grid {
-  align-items: stretch;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
 }
 
 .demo-card {
+  width: 100%;
   display: grid;
   grid-template-rows: auto 1fr auto;
   min-height: 230px;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: revealCard .25s ease forwards;
+  animation-delay: var(--card-delay, 0ms);
+  scroll-snap-align: start;
 }
 
 .demo-card p {
@@ -302,6 +314,8 @@ input:focus, textarea:focus {
 }
 
 .demo-card p.expanded { max-height: none; }
+.demo-text.is-thinking { color: var(--muted); font-style: italic; }
+.demo-text.is-error { color: #ff8b97; }
 
 .demo-card-foot {
   margin-top: 10px;
@@ -340,4 +354,8 @@ input:focus, textarea:focus {
 @keyframes floatLogo {
   0%,100% { transform: translateY(0); }
   50% { transform: translateY(-4px); }
+}
+
+@keyframes revealCard {
+  to { opacity: 1; transform: translateY(0); }
 }

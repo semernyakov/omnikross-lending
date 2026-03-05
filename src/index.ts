@@ -5,6 +5,7 @@ import { secureHeaders } from 'hono/secure-headers';
 import { randomUUID } from 'crypto';
 import db, { initDb } from './db';
 import { markRegistrationConfirmedInSupabase, syncRegistrationToSupabase } from './supabase';
+import { adaptWithZAISequential, hasValidDemoInput, resolveSelectedPlatforms, type Lang } from './demo-adapter';
 
 const app = new Hono();
 
@@ -14,29 +15,6 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TELEGRAM_RE = /^@[a-zA-Z0-9_]{5,32}$/;
 const PHONE_RE = /^\+?[0-9\s()\-]{7,20}$/;
 
-const PLATFORM_LIMITS = {
-  ru: { vk: 2200, ok: 1200, telegram: 1024, max: 600, habr: 3000 },
-  en: { linkedin: 3000, x: 280, instagram: 2200, reddit: 4000 }
-} as const;
-
-type Lang = keyof typeof PLATFORM_LIMITS;
-
-const PLATFORM_ALIASES = {
-  ru: { VK: 'vk', OK: 'ok', Telegram: 'telegram', MAX: 'max', Habr: 'habr' },
-  en: { LinkedIn: 'linkedin', 'X/Twitter': 'x', Instagram: 'instagram', Reddit: 'reddit' }
-} as const;
-
-const resolveSelectedPlatforms = (lang: Lang, channels: unknown) => {
-  const allPlatforms = Object.keys(PLATFORM_LIMITS[lang]);
-  if (!Array.isArray(channels) || channels.length === 0) return allPlatforms;
-
-  const mapped = channels
-    .map((channel) => normalizeText(channel))
-    .map((channel) => (PLATFORM_ALIASES[lang] as Record<string, string>)[channel] ?? channel.toLowerCase())
-    .filter((channel) => allPlatforms.includes(channel));
-
-  return mapped.length > 0 ? [...new Set(mapped)] : allPlatforms;
-};
 
 type RegistrationPayload = {
   role: 'agency' | 'solo';
@@ -78,58 +56,7 @@ const parseRegistrationPayload = (body: unknown): RegistrationPayload => {
   };
 };
 
-const trimToLimit = (text: string, limit: number) => {
-  if (text.length <= limit) return text;
-  return `${text.slice(0, Math.max(limit - 1, 1)).trimEnd()}…`;
-};
 
-const fallbackAdapt = (text: string, lang: Lang, selectedPlatforms?: string[]) => {
-  const limits = PLATFORM_LIMITS[lang];
-  const allowed = selectedPlatforms && selectedPlatforms.length > 0 ? selectedPlatforms : Object.keys(limits);
-  return Object.fromEntries(
-    Object.entries(limits)
-      .filter(([platform]) => allowed.includes(platform))
-      .map(([platform, limit]) => [platform, trimToLimit(`[${platform.toUpperCase()}] ${text}`, limit)])
-  );
-};
-
-const adaptWithZAI = async (text: string, lang: Lang, selectedPlatforms?: string[]) => {
-  const apiKey = process.env.ZAI_API_KEY;
-  if (!apiKey) return fallbackAdapt(text, lang, selectedPlatforms);
-
-  const limits = PLATFORM_LIMITS[lang];
-  const activePlatforms = selectedPlatforms && selectedPlatforms.length > 0 ? selectedPlatforms : Object.keys(limits);
-  const selectedLimits = Object.fromEntries(activePlatforms.map((platform) => [platform, limits[platform as keyof typeof limits]]));
-  const prompt = `Return only strict JSON. Keys: ${activePlatforms.join(', ')}. Keep each output within limits: ${JSON.stringify(selectedLimits)}. Source: ${text}`;
-
-  const response = await fetch('https://api.z.ai/api/paas/v4/chat/completions', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Accept-Language': lang === 'ru' ? 'ru-RU' : 'en-US,en',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ model: 'glm-4.7-flash', messages: [{ role: 'user', content: prompt }] })
-  });
-
-  if (!response.ok) return fallbackAdapt(text, lang, activePlatforms);
-
-  const payload = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
-  const content = payload?.choices?.[0]?.message?.content;
-  if (!content) return fallbackAdapt(text, lang, activePlatforms);
-
-  try {
-    const parsed = JSON.parse(content) as Record<string, string>;
-    const result: Record<string, string> = {};
-    for (const [platform, limit] of Object.entries(limits)) {
-      if (!activePlatforms.includes(platform)) continue;
-      result[platform] = trimToLimit(normalizeText(parsed[platform]) || text, limit);
-    }
-    return result;
-  } catch {
-    return fallbackAdapt(text, lang, activePlatforms);
-  }
-};
 
 const sendConfirmationEmail = async (email: string, link: string) => {
   console.log(`📧 Confirmation link for ${email}: ${link}`);
@@ -211,14 +138,15 @@ app.post('/api/demo-adapt', async (c) => {
     const body = await c.req.json() as { text?: string; lang?: string; channels?: string[] };
     const text = normalizeText(body.text);
     const lang = (normalizeText(body.lang) || 'ru') as Lang;
-    if (!text || text.length > 1800 || !(lang in PLATFORM_LIMITS)) return c.json({ success: false, message: 'Validation failed' }, 400);
+    if (!hasValidDemoInput(text, lang)) return c.json({ success: false, message: 'Validation failed' }, 400);
 
-    const selectedPlatforms = resolveSelectedPlatforms(lang, body.channels);
-    const adaptations = await adaptWithZAI(text, lang, selectedPlatforms);
+    const selectedPlatforms = resolveSelectedPlatforms(lang as Lang, body.channels);
+    const adaptations = await adaptWithZAISequential(text, lang as Lang, selectedPlatforms);
     return c.json({ success: true, adaptations });
   } catch (err) {
     console.error('Demo adapt error:', err);
-    return c.json({ success: false, message: 'Internal server error' }, 500);
+    const message = err instanceof Error ? err.message : 'Internal server error';
+    return c.json({ success: false, message: `LLM unavailable: ${message}` }, 502);
   }
 });
 
