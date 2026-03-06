@@ -69,10 +69,16 @@ export const adaptWithZAISequential = async (text: string, lang: Lang, selectedP
         presence_penalty: 0.25,
         messages: [{ role: 'user', content: buildPrompt(platform, lang, limit, text) }]
       }),
-      signal: AbortSignal.timeout(25000)
+      signal: AbortSignal.timeout(60000)
     });
 
     if (!response.ok) {
+      if (response.status === 429) {
+        throw new Error(`Rate limit exceeded for ${platform}. Please try again in 1 minute.`);
+      }
+      if (response.status >= 500) {
+        throw new Error(`LLM service unavailable for ${platform} (status ${response.status}).`);
+      }
       throw new Error(`LLM request failed for ${platform} with status ${response.status}`);
     }
 
